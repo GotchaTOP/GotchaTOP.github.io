@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      32.9k 字
+      33.4k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1125
+      1140
        分钟
     </span>
   
@@ -739,6 +739,53 @@
 <p>HashMap在进行扩容时，使用的rehash方式非常巧妙，因为每次扩容都是翻倍，与原来计算的 (n-1)&amp;hash的结果相比，只是多了一个bit位，所以节点要么就在原来的位置，要么就被分配到”<strong>原位置+旧容量</strong>“这个位置。</p>
 <p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/4.62.png" srcset="/img/loading.gif" lazyload></p>
 <p>正是因为这样巧妙的rehash方式，既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，在resize的过程中保证了rehash之后每个桶上的节点数一定小于等于原来桶上的节点数，保证了rehash之后不会出现更严重的hash冲突，均匀的把之前的冲突的节点分散到新的桶中了。</p>
+<h3 id="JDK1-8，多线程下HashMap不安全的问题"><a href="#JDK1-8，多线程下HashMap不安全的问题" class="headerlink" title="JDK1.8，多线程下HashMap不安全的问题"></a>JDK1.8，多线程下HashMap不安全的问题</h3><ul>
+<li>多个线程在同一个hash桶中添加元素时，可能出现数据丢失</li>
+<li>size计算时，使用的++size不是原子操作</li>
+</ul>
+<h3 id="JDK1-7，多线程下HashMap不安全的问题"><a href="#JDK1-7，多线程下HashMap不安全的问题" class="headerlink" title="JDK1.7，多线程下HashMap不安全的问题"></a>JDK1.7，多线程下HashMap不安全的问题</h3><ul>
+<li>扩容的时候、链表的元素发生倒置。在多线程进行扩容的时候、就会导致循环链表</li>
+</ul>
+<p>假设一个HashMap已经到了Resize的临界点。此时有两个线程A和B，在同一时刻对HashMap进行Put操作</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115128959.png" srcset="/img/loading.gif" lazyload alt="image-20210727115128959"></p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115210752.png" srcset="/img/loading.gif" lazyload alt="image-20210727115210752"></p>
+<p>此时达到Resize条件，两个线程各自进行Rezie的第一步，也就是扩容</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115300441.png" srcset="/img/loading.gif" lazyload alt="image-20210727115300441"></p>
+<p>这时候，两个线程都走到了ReHash的步骤。让我们回顾一下ReHash的代码：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115355309.png" srcset="/img/loading.gif" lazyload alt="image-20210727115355309"></p>
+<p>假如此时线程B遍历到Entry3对象，刚执行完红框里的这行代码，线程就被挂起。对于线程B来说：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115544544.png" srcset="/img/loading.gif" lazyload alt="image-20210727115544544"></p>
+<p>这时候线程A畅通无阻地进行着Rehash，当ReHash完成后，结果如下（图中的e和next，代表线程B的两个引用）：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115625349.png" srcset="/img/loading.gif" lazyload alt="image-20210727115625349"></p>
+<p>直到这一步，看起来没什么毛病。接下来线程B恢复，继续执行属于它自己的ReHash。线程B刚才的状态是：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115716859.png" srcset="/img/loading.gif" lazyload alt="image-20210727115716859"></p>
+<p>当执行到上面这一行时，显然 i = 3，因为刚才线程A对于Entry3的hash结果也是3。</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115812289.png" srcset="/img/loading.gif" lazyload alt="image-20210727115812289"></p>
+<p>我们继续执行到这两行，Entry3放入了线程B的数组下标为3的位置，并且e指向了Entry2。此时e和next的指向如下：</p>
+<p>e = Entry2</p>
+<p>next = Entry2</p>
+<p>整体情况如图所示：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727115855718.png" srcset="/img/loading.gif" lazyload alt="image-20210727115855718"></p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727120153222.png" srcset="/img/loading.gif" lazyload alt="image-20210727120153222"></p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727120221388.png" srcset="/img/loading.gif" lazyload alt="image-20210727120221388"></p>
+<p>接下来执行下面的三行，用头插法把Entry2插入到了线程B的数组的头结点：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727120308129.png" srcset="/img/loading.gif" lazyload alt="image-20210727120308129"></p>
+<p>整体情况如图所示：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727120348292.png" srcset="/img/loading.gif" lazyload alt="image-20210727120348292"></p>
+<p>第三次循环开始，又执行到红框的代码：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727120435948.png" srcset="/img/loading.gif" lazyload alt="image-20210727120435948"></p>
+<p>e = Entry3</p>
+<p>next = Entry3.next = null</p>
+<p>最后一步，当我们执行下面这一行的时候，见证奇迹的时刻来临了：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727120500276.png" srcset="/img/loading.gif" lazyload alt="image-20210727120500276"></p>
+<p>newTable[i] = Entry2</p>
+<p>e = Entry3</p>
+<p>Entry2.next = Entry3</p>
+<p>Entry3.next = Entry2</p>
+<p>链表出现了环形！</p>
+<p>整体情况如图所示：</p>
+<p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/image-20210727120552282.png" srcset="/img/loading.gif" lazyload alt="image-20210727120552282"></p>
+<p>此时，问题还没有直接产生。当调用Get查找一个不存在的Key，而这个Key的Hash结果恰好等于3的时候，由于位置3带有环形链表，所以程序将会进入死循环！</p>
 <hr>
 <h1 id="五、ConcurrentHashMap"><a href="#五、ConcurrentHashMap" class="headerlink" title="五、ConcurrentHashMap"></a>五、ConcurrentHashMap</h1><h2 id="简介-3"><a href="#简介-3" class="headerlink" title="简介"></a>简介</h2><h2 id="JDK1-7"><a href="#JDK1-7" class="headerlink" title="JDK1.7"></a>JDK1.7</h2><h3 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h3><p>Java 7 中 ConcurrentHashMap 的存储结构如图，ConcurrnetHashMap 由很多个 Segment 组合，而每一个 Segment 是一个类似于 HashMap 的结构，所以每一个 HashMap 的内部可以进行扩容。但是 Segment 的个数一旦<strong>初始化就不能改变</strong>，默认 Segment 的个数是 16 个，也可以认为 ConcurrentHashMap 默认支持最多 16 个线程并发。</p>
 <ul>
@@ -935,7 +982,7 @@
 <p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/6.4.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/6.5.png" srcset="/img/loading.gif" lazyload></p>
 <p><img src="/2020/12/28/Java%E5%AE%B9%E5%99%A8/%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81/6.6.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="加锁分析"><a href="#加锁分析" class="headerlink" title="加锁分析"></a>加锁分析</h2><p>LinkedBlockingQueue的有点在于<strong>用了两把锁和 dummy 节点</strong></p>
+<h2 id="加锁分析"><a href="#加锁分析" class="headerlink" title="加锁分析"></a>加锁分析</h2><p>LinkedBlockingQueue的优点在于<strong>用了两把锁和 dummy 节点</strong></p>
 <ul>
 <li>用一把锁，同一时刻，最多只允许有一个线程（生产者或消费者，二选一）执行</li>
 <li> 用两把锁，同一时刻，可以允许两个线程同时（一个生产者与一个消费者）执行</li>
@@ -1048,7 +1095,8 @@
 <p>LinkedHashMap 存取小结</p>
 <p>LinkedHashMap 的存取过程基本与HashMap基本类似，只是在细节实现上稍有不同，这是由LinkedHashMap本身的特性所决定的，因为它要额外维护一个双向链表用于保持迭代顺序。在put操作上，虽然LinkedHashMap完全继承了HashMap的put操作，但是在细节上还是做了一定的调整，比如，在LinkedHashMap中向哈希表中插入新Entry的同时，还会通过Entry的addBefore方法将其链入到双向链表中。在扩容操作上，虽然LinkedHashMap完全继承了HashMap的resize操作，但是鉴于性能和LinkedHashMap自身特点的考量，LinkedHashMap对其中的重哈希过程(transfer方法)进行了重写。在读取操作上，LinkedHashMap中重写了HashMap中的get方法，通过HashMap中的getEntry方法获取Entry对象。在此基础上，进一步获取指定键对应的值。</p>
 </blockquote>
-<h2 id="LinkedHashMap-与-LRU-Least-recently-used，最近最少使用-算法"><a href="#LinkedHashMap-与-LRU-Least-recently-used，最近最少使用-算法" class="headerlink" title="LinkedHashMap 与 LRU(Least recently used，最近最少使用)算法"></a>LinkedHashMap 与 LRU(Least recently used，最近最少使用)算法</h2><p>LinkedHashMap区别于HashMap最大的一个不同点是，前者是有序的，而后者是无序的。为此，LinkedHashMap增加了两个属性用于保证顺序，分别是双向链表头结点header和标志位accessOrder。我们知道，header是LinkedHashMap所维护的双向链表的头结点，而accessOrder用于决定具体的迭代顺序。实际上，accessOrder标志位的作用可不像我们描述的这样简单，我们接下来仔细分析一波~<br>　　<br>我们知道，当accessOrder标志位为true时，表示双向链表中的元素按照访问的先后顺序排列，可以看到，虽然Entry插入链表的顺序依然是按照其put到LinkedHashMap中的顺序，但put和get方法均有调用recordAccess方法（put方法在key相同时会调用）。recordAccess方法判断accessOrder是否为true，如果是true，则将当前访问的Entry（put进来的Entry或get出来的Entry）移到双向链表的尾部（key不相同时，put新Entry时，会调用addEntry，它会调用createEntry，该方法同样将新插入的元素放入到双向链表的尾部，既符合插入的先后顺序，又符合访问的先后顺序，因为这时该Entry也被访问了）；当标志位accessOrder的值为false时，表示双向链表中的元素按照Entry插入LinkedHashMap到中的先后顺序排序，即每次put到LinkedHashMap中的Entry都放在双向链表的尾部，这样遍历双向链表时，Entry的输出顺序便和插入的顺序一致，这也是默认的双向链表的存储顺序。因此，当标志位accessOrder的值为false时，虽然也会调用recordAccess方法，但不做任何操作。</p>
+<h2 id="LinkedHashMap-与-LRU-Least-recently-used，最近最少使用-算法"><a href="#LinkedHashMap-与-LRU-Least-recently-used，最近最少使用-算法" class="headerlink" title="LinkedHashMap 与 LRU(Least recently used，最近最少使用)算法"></a>LinkedHashMap 与 LRU(Least recently used，最近最少使用)算法</h2><p>LinkedHashMap区别于HashMap最大的一个不同点是，前者是有序的，而后者是无序的。为此，LinkedHashMap增加了两个属性用于保证顺序，分别是双向链表头结点header和标志位accessOrder。我们知道，header是LinkedHashMap所维护的双向链表的头结点，而accessOrder用于决定具体的迭代顺序。实际上，accessOrder标志位的作用可不像我们描述的这样简单，我们接下来仔细分析一波~</p>
+<p>我们知道，当accessOrder标志位为true时，表示双向链表中的元素按照访问的先后顺序排列，可以看到，虽然Entry插入链表的顺序依然是按照其put到LinkedHashMap中的顺序，但put和get方法均有调用recordAccess方法（put方法在key相同时会调用）。recordAccess方法判断accessOrder是否为true，如果是true，则将当前访问的Entry（put进来的Entry或get出来的Entry）移到双向链表的尾部（key不相同时，put新Entry时，会调用addEntry，它会调用createEntry，该方法同样将新插入的元素放入到双向链表的尾部，既符合插入的先后顺序，又符合访问的先后顺序，因为这时该Entry也被访问了）；当标志位accessOrder的值为false时，表示双向链表中的元素按照Entry插入LinkedHashMap到中的先后顺序排序，即每次put到LinkedHashMap中的Entry都放在双向链表的尾部，这样遍历双向链表时，Entry的输出顺序便和插入的顺序一致，这也是默认的双向链表的存储顺序。因此，当标志位accessOrder的值为false时，虽然也会调用recordAccess方法，但不做任何操作。</p>
 <p>注意到我们在前面介绍的LinkedHashMap的五种构造方法，前四个构造方法都将accessOrder设为false，说明<strong>默认是按照插入顺序排序的</strong>；而第五个构造方法可以自定义传入的accessOrder的值，因此可以指定双向循环链表中元素的排序规则。特别地，当我们要用LinkedHashMap实现LRU算法时，就需要调用该构造方法并将accessOrder置为true。</p>
 <h3 id="put操作与标志位accessOrder"><a href="#put操作与标志位accessOrder" class="headerlink" title="put操作与标志位accessOrder"></a>put操作与标志位accessOrder</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java">/ 将key/value添加到LinkedHashMap中      <br><span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">put</span><span class="hljs-params">(K key, V value)</span> </span>&#123;      <br>    <span class="hljs-comment">// 若key为null，则将该键值对添加到table[0]中。      </span><br>    <span class="hljs-keyword">if</span> (key == <span class="hljs-keyword">null</span>)      <br>        <span class="hljs-keyword">return</span> putForNullKey(value);      <br>    <span class="hljs-comment">// 若key不为null，则计算该key的哈希值，然后将其添加到该哈希值对应的链表中。      </span><br>    <span class="hljs-keyword">int</span> hash = hash(key.hashCode());      <br>    <span class="hljs-keyword">int</span> i = indexFor(hash, table.length);      <br>    <span class="hljs-keyword">for</span> (Entry&lt;K,V&gt; e = table[i]; e != <span class="hljs-keyword">null</span>; e = e.next) &#123;      <br>        Object k;      <br>        <span class="hljs-comment">// 若key对已经存在，则用新的value取代旧的value     </span><br>        <span class="hljs-keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123;      <br>            V oldValue = e.value;      <br>            e.value = value;      <br>            e.recordAccess(<span class="hljs-keyword">this</span>);      <br>            <span class="hljs-keyword">return</span> oldValue;      <br>        &#125;      <br>    &#125;      <br><br>    <span class="hljs-comment">// 若key不存在，则将key/value键值对添加到table中      </span><br>    modCount++;    <br>    <span class="hljs-comment">//将key/value键值对添加到table[i]处    </span><br>    addEntry(hash, key, value, i);      <br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;      <br>&#125; <br></code></pre></td></tr></table></figure>
 
