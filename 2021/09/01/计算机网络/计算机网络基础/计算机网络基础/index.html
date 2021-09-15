@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      16.8k 字
+      19.3k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      448
+      516
        分钟
     </span>
   
@@ -275,26 +275,21 @@
 <h1 id="四、网络层"><a href="#四、网络层" class="headerlink" title="四、网络层"></a>四、网络层</h1><h2 id="4-1-概述"><a href="#4-1-概述" class="headerlink" title="4.1 概述"></a>4.1 概述</h2><p><strong>网络层（Network Layer）</strong>：目的是实现两个端系统之间的数据透明传送，具体功能包括寻址和路由选择、连接的建立、保持和终止等。它提供的服务使传输层不需要了解网络中的数据传输和交换技术。如果想用尽量少的词来记住网络层，那就是**”路径选择、路由及逻辑寻址”**。</p>
 <p>网络层中涉及众多的协议，其中包括最重要的协议，也是TCP/IP的核心协议——IP协议。IP协议非常简单，仅仅提供不可靠、无连接的传送服务。IP协议的主要功能有：无连接数据报传输、数据报路由选择和差错控制。与IP协议配套使用实现其功能的还有地址解析协议ARP、逆地址解析协议RARP、因特网报文协议ICMP、因特网组管理协议IGMP。</p>
 <ul>
-<li><p>网络层的任务：</p>
-<ul>
+<li>网络层的任务：<ul>
 <li>将传输层传下来的报文段<strong>封装成分组</strong></li>
 <li><strong>选择合适的路由</strong>，使得传输层传下来的分组能够交付到目的主机</li>
 </ul>
 </li>
-<li><p>网络层的功能：</p>
-<ul>
+<li>网络层的功能：<ul>
 <li>为传输层提供服务</li>
 <li>组包和拆包</li>
 <li>路由选择</li>
 <li>拥塞控制</li>
 </ul>
 </li>
-<li><p>网络层传输单位：<strong>数据段</strong></p>
-</li>
-<li><p>网络层实现的硬件：<strong>路由器</strong></p>
-</li>
-<li><p>协议：ICMP、ARP、RARP、IP、IGMP、OSPF</p>
-</li>
+<li>网络层传输单位：<strong>数据段</strong></li>
+<li>网络层实现的硬件：<strong>路由器</strong></li>
+<li>协议：ICMP、ARP、RARP、IP、IGMP、OSPF</li>
 </ul>
 <h2 id="4-2-IP协议"><a href="#4-2-IP协议" class="headerlink" title="4.2 IP协议"></a>4.2 IP协议</h2><h3 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>IP地址是IP协议提供的一种统一的地址格式，它为互联网上的每一个网络和每一台主机分配一个逻辑地址，以此来屏蔽物理地址的差异。</p>
 <p>每个IP地址都包含两部分：<strong>网络ID</strong>和<strong>主机ID</strong>，网络ID标识在同一个物理网络上的所有宿主机，主机ID标识网络上的每一个宿主机，运行TCP/IP的每个计算机都需要唯一的IP地址。</p>
@@ -822,8 +817,176 @@ TCP 的接收端会丢弃重复的数据。
 <h3 id="建立TCP连接"><a href="#建立TCP连接" class="headerlink" title="建立TCP连接"></a>建立TCP连接</h3><p>TCP/IP 分为四层，在发送数据时，<strong>每层都要对数据进行封装</strong></p>
 <p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/20201209141851.png" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p><a href="#tcp">TCP协议</a></p>
-<h3 id="发送HTTPS请求"><a href="#发送HTTPS请求" class="headerlink" title="发送HTTPS请求"></a>发送HTTPS请求</h3><hr>
-<h2 id="8-3-HTTP协议"><a href="#8-3-HTTP协议" class="headerlink" title="8.3 HTTP协议"></a>8.3 HTTP协议</h2><h3 id="概述-2"><a href="#概述-2" class="headerlink" title="概述"></a>概述</h3>
+<h3 id="发送HTTPS请求"><a href="#发送HTTPS请求" class="headerlink" title="发送HTTPS请求"></a>发送HTTPS请求</h3><p><a href="#https">HTTPS协议</a></p>
+<hr>
+<h2 id="8-3-HTTP协议"><a href="#8-3-HTTP协议" class="headerlink" title="8.3 HTTP协议"></a>8.3 HTTP协议</h2><h3 id="概述-2"><a href="#概述-2" class="headerlink" title="概述"></a>概述</h3><p>HTTP（HyperText Transfer Protocol）：<strong>超文本传输协议</strong>，HTTP是一个客户端终端（用户）和服务器端（网站）请求和应答的标准（TCP）。通过使用网页浏览器、网络爬虫或者其它的工具，客户端发起一个HTTP请求到服务器上指定端口（默认端口为80）。一旦收到请求，服务器会向客户端返回一个状态，比如”HTTP/1.1 200 OK”，以及返回的内容，如请求的文件、错误消息、或者其它信息。</p>
+<p>尽管TCP/IP协议是互联网上最流行的应用，HTTP协议中，并没有规定必须使用它或它支持的层。事实上，HTTP可以在任何互联网协议上，或其他网络上实现。HTTP假定其下层协议提供可靠的传输。因此，任何能够提供这种保证的协议都可以被其使用。因此也就是其在TCP/IP协议族使用TCP作为其传输层。</p>
+<ul>
+<li>超文本：超文本指的是HTML，css，JavaScript和图片等，HTTP的出现是为了接收和发布HTML页面，经过不断的发展也可以用于接收一些音频，视频，文件等内容。</li>
+</ul>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210910145213312.png" srcset="/img/loading.gif" lazyload alt="image-20210910145213312"></p>
+<hr>
+<h3 id="报文结构"><a href="#报文结构" class="headerlink" title="报文结构"></a>报文结构</h3><p>报文结构：<strong>起始行 + 头部 + 空行 + 实体</strong></p>
+<blockquote>
+<p> http <code>请求报文</code>和<code>响应报文</code>是有一定区别</p>
+</blockquote>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210915150323696.png" srcset="/img/loading.gif" lazyload alt="image-20210915150323696"></p>
+<h4 id="起始行"><a href="#起始行" class="headerlink" title="起始行"></a>起始行</h4><h5 id="请求行"><a href="#请求行" class="headerlink" title="请求行"></a>请求行</h5><ul>
+<li>请求报文 GET /home HTTP/1.1，也就是<strong>方法 + 路径 + http版本</strong></li>
+</ul>
+<p><a href="#http%E7%89%88%E6%9C%AC">HTTP版本</a></p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/1625556960701-67d07a26-61ea-4708-b378-a33ce98e5907.webp" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h5 id="状态行"><a href="#状态行" class="headerlink" title="状态行"></a>状态行</h5><ul>
+<li>响应报文 HTTP/1.1 200 OK ，由<strong>http版本、状态码和原因</strong>三部分组成</li>
+</ul>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/1625556999909-c5905faf-64de-41a8-a43b-780207247fa8.webp" srcset="/img/loading.gif" lazyload alt="img"></p>
+<blockquote>
+<p>在起始行中，每两个部分之间用<strong>空格</strong>隔开，最后一个部分后面应该接一个<strong>换行</strong>，严格遵循<code>ABNF</code>语法规范。</p>
+</blockquote>
+<h4 id="头部"><a href="#头部" class="headerlink" title="头部"></a>头部</h4><h5 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h5><p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210915151245871.png" srcset="/img/loading.gif" lazyload alt="image-20210915151245871"></p>
+<p>Cache-Control：</p>
+<ul>
+<li><p><strong>private：</strong> 仅浏览器可以缓存</p>
+</li>
+<li><p><strong>public：</strong> 浏览器和代理服务器都可以缓存（对于private和public，前端可以认为一样，不用深究</p>
+</li>
+<li><p><strong>max-age=xxx</strong> 过期时间（重要）</p>
+</li>
+<li><p><strong>no-cache</strong> 不进行强缓存（重要）,使用任何缓存前都要向服务器验证</p>
+</li>
+<li><p><strong>no-store</strong> 真正的不缓存</p>
+</li>
+</ul>
+<h5 id="响应头"><a href="#响应头" class="headerlink" title="响应头"></a>响应头</h5><p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210915151401084.png" srcset="/img/loading.gif" lazyload alt="image-20210915151401084"></p>
+<p>Content-Type：</p>
+<p>常见的媒体格式：text/html,text/plain,image/gif</p>
+<p>application开头的媒体格式类型：application/xml, appliation/json</p>
+<p>multipart/form-data</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210915151540851.png" srcset="/img/loading.gif" lazyload alt="image-20210915151540851"></p>
+<h4 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h4><h5 id="请求体"><a href="#请求体" class="headerlink" title="请求体"></a>请求体</h5><h5 id="响应体"><a href="#响应体" class="headerlink" title="响应体"></a>响应体</h5><hr>
+<h3 id="HTTP-版本"><a href="#HTTP-版本" class="headerlink" title="HTTP 版本"></a><span id="http版本">HTTP 版本</span></h3><h4 id="HTTP1-0"><a href="#HTTP1-0" class="headerlink" title="HTTP1.0"></a>HTTP1.0</h4><ul>
+<li>HTTP 1.0 浏览器与服务器只保持短暂的连接，每次请求都需要与服务器建立一个TCP连接</li>
+</ul>
+<h4 id="HTTP1-1"><a href="#HTTP1-1" class="headerlink" title="HTTP1.1"></a>HTTP1.1</h4><ul>
+<li><p>新增Connection字段，用于<strong>支持提供TCP持久连接</strong> Connection: keep-alive</p>
+<ul>
+<li>即TCP连接默认不关闭，可以被多个请求复用</li>
+<li>虽然允许复用TCP连接，但是同一个TCP连接里面，所有的数据通信是按次序进行的，服务器只有处理完一个请求，才会接着处理下一个请求。如果前面的处理特别慢，后面就会有许多请求排队等着。（<strong>HTTP对头阻塞</strong>）</li>
+</ul>
+</li>
+<li><p>增加更多请求头和响应头来完善功能</p>
+</li>
+<li><p>新增 Host 字段，用于支持虚拟主机</p>
+</li>
+<li><p>缓存策略：If-Match，If-None-Match</p>
+</li>
+<li><p>添加了新的请求方法 put, delete, options</p>
+</li>
+</ul>
+<h4 id="HTTP2-0"><a href="#HTTP2-0" class="headerlink" title="HTTP2.0"></a>HTTP2.0</h4><ul>
+<li><p><strong>支持服务端推送</strong></p>
+<ul>
+<li>允许服务端推送资源给客户端，在响应一个页面请求中，可以把需要的其他资源一起发给客户端，免得需要再次发送请求，适合加载静态资源，比如请求html时，把css也传过去</li>
+</ul>
+</li>
+<li><p><strong>支持TCP连接IO多路复用</strong></p>
+<ul>
+<li>在一个连接里，客户端和服务器都可以同时发送多个请求或回应，避免队头阻塞</li>
+</ul>
+</li>
+<li><p><strong>二进制分帧（而非文本格式）</strong></p>
+<ul>
+<li>支持多个连接穿插执行，避免队头阻塞</li>
+</ul>
+</li>
+<li><p>首部压缩：HPACK算法</p>
+<ul>
+<li>首先是在服务器和客户端之间建立哈希表，将用到的字段存放在这张表中，那么在传输的时候对于之前出现过的值，只需要把<strong>索引</strong>(比如0，1，2，…)传给对方即可，对方拿到索引查表就行了。这种<strong>传索引</strong>的方式，可以说让请求头字段得到极大程度的精简和复用。废除了起始行的概念。<ul>
+<li>HTTP2.0当中废除了起始行的概念，将起始行中的请求方法、URI、状态码转换成了头字段，不过这些字段都有一个”:”前缀，用来和其它请求头区分开。</li>
+<li>其次是对于整数和字符串进行<strong>哈夫曼编码</strong>，哈夫曼编码的原理就是先将所有出现的字符建立一张索引表，然后让出现次数多的字符对应的索引尽可能短，传输的时候也是传输这样的<strong>索引序列</strong>，可以达到非常高的压缩率。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="HTTP-状态码"><a href="#HTTP-状态码" class="headerlink" title="HTTP 状态码"></a><span id="http状态码">HTTP 状态码</span></h3><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status">https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status</a></p>
+<p>RFC 规定 HTTP 的状态码为<strong>三位数</strong>，被分为五类:</p>
+<ul>
+<li><p><strong>1xx</strong>: 表示目前是协议处理的中间状态，还需要后续操作。</p>
+<ul>
+<li><p><strong>100 Continue</strong>：迄今为止的所有内容都是可行的，客户端应该继续请求，如果已经完成，则忽略它。</p>
+</li>
+<li><p><strong>101 Switching Protocols</strong>：在<code>HTTP</code>升级为<code>WebSocket</code>的时候，如果服务器同意变更（切换协议），就会发送状态码 101。</p>
+</li>
+<li><p><strong>102 Processing</strong>：服务器已收到并正在处理该请求，但没有响应可用</p>
+</li>
+</ul>
+</li>
+<li><p><strong>2xx</strong>: 表示成功状态。</p>
+<ul>
+<li><strong>200 OK</strong>：请求成功。</li>
+<li><strong>201 Created</strong>：该请求已成功，并因此创建了一个新的资源。这通常是在POST请求，或是某些PUT请求之后返回的响应。</li>
+<li><strong>202 Accepted</strong>：请求已经接收到，但还未响应，没有结果。意味着不会有一个异步的响应去表明当前请求的结果，预期另外的进程和服务去处理请求，或者批处理。</li>
+<li><strong>204 No Content</strong>：含义与 200 相同，但响应头后没有 body 数据。</li>
+<li><strong>206 Partial Content</strong>：表示部分内容，它的使用场景为 HTTP 分块下载和断点续传，当然也会带上相应的响应头字段<code>Content-Range</code>。</li>
+</ul>
+</li>
+<li><p><strong>3xx</strong>: 重定向状态，资源位置发生变动，需要重新请求。</p>
+<ul>
+<li><p><strong>301 Moved Permanently</strong>：永久重定向，求的URL已被移除时使用</p>
+<p>比如网站从 HTTP 升级到了 HTTPS 了，以前的站点再也不用了，应当返回<code>301</code>，这个时候浏览器默认会做缓存优化，在第二次访问的时候自动访问重定向的那个地址。</p>
+</li>
+<li><p><strong>302 Found</strong>：临时重定向，请求的资源现在临时从不同的 URI 响应请求。由于这样的重定向是临时的，客户端应当继续向原有地址发送以后的请求。只有在Cache-Control或Expires中进行了指定的情况下，这个响应才是可缓存的。</p>
+</li>
+<li><p><strong>304 Not Modified</strong>: 当协商缓存命中时会返回这个状态码。如果客户端发送了一个带条件的 GET 请求且该请求已被允许，而文档的内容（自上次访问以来或者根据请求的条件）并没有改变，则服务器应当返回这个状态码。304 响应禁止包含消息体，因此始终以消息头后的第一个空行结尾。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>4xx</strong>: 请求报文有误。</p>
+<ul>
+<li><p><strong>400 Bad Request</strong>: </p>
+<ul>
+<li>1、语义有误，当前请求无法被服务器理解。除非进行修改，否则客户端不应该重复提交这个请求。</li>
+<li>2、请求参数有误。</li>
+</ul>
+</li>
+<li><p><strong>401 Unauthorized</strong>：未授权，当前请求需要用户验证。该响应必须包含一个适用于被请求资源的 WWW-Authenticate 信息头用以询问用户信息。</p>
+</li>
+<li><p><strong>403 Forbidden</strong>：服务器已经理解请求，但是拒绝执行它。这并不是请求报文出错，而是服务器禁止访问，原因有很多，比如法律禁止、信息敏感。</p>
+</li>
+<li><p><strong>404 Not Found</strong>：资源未找到，表示没在服务器上找到相应的资源。</p>
+</li>
+<li><p><strong>405 Method Not Allowed</strong>：请求方法不被服务器端允许。该响应必须返回一个Allow 头信息用以表示出当前资源能够接受的请求方法的列表。</p>
+</li>
+<li><p><strong>406 Not Acceptable</strong>: 资源无法满足客户端的条件。请求的资源的内容特性无法满足请求头中的条件，因而无法生成响应实体。</p>
+</li>
+<li><p><strong>408 Request Timeout</strong>：服务器等待了太长时间。请求超时。客户端没有在服务器预备等待的时间内完成一个请求的发送。客户端可以随时再次提交这一请求而无需进行任何更改。</p>
+</li>
+<li><p><strong>409 Conflict</strong>：多个请求发生了冲突。</p>
+</li>
+<li><p><strong>413 Request Entity Too Large</strong>：请求体的数据过大。</p>
+</li>
+<li><p><strong>414 Request-URI Too Long</strong>：请求行里的 URI 太大。</p>
+</li>
+<li><p><strong>429 Too Many Request</strong>：客户端发送的请求过多。</p>
+</li>
+<li><p><strong>431 Request Header Fields Too Large</strong>：请求头的字段内容太大。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>5xx</strong>: 服务器端发生错误。</p>
+<ul>
+<li><strong>500 Internal Server Error</strong>：服务器遇到了不知道如何处理的情况。</li>
+<li><strong>501 Not Implemented</strong>：客户端请求的功能还不支持。此请求方法不被服务器支持且无法被处理。只有<code>GET</code>和<code>HEAD</code>是要求服务器支持的，它们必定不会返回此错误代码。</li>
+<li><strong>502 Bad Gateway</strong>：此错误响应表明服务器作为网关需要得到一个处理这个请求的响应，但是得到一个错误的响应。服务器自身是正常的，但访问的时候出错了。</li>
+<li><strong>503 Service Unavailable</strong>：服务器没有准备好处理请求。 常见原因是服务器因维护或重载而停机。 请注意，与此响应一起，应发送解释问题的用户友好页面。 </li>
+<li><strong>504 Gateway Timeout</strong>：当服务器作为网关，不能及时得到响应时返回此错误代码。</li>
+<li><strong>505 HTTP Version Not Supported</strong>：服务器不支持请求中所使用的HTTP协议版本。</li>
+</ul>
+</li>
+</ul>
+
             </div>
             <hr>
             <div>
