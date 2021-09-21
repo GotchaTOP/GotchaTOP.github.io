@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      20.1k 字
+      26.7k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      539
+      725
        分钟
     </span>
   
@@ -396,7 +396,7 @@
 <p><strong>注意：加的第一个1是指这个网络连接时所需的网关地址，接着的两个1分别是指网络地址和广播地址。</strong></p>
 <p>因为13小于16（16等于2的4次方），所以主机位为4位。而256－16＝240，所以该子网掩码为255.255.255.240。</p>
 <p>如果一个子网有14台主机，不少人常犯的错误是：依然分配具有16个地址空间的子网，而忘记了给网关分配地址。这样就错误了，因为14＋1＋1＋1＝17，17大于16，所以我们只能分配具有32个地址（32等于2的5次方）空间的子网。这时子网掩码为：255.255.255.224。</p>
-<h2 id="4-3-ARP-RARP协议"><a href="#4-3-ARP-RARP协议" class="headerlink" title="4.3 ARP/RARP协议"></a>4.3 ARP/RARP协议</h2><p><strong>地址解析协议，即ARP（Address Resolution Protocol），是根据IP地址获取物理地址的一个TCP/IP协议。</strong>主机发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间，下次请求时直接查询ARP缓存以节约资源。地址解析协议是建立在网络中各个主机互相信任的基础上的，网络上的主机可以自主发送ARP应答消息，其他主机收到应答报文时不会检测该报文的真实性就会将其记入本机ARP缓存；由此攻击者就可以向某一主机发送伪ARP应答报文，使其发送的信息无法到达预期的主机或到达错误的主机，这就构成了一个ARP欺骗。<strong>ARP命令可用于查询本机ARP缓存中IP地址和MAC地址的对应关系、添加或删除静态对应关系等。</strong></p>
+<h2 id="4-3-ARP-RARP协议"><a href="#4-3-ARP-RARP协议" class="headerlink" title="4.3 ARP/RARP协议"></a><span id="arp">4.3 ARP/RARP协议</span></h2><p><strong>地址解析协议，即ARP（Address Resolution Protocol），是根据IP地址获取物理地址的一个TCP/IP协议。</strong>主机发送信息时将包含目标IP地址的ARP请求广播到网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间，下次请求时直接查询ARP缓存以节约资源。地址解析协议是建立在网络中各个主机互相信任的基础上的，网络上的主机可以自主发送ARP应答消息，其他主机收到应答报文时不会检测该报文的真实性就会将其记入本机ARP缓存；由此攻击者就可以向某一主机发送伪ARP应答报文，使其发送的信息无法到达预期的主机或到达错误的主机，这就构成了一个ARP欺骗。<strong>ARP命令可用于查询本机ARP缓存中IP地址和MAC地址的对应关系、添加或删除静态对应关系等。</strong></p>
 <p>ARP工作流程举例：</p>
 <p>主机A的IP地址为192.168.1.1，MAC地址为0A-11-22-33-44-01；</p>
 <p>主机B的IP地址为192.168.1.2，MAC地址为0A-11-22-33-44-02；</p>
@@ -818,6 +818,111 @@ TCP 的接收端会丢弃重复的数据。
 <p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/20201209141851.png" srcset="/img/loading.gif" lazyload alt="img"></p>
 <p><a href="#tcp">TCP协议</a></p>
 <h3 id="发送HTTPS请求"><a href="#发送HTTPS请求" class="headerlink" title="发送HTTPS请求"></a>发送HTTPS请求</h3><p><a href="#https">HTTPS协议</a></p>
+<p><strong>大致过程如下</strong></p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921110642708.png" srcset="/img/loading.gif" lazyload alt="image-20210921110642708"></p>
+<h3 id="查询MAC地址"><a href="#查询MAC地址" class="headerlink" title="查询MAC地址"></a>查询MAC地址</h3><p>这一步主要负责为打包好的<code>数据+TCP首部+IP首部</code>寻找传输路线，<strong>找到IP对应的物理机</strong>，这里会用到ARP协议。</p>
+<p><a href="#arp">ARP协议</a></p>
+<h3 id="请求在Tomcat中的处理流程"><a href="#请求在Tomcat中的处理流程" class="headerlink" title="请求在Tomcat中的处理流程"></a>请求在Tomcat中的处理流程</h3><p>Web 容器以<strong>进程</strong>的方式在计算机上运行，<strong>它主要负责接收请求，并将其投送至特定的应用</strong>，但Web容器并不属于计算机网络的组成部分。接下来将以Tomcat为例介绍Web容器的核心组件。</p>
+<h4 id="Tomcat的核心组件"><a href="#Tomcat的核心组件" class="headerlink" title="Tomcat的核心组件"></a>Tomcat的核心组件</h4><p>Tomcat的核心组件主要有：<strong>Server、Service、Connector、Engine、Host和Context</strong>。</p>
+<p><strong>一个Server可以包含多个Service，一个Service可以包含多个Connector，但只能包含一个Engine，一个Engine可以包含多个Host，一个Host可以包含多个Context</strong>。</p>
+<p><strong>它们之间的关系如下图所示</strong></p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921111523133.png" srcset="/img/loading.gif" lazyload alt="image-20210921111523133"></p>
+<p><strong>配置文件的结构如下</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">Server</span>&gt;</span>                              <br>    <span class="hljs-tag">&lt;<span class="hljs-name">Service</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">Engine</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">Host</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">Context</span> /&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">Host</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">Host</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">Context</span> /&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">Host</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">Engine</span>&gt;</span>  <br>        <span class="hljs-tag">&lt;<span class="hljs-name">Connector</span> /&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">Connector</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">Service</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">Server</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h5><p>Server 是整个配置文件的<strong>唯一根元素</strong>，代表整个 Tomcat 容器。Server 内部可以包含多个 Service，其主要职责就是管理多个 Service，对外提供给客户端访问，同时维护所有 Service 的生命周期，包括初始化服务、结束服务、定位客户端要访问的 Service 等等。</p>
+<h5 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h5><p>Service 的主要职责就是将 Engine 与 Connector 装配在一起对外提供服务。一个 Service 可以包含多个 Connector，但只能包含一个 Engine，<strong>其中 Connector 负责从客户端接收请求，Engine 负责处理 Connector 接收进来的请求。</strong></p>
+<h5 id="Connector"><a href="#Connector" class="headerlink" title="Connector"></a>Connector</h5><p><strong>Connector是主要负责接收请求的组件</strong>。</p>
+<p><strong>Tomcat有以下两种工作模式</strong></p>
+<ul>
+<li>作为Web服务器，直接接收客户端的请求</li>
+<li>作为Java Web服务器，接收前置Web服务器的请求</li>
+</ul>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921111734338.png" srcset="/img/loading.gif" lazyload alt="image-20210921111734338"></p>
+<p>每个 Service 可以有一个或多个 Connector，不同工作模式下，Tomcat 需要为各种类型的请求分别定义相应的 Connector，这样才能正确接收客户端对应协议的请求。定义 Connector 可以使用多种属性，某些属性只适用于某种特定的 Connector 类型。</p>
+<p>一般说来，常见的 Connector 有 4 种类型</p>
+<ul>
+<li><strong>HTTP</strong></li>
+<li><strong>HTTPS</strong></li>
+<li><strong>AJP</strong></li>
+<li><strong>Proxy</strong></li>
+</ul>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921111805468.png" srcset="/img/loading.gif" lazyload alt="image-20210921111805468"></p>
+<p>Connector作为通信接口，<strong>它为其所属特定的 Service 接收外部客户端请求，以及回送应答至外部客户端</strong>。具体职责包括创建 Request、Response 对象用于跟外部客户端交换数据，并<strong>将 Request 交给配套的 Engine 来处理</strong>。</p>
+<h5 id="Engine"><a href="#Engine" class="headerlink" title="Engine"></a>Engine</h5><p>Engine 是 Service 组件中<strong>负责请求处理的组件</strong>，其内部可以包含多个 Host。Engine 从一个或多个 Connector 中接收请求并处理，并将处理结果封装成应答交给 Connector，最终回传给外部客户端。</p>
+<h5 id="Host"><a href="#Host" class="headerlink" title="Host"></a>Host</h5><p><strong>Host 代表一个虚拟主机，它对应计算机网络上的一个实体</strong>。即某个在 DNS 服务器上注册过的域名或者 IP 地址，例如：<code>www.baidu.com</code>或 201.187.10.21。Host 内部可以包含多个 Context，<strong>每个 Context 表示一个 Web 应用</strong>。Host 负责安装、展开、启动和结束每个 Web 应用。</p>
+<p>客户端在填写目标地址时会通过主机名来标识它希望访问的服务器，Tomcat 将从 HTTP 请求头的 Host 字段提取主机名，然后再匹配对应的虚拟主机。如果没有找到匹配的，HTTP 请求将被发送至默认主机 defaultHost。</p>
+<h5 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h5><p>Context 代表在特定虚拟主机上运行的一个 Web 应用，<strong>负责处理某个特定 Web 应用的所有请求</strong>。</p>
+<h4 id="Tomcat处理HTTP请求"><a href="#Tomcat处理HTTP请求" class="headerlink" title="Tomcat处理HTTP请求"></a>Tomcat处理HTTP请求</h4><p>当以 HTTP 请求到达Tomcat服务器（Server）以后，Tomcat会进行以下几个步骤，将请求交给对应的Web应用进行处理</p>
+<ul>
+<li>根据协议类型和端口号选定 Service 和 Engine<ul>
+<li>Connector 主要负责接收请求。当 Connector 接收到特定协议和特定端口的请求后，<strong>其所属的 Service 和 Service 下的 Engine 也就确定了</strong></li>
+</ul>
+</li>
+<li>根据域名或 IP 地址选定 Host<ul>
+<li>Engine一旦确定了，就会根据 IP 来选择对应的虚拟主机Host来处理请求。如果匹配失败了，则会使用默认虚拟主机来处理请求</li>
+</ul>
+</li>
+<li>根据 URI 选定 Context<ul>
+<li>URI 中的 context-path 指定了 HTTPS 请求将要访问的 Web 应用</li>
+<li>当请求抵达时，Tomcat 将根据 Context 的属性 path 取值与 URI 中的 context-path 的匹配程度来选择 Web 应用处理相应请求</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="请求在Web应用中的处理流程"><a href="#请求在Web应用中的处理流程" class="headerlink" title="请求在Web应用中的处理流程"></a>请求在Web应用中的处理流程</h3><p>请求被 Web 容器中的 Connector 捕获，选取对应的 Server 中的 Engine ，Engine 再根据IP选择对应的虚拟主机，虚拟主机根据URI将请求交给对应的Web应用进行处理。接下来将介绍请求在Web请求中的处理过程。</p>
+<p>介绍处理过程前，先对Web应用的基本组件进行简单介绍。</p>
+<h4 id="Web应用核心组件"><a href="#Web应用核心组件" class="headerlink" title="Web应用核心组件"></a>Web应用核心组件</h4><h5 id="Listener"><a href="#Listener" class="headerlink" title="Listener"></a>Listener</h5><p>监听器 Listener 主要用于监听 Application、Session、Request 等对象的变化，每当这些对象发生变化就会回调用对应的监听方法。</p>
+<h5 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h5><p>过滤器 Filter 负责对请求做<strong>预处理</strong>，接着将请求交给 Servlet 进行处理并生成响应，最后 Filter 再对响应进行后处理。</p>
+<p>从请求的处理过程来看，Filter 主要参与以下几个环节</p>
+<ul>
+<li>在 HttpServletRequest <strong>到达 Servlet 之前，拦截客户的 HttpServletRequest</strong></li>
+<li>根据需要检查 HttpServletRequest，也可以修改 HttpServletRequest 报文头和数据</li>
+<li>在 Servlet 生成的 HttpServletResponse <strong>抵达客户端之前，拦截 HttpServletResponse</strong></li>
+<li>根据需要检查 HttpServletResponse，也可以修改 HttpServletResponse 报文头和数据</li>
+</ul>
+<p><strong>简单来说就是在真正处理请求以及返回响应之前，通过过滤器对内容再进行一些修改</strong></p>
+<h5 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h5><p><strong>Servlet 负责处理客户端访问动态资源的 HTTP 请求</strong>，接口 javax.servlet.Servlet 定义了所有 Servlet 必须要实现的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">Servlet</span> </span>&#123;<br>    <span class="hljs-comment">// 由 Servlet 容器调用，完成 Servlet 初始化，启动对外服务</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(ServletConfig var1)</span> <span class="hljs-keyword">throws</span> ServletException</span>;<br><br>    <span class="hljs-comment">// 获取 Servlet 初始化和启动时参数的配置信息对象 ServletConfig</span><br>    <span class="hljs-function">ServletConfig <span class="hljs-title">getServletConfig</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-comment">// 由 Servlet 容器调用，让 Servlet 处理某个 HTTP 请求</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">service</span><span class="hljs-params">(ServletRequest var1, ServletResponse var2)</span> <span class="hljs-keyword">throws</span> ServletException, IOException</span>;<br><br>    <span class="hljs-comment">// 获取 Servlet 的说明信息，包括：作者、版本和版权等等</span><br>    <span class="hljs-function">String <span class="hljs-title">getServletInfo</span><span class="hljs-params">()</span></span>;<br><br>    <span class="hljs-comment">// 由 Servlet 容器调用，用于关闭停止 Servlet 提供的服务</span><br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">destroy</span><span class="hljs-params">()</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>从 HTTP 请求的处理过程来看，Servlet 主要参与以下几个环节</p>
+<ul>
+<li>接收请求<ul>
+<li>客户端请求会被封装成 HttpServletRequest 对象，包含报文头参数和报文体等信息</li>
+</ul>
+</li>
+<li>处理请求<ul>
+<li>通常调用 Servlet 的方法 service、doPost 或 doGet 等方法处理请求，并<strong>进一步调用业务层相应逻辑对其进行处理等</strong></li>
+</ul>
+</li>
+<li>反回响应<ul>
+<li>处理完请求后，可以转发（forward）、重定向（redirect）到某个视图页面或者直接返回结果数据</li>
+</ul>
+</li>
+</ul>
+<h4 id="Web应用处理HTTP请求流程"><a href="#Web应用处理HTTP请求流程" class="headerlink" title="Web应用处理HTTP请求流程"></a>Web应用处理HTTP请求流程</h4><p>Web 应用处理 HTTP 请求的流程主要是<strong>穿越 Listener 和多个 Filters，最终抵达 Servlet 的过程</strong>，Servlet再进行下一步的处理。</p>
+<p><strong>具体流程如下图</strong></p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921112418359.png" srcset="/img/loading.gif" lazyload alt="image-20210921112418359"></p>
+<hr>
+<h3 id="请求在Spring-Web应用中的处理流程"><a href="#请求在Spring-Web应用中的处理流程" class="headerlink" title="请求在Spring Web应用中的处理流程"></a>请求在Spring Web应用中的处理流程</h3><p>因为使用 SSM 框架，所以 Spring MVC 中的 DispatcherServlet 充当了 Web 应用中的 Serlvet，负责将任务分配给对应的Controller，并将最终视图返回给 Web 容器。</p>
+<h4 id="Spring-MVC的核心组件"><a href="#Spring-MVC的核心组件" class="headerlink" title="Spring MVC的核心组件"></a>Spring MVC的核心组件</h4><h5 id="DispatcherServlet"><a href="#DispatcherServlet" class="headerlink" title="DispatcherServlet"></a>DispatcherServlet</h5><p>DispatcherServlet 是整个流程<strong>控制的中心</strong>，由它来<strong>接收请求并调用其它组件处理用户的请求</strong>，同时还负责响应结果。DispatcherServlet的存在降低了组件之间的耦合性。</p>
+<h5 id="HandlerMapping"><a href="#HandlerMapping" class="headerlink" title="HandlerMapping"></a>HandlerMapping</h5><p>HandlerMapping 负责<strong>根据用户请求映射获得对应的 Handler和 HandlerInterceptor</strong>。处理方法为从 URL 获得 URI，在通过 URI 从 HandlerMapping 中找到对应的 Handler 和 HandlerInterceptor，即处理器和拦截器。</p>
+<h5 id="HandlerAdapter"><a href="#HandlerAdapter" class="headerlink" title="HandlerAdapter"></a>HandlerAdapter</h5><p>HandlerAdapter 负责按照特定规则去执行 Handler。</p>
+<p>如果 Handler 有对应的 HandlerAdapater，<strong>HandlerAdapater 则会在调用 Handler 之前执行 HandlerInterceptor 的 preHandler() 方法对 Handler 进行拦截</strong>。</p>
+<h5 id="HandlerInterceptor"><a href="#HandlerInterceptor" class="headerlink" title="HandlerInterceptor"></a>HandlerInterceptor</h5><p>HandlerInterceptor 主要负责在执行 Handler 前对其进行拦截。HandlerInterceptor 中的 preHandler() 方法将会提取 HTTP 请求中的数据填充到处理器 Handler 的中。</p>
+<h5 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h5><p>Handler <strong>即Controller ，是处理业务代码的核心器件</strong>。这部分由程序员自行编写，一般的SSM框架中，其下层还有Service和Dao。</p>
+<h4 id="Spring-MVC处理请求流程"><a href="#Spring-MVC处理请求流程" class="headerlink" title="Spring MVC处理请求流程"></a>Spring MVC处理请求流程</h4><p>当 Web 容器中的 Host 会选择对应的 Web应用来处理请求，这里将请求交给了 Spring MVC 中的 DispatcherServlet 来进一步处理请求。</p>
+<ul>
+<li>DispatcherServlet 通过解析 HTTP 请求的 URL 获得 URI，再根据该 URI <strong>从 HandlerMapping 当中获得该请求对应的 Handler 和 HandlerInterceptor</strong></li>
+<li>DispatcherServlet 根据获得的 Handler 选择合适的 HandlerAdapter。如果成功获得 HandlerAdapter，<strong>HandlerAdapater 则会在调用 Handler 之前执行 HandlerInterceptor 的 preHandler() 方法对 Handler 进行拦截</strong></li>
+<li>Handler 即 Controller 会进行请求的处理，并向下调用 Service 和 Dao 来处理请求</li>
+<li>Hander 处理完成请求后会返回模型数据，模型数据由 DispatcherServlet 封装后返回给Web 容器</li>
+</ul>
+<p><strong>处理的流程图如下</strong></p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921112655885.png" srcset="/img/loading.gif" lazyload alt="image-20210921112655885"></p>
+<hr>
+<h3 id="返回过程"><a href="#返回过程" class="headerlink" title="返回过程"></a>返回过程</h3><p>Web 应用处理完请求并将结果返回给 Web 容器后，容器会将响应结果返回给客户端，这是上面流程的逆过程。浏览器收到响应结果后，会对结果进行解析和渲染。这样我们就能看到浏览器给我们显示的网页了。</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921113017358.png" srcset="/img/loading.gif" lazyload alt="image-20210921113017358"></p>
 <hr>
 <h2 id="8-3-HTTP协议"><a href="#8-3-HTTP协议" class="headerlink" title="8.3 HTTP协议"></a>8.3 HTTP协议</h2><h3 id="概述-2"><a href="#概述-2" class="headerlink" title="概述"></a>概述</h3><p>HTTP（HyperText Transfer Protocol）：<strong>超文本传输协议</strong>，HTTP是一个客户端终端（用户）和服务器端（网站）请求和应答的标准（TCP）。通过使用网页浏览器、网络爬虫或者其它的工具，客户端发起一个HTTP请求到服务器上指定端口（默认端口为80）。一旦收到请求，服务器会向客户端返回一个状态，比如”HTTP/1.1 200 OK”，以及返回的内容，如请求的文件、错误消息、或者其它信息。</p>
 <p>尽管TCP/IP协议是互联网上最流行的应用，HTTP协议中，并没有规定必须使用它或它支持的层。事实上，HTTP可以在任何互联网协议上，或其他网络上实现。HTTP假定其下层协议提供可靠的传输。因此，任何能够提供这种保证的协议都可以被其使用。因此也就是其在TCP/IP协议族使用TCP作为其传输层。</p>
@@ -899,7 +1004,7 @@ TCP 的接收端会丢弃重复的数据。
 <li><p>新增Connection字段，用于<strong>支持提供TCP持久连接</strong> Connection: keep-alive</p>
 <ul>
 <li>即TCP连接默认不关闭，可以被多个请求复用</li>
-<li>虽然允许复用TCP连接，但是同一个TCP连接里面，所有的数据通信是按次序进行的，服务器只有处理完一个请求，才会接着处理下一个请求。如果前面的处理特别慢，后面就会有许多请求排队等着。（<strong>HTTP对头阻塞</strong>）</li>
+<li>虽然允许复用TCP连接，但是同一个TCP连接里面，所有的数据通信是按次序进行的，服务器只有处理完一个请求，才会接着处理下一个请求。如果前面的处理特别慢，后面就会有许多请求排队等着。（<strong>HTTP队头阻塞</strong>）</li>
 </ul>
 </li>
 <li><p>增加更多请求头和响应头来完善功能</p>
@@ -909,6 +1014,20 @@ TCP 的接收端会丢弃重复的数据。
 <li><p>缓存策略：If-Match，If-None-Match</p>
 </li>
 <li><p>添加了新的请求方法 put, delete, options</p>
+</li>
+</ul>
+<blockquote>
+<p>队头阻塞</p>
+<p>”队头阻塞“与短连接和长连接无关，而是由 HTTP 基本的“请求 - 应答”模型所导致的。</p>
+<p>因为 HTTP 规定报文必须是“一发一收”，这就形成了一个先进先出的“串行”队列。</p>
+<p>队列里的请求没有轻重缓急的优先级，只有入队的先后顺序，排在最前面的请求被最优先处理。</p>
+<p>如果队首的请求因为处理的太慢耽误了时间，那么队列里后面的所有请求也不得不跟着一起等待，结果就是其他的请求承担了不应有的时间成本。</p>
+</blockquote>
+<p>因为“请求 - 应答”模型不能变，所以“队头阻塞”问题在 HTTP/1.1 里无法解决，只能缓解</p>
+<ul>
+<li><p>这在 HTTP 里就是“并发连接”（concurrent connections），也就是同时对一个域名发起多个长连接，用数量来解决质量的问题。但这种方式也存在缺陷。如果每个客户端都想自己快，建立很多个连接，用户数×并发数就会是个天文数字。服务器的资源根本就扛不住，或者被服务器认为是恶意攻击，反而会造成“拒绝服务”。所以，HTTP 协议建议客户端使用并发，但不能“滥用”并发。RFC2616 里明确限制每个客户端最多并发 2 个连接。不过实践证明这个数字实在是太小了，众多浏览器都“无视”标准，把这个上限提高到了 6~8。后来修订的 RFC7230 也就“顺水推舟”，取消了这个“2”的限制。</p>
+</li>
+<li><p>“域名分片”（domain sharding）技术，还是用数量来解决质量的思路。HTTP 协议和浏览器不是限制并发连接数量吗？好，那我就多开几个域名，比如 shard1.chrono.com、shard2.chrono.com，而这些域名都指向同一台服务器 <a target="_blank" rel="noopener" href="http://www.chrono.com,这样实际长连接的数量就又上去了/">www.chrono.com，这样实际长连接的数量就又上去了</a></p>
 </li>
 </ul>
 <h4 id="HTTP2-0"><a href="#HTTP2-0" class="headerlink" title="HTTP2.0"></a>HTTP2.0</h4><ul>
@@ -1036,6 +1155,9 @@ TCP 的接收端会丢弃重复的数据。
 <li><p><strong>fragment</strong>表示 URI 所定位的资源内的一个<strong>锚点</strong>，浏览器可以根据这个锚点跳转到对应的位置。</p>
 </li>
 </ul>
+<p>URI 只能使用<code>ASCII</code>, ASCII 之外的字符是不支持显示的，而且还有一部分符号是界定符，如果不加以处理就会导致解析出错。</p>
+<p>因此，URI 引入了<code>编码</code>机制，将所有<strong>非 ASCII 码字符</strong>和<strong>界定符</strong>转为十六进制字节值，然后在前面加个<code>%</code>。</p>
+<p>如，空格被转义成了<code>%20</code>。</p>
 <p>URI允许统一识别资源。URI另外被分组为定位符，名称或两者，这意味着它可以描述URL，URN或两者。</p>
 <blockquote>
 <p><strong>URL和URN都是URI的子集</strong>。换而言之，URL和URN都是URI，但是URI不一定是URL或者URN。</p>
@@ -1044,6 +1166,188 @@ TCP 的接收端会丢弃重复的数据。
 <p>举例如下：</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs awk">构造一个URI	<br>	http:*<span class="hljs-regexp">//</span>bitpoetry.io<span class="hljs-regexp">/posts/</span>hello.html<span class="hljs-comment">#intro</span><br><br>其中<br>   http:<span class="hljs-regexp">//</span>  <span class="hljs-regexp">//</span> 是定义如何访问资源的方式<br>   bitpoetry.io<span class="hljs-regexp">/posts/</span>hello.html  <span class="hljs-regexp">//</span> 是资源存放的位置<br>   <span class="hljs-comment">#intro  // 是资源</span><br>   <br>URL是URI的一个子集，告诉我们访问资源位置的方式。在例子中，URL应该如下所示：   <br>    http:<span class="hljs-regexp">//</span>bitpoetry.io<span class="hljs-regexp">/posts/</span>hello.html<br>    <br>URN是URI的子集，包括名字（给定的命名空间内），但是不包括访问方式。在例子中，URN如下所示：  <br>	 bitpoetry.io<span class="hljs-regexp">/posts/</span>hello.html<span class="hljs-comment">#intro</span><br></code></pre></td></tr></table></figure>
 
+
+
+<hr>
+<h3 id="HTTP-传输定长和不定长的数据"><a href="#HTTP-传输定长和不定长的数据" class="headerlink" title="HTTP 传输定长和不定长的数据"></a>HTTP 传输定长和不定长的数据</h3><h4 id="定长数据"><a href="#定长数据" class="headerlink" title="定长数据"></a>定长数据</h4><ul>
+<li>对于定长包体而言，发送端在传输的时候一般会带上 <code>Content-Length</code>, 来指明包体的长度<ul>
+<li>用一个<code>nodejs</code>服务器来模拟一下:</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>);<br><br><span class="hljs-keyword">const</span> server = http.createServer();<br><br>server.on(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span>(req.url === <span class="hljs-string">&#x27;/&#x27;</span>) &#123;<br>    res.setHeader(<span class="hljs-string">&#x27;Content-Type&#x27;</span>, <span class="hljs-string">&#x27;text/plain&#x27;</span>);<br>    res.setHeader(<span class="hljs-string">&#x27;Content-Length&#x27;</span>, <span class="hljs-number">10</span>);<br>    res.write(<span class="hljs-string">&quot;helloworld&quot;</span>);<br>  &#125;<br>&#125;)<br><br>server.listen(<span class="hljs-number">8081</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;成功启动&quot;</span>);<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>启动后访问: <strong>localhost:8081</strong>。</p>
+<p>浏览器中显示如下:</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">helloworld</span><br></code></pre></td></tr></table></figure>
+
+<p>这是长度正确的情况，那不正确的情况是如何处理的呢</p>
+<p>我们试着把这个长度设置的小一些:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">res</span><span class="hljs-selector-class">.setHeader</span>(<span class="hljs-string">&#x27;Content-Length&#x27;</span>, <span class="hljs-number">8</span>);<br></code></pre></td></tr></table></figure>
+
+<p>重启服务，再次访问，现在浏览器中内容如下:</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">hellowor</span><br></code></pre></td></tr></table></figure>
+
+<p>那后面的<code>ld</code>哪里去了呢？实际上在 http 的响应体中直接被截去了。</p>
+<p>然后我们试着将这个长度设置得大一些:</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">res</span><span class="hljs-selector-class">.setHeader</span>(<span class="hljs-string">&#x27;Content-Length&#x27;</span>, <span class="hljs-number">12</span>);<br></code></pre></td></tr></table></figure>
+
+
+<p>此时浏览器显示如下：</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210916161841752.png" srcset="/img/loading.gif" lazyload alt="image-20210916161841752"></p>
+<p>直接无法显示了。可以看到<code>Content-Length</code>对于 http 传输过程起到了十分关键的作用，如果设置不当可以直接导致传输失败。</p>
+<h4 id="不定长包体"><a href="#不定长包体" class="headerlink" title="不定长包体"></a>不定长包体</h4><p>上述是针对于<code>定长包体</code>，那么对于<code>不定长包体</code>而言是如何传输的呢？</p>
+<p>这里就必须介绍另外一个 http 头部字段了:</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fortran"><span class="hljs-built_in">Transfer</span>-Encoding: chunked<br></code></pre></td></tr></table></figure>
+
+<p>表示分块传输数据，设置这个字段后会自动产生两个效果:</p>
+<ul>
+<li>Content-Length 字段会被忽略</li>
+<li>基于长连接持续推送动态内容</li>
+</ul>
+<p>我们依然以一个实际的例子来模拟分块传输，nodejs 程序如下:</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript">const http = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;http&#x27;</span>);<br><br>const server = http.createServer();<br><br>server.<span class="hljs-literal">on</span>(<span class="hljs-string">&#x27;request&#x27;</span>, <span class="hljs-function"><span class="hljs-params">(req, res)</span> =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span>(req.url === <span class="hljs-string">&#x27;/&#x27;</span>) &#123;<br>    res.setHeader(<span class="hljs-string">&#x27;Content-Type&#x27;</span>, <span class="hljs-string">&#x27;text/html; charset=utf8&#x27;</span>);<br>    res.setHeader(<span class="hljs-string">&#x27;Content-Length&#x27;</span>, <span class="hljs-number">10</span>);<br>    res.setHeader(<span class="hljs-string">&#x27;Transfer-Encoding&#x27;</span>, <span class="hljs-string">&#x27;chunked&#x27;</span>);<br>    res.write(<span class="hljs-string">&quot;&lt;p&gt;来啦&lt;/p&gt;&quot;</span>);<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>      res.write(<span class="hljs-string">&quot;第一次传输&lt;br/&gt;&quot;</span>);<br>    &#125;, <span class="hljs-number">1000</span>);<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>      res.write(<span class="hljs-string">&quot;第二次传输&quot;</span>);<br>      res.end()<br>    &#125;, <span class="hljs-number">2000</span>);<br>  &#125;<br>&#125;)<br><br>server.listen(<span class="hljs-number">8009</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;<br>  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;成功启动&quot;</span>);<br>&#125;)<br></code></pre></td></tr></table></figure>
+
+<p>访问效果入下:</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210917105352387.png" srcset="/img/loading.gif" lazyload alt="image-20210917105352387"></p>
+<hr>
+<h3 id="传输过程"><a href="#传输过程" class="headerlink" title="传输过程"></a>传输过程</h3><p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921105357172.png" srcset="/img/loading.gif" lazyload alt="image-20210921105357172"></p>
+<hr>
+<h2 id="8-4-HTTPS协议"><a href="#8-4-HTTPS协议" class="headerlink" title="8.4 HTTPS协议"></a><span id="https">8.4 HTTPS协议</span></h2><p>顾名思义，就是在HTTP（超文本传输协议）的基础上再加一层TLS（传输层安全性协议）或者SSL（安全套接层），说白了就是为了应付HTTP是明文传输的缺点，容易被中间人窃听或者篡改，导致隐私和信息安全出现问题的解决方案。</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210918144054923.png" srcset="/img/loading.gif" lazyload alt="image-20210918144054923"></p>
+<h3 id="通信过程"><a href="#通信过程" class="headerlink" title="通信过程"></a>通信过程</h3><h4 id="Client-Hello"><a href="#Client-Hello" class="headerlink" title="Client Hello"></a>Client Hello</h4><p>握手第一步是客户端向服务端发送 Client Hello 消息，这个消息里包含了一个客户端生成的随机数 <strong>Random1</strong>、客户端支持的加密套件（Support Ciphers）和 SSL Version 等信息。</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210918151748632.png" srcset="/img/loading.gif" lazyload alt="image-20210918151748632"></p>
+<h4 id="Server-Hello"><a href="#Server-Hello" class="headerlink" title="Server Hello"></a>Server Hello</h4><p>第二步是服务端向客户端发送 Server Hello 消息，这个消息会从 Client Hello 传过来的 Support Ciphers 里确定一份加密套件，这个套件决定了后续加密和生成摘要时具体使用哪些算法，另外还会生成一份随机数 <strong>Random2</strong>。注意，至此客户端和服务端都拥有了两个随机数（Random1+ Random2），这两个随机数会在后续生成对称秘钥时用到。</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210918151908297.png" srcset="/img/loading.gif" lazyload alt="image-20210918151908297"></p>
+<h4 id="Certificate"><a href="#Certificate" class="headerlink" title="Certificate"></a>Certificate</h4><p>这一步是服务端将自己的证书下发给客户端，让客户端验证自己的身份，客户端验证通过后取出证书中的公钥。</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210918152228237.png" srcset="/img/loading.gif" lazyload alt="image-20210918152228237"></p>
+<h4 id="Certificate-Verify"><a href="#Certificate-Verify" class="headerlink" title="Certificate Verify"></a>Certificate Verify</h4><p>客户端收到服务端传来的证书后，先从 CA 验证该证书的合法性，验证通过后取出证书中的服务端公钥，再生成一个随机数 <strong>Random3</strong>，再用服务端公钥非对称加密 <strong>Random3</strong> 生成 <strong>PreMaster Key</strong>。</p>
+<h4 id="Client-Key-Exchange"><a href="#Client-Key-Exchange" class="headerlink" title="Client Key Exchange"></a>Client Key Exchange</h4><p>上面客户端根据服务器传来的公钥生成了 <strong>PreMaster Key</strong>，Client Key Exchange 就是将这个 key 传给服务端，服务端再用自己的私钥解出这个 <strong>PreMaster Key</strong> 得到客户端生成的 <strong>Random3</strong>。至此，客户端和服务端都拥有 <strong>Random1</strong> + <strong>Random2</strong> + <strong>Random3</strong>，两边再根据同样的算法就可以生成一份秘钥，握手结束后的应用层数据都是使用这个秘钥进行对称加密。为什么要使用三个随机数呢？这是因为 SSL/TLS 握手过程的数据都是明文传输的，并且多个随机数种子来生成秘钥不容易被暴力破解出来。客户端将 <strong>PreMaster Key</strong> 传给服务端的过程如下图所示：</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210918152355695.png" srcset="/img/loading.gif" lazyload alt="image-20210918152355695"></p>
+<h4 id="Encrypted-Handshake-Message-Client"><a href="#Encrypted-Handshake-Message-Client" class="headerlink" title="Encrypted Handshake Message(Client)"></a>Encrypted Handshake Message(Client)</h4><p>这一步对应的是 Client Finish 消息，客户端将前面的握手消息生成摘要再用协商好的秘钥加密，这是客户端发出的第一条加密消息。服务端接收后会用秘钥解密，能解出来说明前面协商出来的秘钥是一致的。</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210918152438216.png" srcset="/img/loading.gif" lazyload alt="image-20210918152438216"></p>
+<h4 id="Change-Cipher-Spec-Server"><a href="#Change-Cipher-Spec-Server" class="headerlink" title="Change Cipher Spec(Server)"></a>Change Cipher Spec(Server)</h4><p>这一步是服务端通知客户端后面再发送的消息都会使用加密，也是一条事件消息。</p>
+<h4 id="Encrypted-Handshake-Message-Server"><a href="#Encrypted-Handshake-Message-Server" class="headerlink" title="Encrypted Handshake Message(Server)"></a>Encrypted Handshake Message(Server)</h4><p>这一步对应的是 Server Finish 消息，服务端也会将握手过程的消息生成摘要再用秘钥加密，这是服务端发出的第一条加密消息。客户端接收后会用秘钥解密，能解出来说明协商的秘钥是一致的。</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210918152522642.png" srcset="/img/loading.gif" lazyload alt="image-20210918152522642"></p>
+<h4 id="Application-Data"><a href="#Application-Data" class="headerlink" title="Application Data"></a>Application Data</h4><p>到这里，双方已安全地协商出了同一份秘钥，所有的应用层数据都会用这个秘钥加密后再通过 TCP 进行可靠传输。</p>
+<hr>
+<h3 id="传输过程-1"><a href="#传输过程-1" class="headerlink" title="传输过程"></a>传输过程</h3><p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921105440452.png" srcset="/img/loading.gif" lazyload alt="image-20210921105440452"></p>
+<ul>
+<li><strong>HTTPS传输过程最多会比HTTP多7个RTT</strong></li>
+</ul>
+<p>step1：正常的TCP连接三次握手，这不必说</p>
+<p>step2：然后链接会跳转到HTTPS的网站，毕竟协议都不同，考虑到不可能人会把网址打全，所以还需要跳转一步。</p>
+<p>step3：又是TCP连接，这里需要又一步TCP连接是因为HTTPS的传输端口不同（这个是传输层的，http是80，https是443）。</p>
+<p>step4：完成加密套件的协商和证书的身份确认，这次交互客户端和服务端会协商出相同的密钥交换算法、对称加密算法、内容一致性校验算法、证书签名算法等等。浏览器获取到证书之后，也要验证证书的有效性，是否过期是否撤销。</p>
+<p>step5：浏览器获取CA域名，如果没有命中CA域名的缓存，还需要进行DNS解析，又需要多一次交互。</p>
+<p>step6：解析成功解析ip之后，需要和CA网站进行tcp三次握手。</p>
+<p>step7：这里OCSP请求，全称是Online Certificate Status Protocol，在线证书状态协议，顾名思义用来获取证书状态的请求，这里的状态包括有效、过期、未知。并且可以宽限一段客户端访问证书的时间。</p>
+<p>step8：主要进行密钥协商。</p>
+<hr>
+<h3 id="CA证书"><a href="#CA证书" class="headerlink" title="CA证书"></a>CA证书</h3><ul>
+<li>CA是Certificate Authority的缩写，也叫“证书授权中心”。它是负责管理和签发证书的第三方机构，作用是检查证书持有者身份的合法性，并签发证书，以防证书被伪造或篡改。</li>
+<li>CA 证书就是CA颁发的证书。 CA证书也就我们常说的数字证书，包含证书拥有者的身份信息，CA机构的签名，公钥和私钥。身份信息用于证明证书持有者的身份；CA签名用于保证身份的真实性；公钥和私钥用于通信过程中加解密，从而保证通讯信息的安全性。</li>
+</ul>
+<h4 id="CA证书内容"><a href="#CA证书内容" class="headerlink" title="CA证书内容"></a>CA证书内容</h4><ul>
+<li>颁发者</li>
+<li>使用者</li>
+<li>版本</li>
+<li>签名算法</li>
+<li>签名哈希算法</li>
+<li>使用者</li>
+<li>公钥</li>
+<li>指纹</li>
+<li>指纹算法</li>
+</ul>
+<hr>
+<h1 id="九、其它"><a href="#九、其它" class="headerlink" title="九、其它"></a>九、其它</h1><h2 id="9-1-Cookie与Session"><a href="#9-1-Cookie与Session" class="headerlink" title="9.1 Cookie与Session"></a>9.1 Cookie与Session</h2><h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ol>
+<li>存储位置不同：<strong>cookie存放于客户端；session存放于服务端</strong>。</li>
+<li>存储容量不同：单个cookie保存的数据&lt;=4KB，一个站点最多保存20个cookie；而session并没有上限。</li>
+<li>存储方式不同：cookie只能保存ASCII字符串，并需要通过编码当时存储为Unicode字符或者二进制数据；session中能够存储任何类型的数据，例如字符串、整数、集合等。</li>
+<li>隐私策略不同：cookie对客户端是可见的，别有用心的人可以分析存放在本地的cookie并进行cookie欺骗，所以它是不安全的；session存储在服务器上，对客户端是透明的，不存在敏感信息泄露的风险。</li>
+<li>生命周期不同：可以通过设置cookie的属性，达到cookie长期有效的效果；session依赖于名为JSESSIONID的cookie，而该cookie的默认过期时间为-1，只需关闭窗口该session就会失效，因此session不能长期有效。</li>
+<li>服务器压力不同：cookie保存在客户端，不占用服务器资源；session保管在服务器上，每个用户都会产生一个session，如果并发量大的话，则会消耗大量的服务器内存。</li>
+<li>浏览器支持不同：cookie是需要浏览器支持的，如果客户端禁用了cookie，则会话跟踪就会失效；运用session就需要使用URL重写的方式，所有用到session的URL都要进行重写，否则session会话跟踪也会失效。</li>
+<li>跨域支持不同：cookie支持跨域访问，session不支持跨域访问。</li>
+</ol>
+<h3 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h3><h4 id="Cookie-属性"><a href="#Cookie-属性" class="headerlink" title="Cookie 属性"></a>Cookie 属性</h4><h5 id="生存周期"><a href="#生存周期" class="headerlink" title="生存周期"></a>生存周期</h5><p>Cookie 的有效期可以通过<strong>Expires</strong>和<strong>Max-Age</strong>两个属性来设置。</p>
+<ul>
+<li><strong>Expires</strong>即<code>过期时间</code></li>
+<li><strong>Max-Age</strong>用的是一段时间间隔，单位是秒，从浏览器收到报文开始计算。</li>
+</ul>
+<p>若 Cookie 过期，则这个 Cookie 会被删除，并不会发送给服务端。</p>
+<h5 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h5><p>关于作用域也有两个属性: <strong>Domain</strong>和<strong>path</strong>, 给 <strong>Cookie</strong> 绑定了域名和路径，在发送请求之前，发现域名或者路径和这两个属性不匹配，那么就不会带上 Cookie。值得注意的是，对于路径来说，<code>/</code>表示域名下的任意路径都允许使用 Cookie。</p>
+<h5 id="安全相关"><a href="#安全相关" class="headerlink" title="安全相关"></a>安全相关</h5><p>如果带上<code>Secure</code>，说明只能通过 HTTPS 传输 cookie。</p>
+<p>如果 cookie 字段带上<code>HttpOnly</code>，那么说明只能通过 HTTP 协议传输，不能通过 JS 访问，这也是预防 XSS 攻击的重要手段。</p>
+<p>相应的，对于 CSRF 攻击的预防，也有<code>SameSite</code>属性。</p>
+<p><code>SameSite</code>可以设置为三个值，<code>Strict</code>、<code>Lax</code>和<code>None</code>。</p>
+<p><strong>a.</strong> 在<code>Strict</code>模式下，浏览器完全禁止第三方请求携带Cookie。比如请求<code>sanyuan.com</code>网站只能在<code>sanyuan.com</code>域名当中请求才能携带 Cookie，在其他网站请求都不能。</p>
+<p><strong>b.</strong> 在<code>Lax</code>模式，就宽松一点了，但是只能在 <code>get 方法提交表单</code>况或者<code>a 标签发送 get 请求</code>的情况下可以携带 Cookie，其他情况均不能。</p>
+<p><strong>c.</strong> 在<code>None</code>模式下，也就是默认模式，请求会自动携带上 Cookie。</p>
+<h4 id="Cookie-的缺点"><a href="#Cookie-的缺点" class="headerlink" title="Cookie 的缺点"></a>Cookie 的缺点</h4><ol>
+<li>容量缺陷。Cookie 的体积上限只有<code>4KB</code>，只能用来存储少量的信息。</li>
+<li>性能缺陷。Cookie 紧跟域名，不管域名下面的某一个地址需不需要这个 Cookie ，请求都会携带上完整的 Cookie，这样随着请求数的增多，其实会造成巨大的性能浪费的，因为请求携带了很多不必要的内容。但可以通过<code>Domain</code>和<code>Path</code>指定<strong>作用域</strong>来解决。</li>
+<li>安全缺陷。由于 Cookie 以纯文本的形式在浏览器和服务器中传递，很容易被非法用户截获，然后进行一系列的篡改，在 Cookie 的有效期内重新发送给服务器，这是相当危险的。另外，在<code>HttpOnly</code>为 false 的情况下，Cookie 信息能直接通过 JS 脚本来读取。</li>
+</ol>
+<hr>
+<h2 id="9-2-跨域"><a href="#9-2-跨域" class="headerlink" title="9.2 跨域"></a>9.2 跨域</h2><p>当一个请求url的协议、域名、端口三者之间任意一个与当前页面url不同即为跨域</p>
+<p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210918143407829.png" srcset="/img/loading.gif" lazyload alt="image-20210918143407829"></p>
+<h3 id="跨域问题出现原因"><a href="#跨域问题出现原因" class="headerlink" title="跨域问题出现原因"></a>跨域问题出现原因</h3><p>出于浏览器的同源策略限制。同源策略（Sameoriginpolicy）是一种约定，它是浏览器最核心也最基本的安全功能，如果缺少了同源策略，则浏览器的正常功能可能都会受到影响。可以说Web是构建在同源策略基础之上的，浏览器只是针对同源策略的一种实现。</p>
+<p><strong>同源策略会阻止一个域的javascript脚本和另外一个域的内容进行交互</strong>。所谓同源（即指在同一个域）就是两个页面具有相同的协议（protocol），主机（host）和端口号（port）</p>
+<h3 id="非同源限制"><a href="#非同源限制" class="headerlink" title="非同源限制"></a>非同源限制</h3><ul>
+<li>无法读取非同源网页的 Cookie、LocalStorage 和 IndexedDB</li>
+<li>无法接触非同源网页的 DOM</li>
+<li>无法向非同源地址发送 AJAX 请求</li>
+</ul>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p><a target="_blank" rel="noopener" href="https://igotcha.gitee.io/2021/06/03/JavaWeb/SpringBoot%E4%B8%AD%E5%AE%9E%E7%8E%B0%E8%B7%A8%E5%9F%9F%E7%9A%845%E7%A7%8D%E6%96%B9%E5%BC%8F/">后端解决方式</a></p>
+<hr>
+<h2 id="9-3-XSS、CSRF"><a href="#9-3-XSS、CSRF" class="headerlink" title="9.3 XSS、CSRF"></a>9.3 XSS、CSRF</h2><h3 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h3><h4 id="概述-3"><a href="#概述-3" class="headerlink" title="概述"></a>概述</h4><p>XSS：跨站脚本攻击（Cross Site Scripting），攻击者通过在目标网站上注入恶意脚本，使之在用户的浏览器上运行。利用这些恶意脚本，攻击者可获取用户的敏感信息如 Cookie、SessionID等，进而危害数据安全。</p>
+<p>XSS分为存储型XSS、反射型XSS、DOM型XSS</p>
+<ul>
+<li>存储型XSS的恶意代码存在数据库里</li>
+<li>反射型XSS的恶意代码存在URL里。</li>
+<li>DOM型XSS属于前端JavaScript自身的安全漏洞，</li>
+</ul>
+<h4 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h4><ul>
+<li>窃取cookies</li>
+<li>配合其他漏洞，如CSRF</li>
+<li>插入广告</li>
+</ul>
+<h4 id="防范"><a href="#防范" class="headerlink" title="防范"></a>防范</h4><p>防止 HTML 中出现注入，防止 JavaScript 执行时，执行恶意代码。</p>
+<p>存储型XSS、反射型XSS</p>
+<ul>
+<li><p>纯前端渲染，但是还是要注意避免DOM型XSS漏洞（onload事件和href中的javascript:xxx）</p>
+</li>
+<li><p>转义HTML</p>
+</li>
+<li><p>白名单过滤</p>
+</li>
+</ul>
+<p>DOM型XSS</p>
+<ul>
+<li><p>如果不使用框架，避免直接使用innerHTML，尽量使用.textContent、.setAttribute</p>
+</li>
+<li><p>避免内联事件（onClick,onLoad）等</p>
+</li>
+<li><p>set-cookies设置Http-Only</p>
+</li>
+</ul>
+<h3 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h3><h4 id="概述-4"><a href="#概述-4" class="headerlink" title="概述"></a>概述</h4><p>CSRF：跨站请求伪造（Cross-site request forgery），挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。</p>
+<h4 id="危害-1"><a href="#危害-1" class="headerlink" title="危害"></a>危害</h4><p>攻击者盗用了你的身份，以你的名义发送恶意请求。CSRF能够做的事情包括：以你名义发送邮件，发消息，盗取你的账号，甚至于购买商品，虚拟货币转账……造成的问题包括：<strong>个人隐私泄露以及财产安全</strong>。</p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p><img src="/2021/09/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/image-20210921115900826.png" srcset="/img/loading.gif" lazyload alt="image-20210921115900826"></p>
+<p>从上图可以看出，要完成一次CSRF攻击，受害者必须依次完成两个步骤：</p>
+<ul>
+<li>登录受信任网站A，并在本地生成Cookie。</li>
+<li>在不登出A的情况下，访问危险网站B。</li>
+</ul>
+<h4 id="避免"><a href="#避免" class="headerlink" title="避免"></a>避免</h4><ul>
+<li><p>cookies不随着跨域请求发送</p>
+</li>
+<li><p>请求头中的Referer请求头来判断请求来源</p>
+</li>
+<li><p>使用Token</p>
+</li>
+</ul>
 
             </div>
             <hr>
