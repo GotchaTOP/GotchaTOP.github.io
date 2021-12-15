@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      22.9k 字
+      23.5k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      646
+      666
        分钟
     </span>
   
@@ -1056,7 +1056,8 @@
 <p><img src="/2020/11/10/Mysql/Mysql%E9%AB%98%E7%BA%A7/mysql%E9%AB%98%E7%BA%A7/10.4.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p><strong>读锁不会阻塞读，只会阻塞写。但是写锁会阻塞读和写。</strong></p>
 <h2 id="10-2-行锁"><a href="#10-2-行锁" class="headerlink" title="10.2 行锁"></a>10.2 行锁</h2><p><strong>InnoDB使用行锁，并且支持事务</strong></p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>如果两个客户端<strong>对同一条记录进行修改</strong></p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>InnoDB的行锁，是通过锁住<strong>索引</strong>来实现的，如果加锁查询的时候没有使用过索引，会将整个聚簇索引都锁住，相当于<strong>表锁</strong>。根据锁定范围的不同，行锁可以使用记录锁(Record Locks)、间隙锁(Gap Locks)和临键锁(Next-Key Locks)的方式实现。</p>
+<p>如果两个客户端<strong>对同一条记录进行修改</strong></p>
 <ul>
 <li>客户端A修改后，未提交（未commit），此时客户端B修改，则会阻塞</li>
 <li>客户端A修改后，提交后，客户端B再修改，则不会阻塞</li>
@@ -1084,7 +1085,7 @@
 <p>当<strong>索引失效</strong>后，即使多个客户端操作的不是同一条记录，<strong>如果未提交，其他客户端也会进入阻塞状态</strong></p>
 <p>所以要<strong>避免索引失效</strong></p>
 <h3 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h3><h4 id="概念-2"><a href="#概念-2" class="headerlink" title="概念"></a>概念</h4><p>当我们用<strong>范围条件</strong>而不是相等条件检索数据，并请求共享或排他锁时，InnoDB会给符合条件的已有数据记录的索引项加锁</p>
-<p>对于键值<strong>在条件范围内但并不存在的记录</strong>，叫做<strong>“间隙(GAP)<strong>” ，</strong>InnoDB也会对这个“间隙”加锁</strong>，这种锁机制就是所谓的间隙锁(Next-Key锁)。</p>
+<p>对于键值<strong>在条件范围内但并不存在的记录</strong>，叫做<strong>“间隙(GAP)<strong>” ，</strong>InnoDB也会对这个“间隙”加锁</strong>，这种锁机制就是所谓的间隙锁(Gap Locks锁)。</p>
 <h4 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h4><p>因为Query执行过程中通过过范围查找的话，他会锁定整个范围内所有的索引键值，即使这个键值并不存在。<br>间隙锁有一个比较致命的弱点，就是当锁定一个范围键值之后，即使某些不存在的键值也会被无辜的锁定，而造成在锁定的时候无法插入锁定键值范围内的任何数据。在某些场景下这可能会对性能造成很大的危害</p>
 <h4 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#查询表记录，此处没有id=2的记录<br>SELECT * FROM t_emp;<br><br>#客户端A进行范围查询，但是范围内没有id=2的记录<br>UPDATE t_emp SET deptId = 1 WHERE id&gt;1 AND id &lt; 6;<br><br>#客户端B进行插入数据，插入一条id=2的记录<br>INSERT t_emp VALUES(2, &#x27;岳不群&#x27;, 11, 2, 100002); <br><br>#客户端A提交<br>COMMIT;<br><br>#客户端B提交<br>COMMIT;<br></code></pre></td></tr></table></figure>
 
@@ -1093,6 +1094,28 @@
 <h3 id="锁住指定的一行"><a href="#锁住指定的一行" class="headerlink" title="锁住指定的一行"></a>锁住指定的一行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs mysql">BEGIN;<br><br>#锁住指定的一行，如果进行更新操作就是 ... FOR UPDATE，删除操作就是 ... FOR DELETE 以此类推<br>SELECT * FROM t_emp WHERE id = 1 FOR UPDATE;<br><br>#进行修改操作<br>UPDATE t_emp SET NAME = &#x27;风车车&#x27; WHERE id = 1;<br><br>#提交<br>COMMIT;<br></code></pre></td></tr></table></figure>
 
 <p>如果当某一行被锁住后，其他客户端对改行进行操作，会被<strong>阻塞</strong></p>
+<h3 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h3><p>假设现在有一张表t，主键是id。我们插入了4行数据，主键值分别是 1、4、7、10。接下来我们就以聚簇索引为例，具体介绍三种形式的行锁。</p>
+<ul>
+<li><strong>记录锁(Record Locks)</strong> 所谓记录，就是指聚簇索引中真实存放的数据，比如上面的1、4、7、10都是记录。</li>
+</ul>
+<p><img src="/2020/11/10/Mysql/Mysql%E9%AB%98%E7%BA%A7/mysql%E9%AB%98%E7%BA%A7/image-20211009101723714.png" srcset="/img/loading.gif" lazyload alt="image-20211009101723714"></p>
+<p>显然，记录锁就是直接锁定某行记录。当我们使用唯一性的索引(包括唯一索引和聚簇索引)进行等值查询且精准匹配到一条记录时，此时就会直接将这条记录锁定。例如select * from t where id =4 for update;就会将id=4的记录锁定。</p>
+<ul>
+<li><strong>间隙锁(Gap Locks)</strong> 间隙指的是两个记录之间逻辑上尚未填入数据的部分，比如上述的(1,4)、(4,7)等。</li>
+</ul>
+<p><img src="/2020/11/10/Mysql/Mysql%E9%AB%98%E7%BA%A7/mysql%E9%AB%98%E7%BA%A7/image-20211009101753864.png" srcset="/img/loading.gif" lazyload alt="image-20211009101753864"></p>
+<p>同理，间隙锁就是锁定某些间隙区间的。当我们使用用等值查询或者范围查询，并且没有命中任何一个record，此时就会将对应的间隙区间锁定。例如select * from t where id =3 for update;或者select * from t where id &gt; 1 and id &lt; 4 for update;就会将(1,4)区间锁定。</p>
+<ul>
+<li><strong>临键锁(Next-Key Locks)</strong> 临键指的是间隙加上它右边的记录组成的<strong>左开右闭</strong>区间。比如上述的(1,4]、(4,7]等。</li>
+</ul>
+<p><img src="/2020/11/10/Mysql/Mysql%E9%AB%98%E7%BA%A7/mysql%E9%AB%98%E7%BA%A7/image-20211009101819407.png" srcset="/img/loading.gif" lazyload alt="image-20211009101819407"></p>
+<p><strong>临键锁就是记录锁(Record Locks)和间隙锁(Gap Locks)的结合</strong>，即除了锁住记录本身，还要再锁住索引之间的间隙。当我们使用范围查询，并且命中了部分record记录，此时锁住的就是临键区间。注意，临键锁锁住的区间会包含最后一个record的右边的临键区间。例如select * from t where id &gt; 5 and id &lt;= 7 for update;会锁住(4,7]、(7,+∞)。mysql默认行锁类型就是临键锁(Next-Key Locks)。</p>
+<p>当使用唯一性索引，等值查询</p>
+<ul>
+<li>匹配到一条记录的时候，临键锁(Next-Key Locks)会退化成记录锁；</li>
+<li>没有匹配到任何记录的时候，退化成间隙锁。</li>
+</ul>
+<p><strong>间隙锁(Gap Locks)和临键锁(Next-Key Locks)都是用来解决幻读问题的，在已提交读（READ COMMITTED）隔离级别下，间隙锁(Gap Locks)和临键锁(Next-Key Locks)都会失效！</strong></p>
 <h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h3><p>Innodb存储引擎由于实现了<strong>行级锁定</strong>，虽然在锁定机制的实现方面所带来的性能损耗可能比表级锁定会要更高一些， 但是在整体<strong>并发</strong>处理能力方面要远远优于MyISAM的表级锁定的。当系统并发量较高的时候，Innodb的整体性能和MyISAM相比就会有比较明显的优势了。<br>但是，Innodb的行级锁定同样也有其脆弱的一面，当我们<strong>使用不当的时候</strong>，可能会让Innodb的整体性能表现不仅不能比MylSAM高，甚至可能会更差。</p>
 <h2 id="10-3-意向锁"><a href="#10-3-意向锁" class="headerlink" title="10.3 意向锁"></a>10.3 意向锁</h2><p>InnoDB存储引擎支持多粒度锁定，这种锁定允许事务在行级上的锁和表级上的锁同时存在。为了支持在不同粒度上进行加锁操作，InnoDB存储引擎支持一种额外的锁方式，称之为意向锁。意向锁是将锁定的对象分为多个层次，意向锁意味着事务希望在更细粒度上进行加锁。</p>
 <p><strong>意向锁是表锁，多用在innoDB中，是数据库自身的行为，不需要人工干预，在事务结束后会自行解除。</strong></p>
@@ -1360,7 +1383,7 @@
 <blockquote>
 <p>如果 row_trx_id 等于当前事务的 id，那表示这条数据就是当前事务修改的，那当前事务肯定能读取到。</p>
 </blockquote>
-<h2 id="如何解决幻读问题"><a href="#如何解决幻读问题" class="headerlink" title="如何解决幻读问题"></a>如何解决幻读问题</h2><p>MySQL 已经在可重复读隔离级别下解决了幻读的问题，用的是间隙锁。MySQL 把行锁和间隙锁合并在一起，解决了并发写和幻读的问题，这个锁叫做 Next-Key锁。</p>
+<h2 id="如何解决幻读问题"><a href="#如何解决幻读问题" class="headerlink" title="如何解决幻读问题"></a>如何解决幻读问题</h2><p>MySQL 已经在可重复读隔离级别下解决了幻读的问题，用的是间隙锁。MySQL 把行锁和间隙锁合并在一起，解决了并发写和幻读的问题，这个锁叫做 Next-Key（<strong>临键锁</strong>）锁。</p>
 <p>假设现在表中有两条记录，并且 age 字段已经添加了索引，两条记录 age 的值分别为 10 和 30。此时，在数据库中会为索引维护一套B+树，用来快速定位行记录。B+索引树是有序的，所以会把这张表的索引分割成几个区间。</p>
 <p><img src="/2020/11/10/Mysql/Mysql%E9%AB%98%E7%BA%A7/mysql%E9%AB%98%E7%BA%A7/image-20210831092818152.png" srcset="/img/loading.gif" lazyload alt="image-20210831092818152"></p>
 <p>此时，在数据库中会为索引维护一套B+树，用来快速定位行记录。B+索引树是有序的，所以会把这张表的索引分割成几个区间。如图所示，分成了3 个区间，在这3个区间是可以加间隙锁的。</p>

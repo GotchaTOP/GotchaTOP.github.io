@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      32.2k 字
+      32.3k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1082
+      1084
        分钟
     </span>
   
@@ -360,6 +360,21 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">service iptables stop   #关闭防火墙<br>chkconfig iptables off  #禁止开机启动<br></code></pre></td></tr></table></figure>
 
 <p><img src="/2021/01/04/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE/1.11.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>关闭防火墙时，如果提示下图</p>
+<p><img src="/2021/01/04/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE/image-20211104092404746.png" srcset="/img/loading.gif" lazyload alt="image-20211104092404746"></p>
+<p>是因为centos7后是使用的基于iptable的systemctl stop firewalld</p>
+<p>解决方法：</p>
+<p><code>yum install iptables-services</code></p>
+<p>查看防火墙状态</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">firewall-cmd <span class="hljs-comment">--state</span><br></code></pre></td></tr></table></figure>
+
+<p>停止firewall</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">systemctl stop firewalld.service<br></code></pre></td></tr></table></figure>
+
+<p>禁止firewall开机启动</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">systemctl <span class="hljs-builtin-name">disable</span> firewalld.service<br></code></pre></td></tr></table></figure>
+</blockquote>
 <h3 id="虚拟机关闭selinux"><a href="#虚拟机关闭selinux" class="headerlink" title="虚拟机关闭selinux"></a>虚拟机关闭selinux</h3><ul>
 <li>什么是SELinux<ul>
 <li>SELinux是Linux的一种安全子系统</li>
