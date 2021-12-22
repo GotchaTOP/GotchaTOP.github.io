@@ -234,7 +234,7 @@
               </p>
             
             <div class="markdown-body">
-              <h1 id="一、Phoenix概述"><a href="#一、Phoenix概述" class="headerlink" title="一、Phoenix概述"></a>一、Phoenix概述</h1><h2 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h2><p>关于phoenix的名称，直译为凤凰。</p>
+              <h1 id="一、Phoenix概述"><a href="#一、Phoenix概述" class="headerlink" title="一、Phoenix概述"></a>一、Phoenix概述</h1><h2 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h2><p>phoenix的名称直译为凤凰。</p>
 <p>phoenix是构建的Hbase之上的，是使用Java语言编写的一个HBase框架，<strong>使用标准的SQL操作Hbase</strong>，可以做联机事务处理，拥有低延迟的特性。</p>
 <p>phoenix会把SQL编译成一系列的Hbase的scan操作，然后把scan结果生成标准的JDBC结果集，</p>
 <p>其底层由于使用了Hbase的API，协处理器，过滤器，处理千万级行的数据也只用毫秒或秒级就搞定。</p>
@@ -243,7 +243,7 @@
 <p>可以通过类似Mysql方式连接phoenix:</p>
 <p>Connection conn = DriverManager.getConnection(“jdbc:phoenix:server1,server2:3333”,props);</p>
 <p>Phoenix支持通过DDL命令进行表格创建和版本化增量更改，相应元数据存储在Hbase表中。</p>
-<p>元数据用于描述phoenix表与hbase之间的关系，映射。</p>
+<p>元数据用于描述phoenix表与hbase之间的关系与映射。</p>
 <h2 id="1-2-特点"><a href="#1-2-特点" class="headerlink" title="1.2 特点"></a>1.2 特点</h2><p>Apache Phoenix在Hadoop中为低延迟应用程序启用OLTP和运营分析：</p>
 <ul>
 <li>具有完整ACID事务功能的标准SQL和JDBC API的强大功能</li>
@@ -263,7 +263,7 @@
 <p>如果是通过Phoenix创建的表，那么必须通过Phoenix客户端来对表进行操作，因为通过Phoenix创建的表其非主键的列会进行编码。</p>
 <hr>
 <h1 id="二、Phoenix安装"><a href="#二、Phoenix安装" class="headerlink" title="二、Phoenix安装"></a>二、Phoenix安装</h1><p><strong>注意HBase版本需要与Phoenix匹配</strong></p>
-<p><img src="/2021/12/21/%E5%A4%A7%E6%95%B0%E6%8D%AE/Phoenix/Phoenix/HBase/HBase/image-20211216163736392.png" srcset="/img/loading.gif" lazyload alt="image-20211216163736392"></p>
+<p><img src="/2021/12/21/%E5%A4%A7%E6%95%B0%E6%8D%AE/Phoenix/Phoenix/image-20211222213126594.png" srcset="/img/loading.gif" lazyload alt="image-20211222213126594"></p>
 <h2 id="2-1-相关环境"><a href="#2-1-相关环境" class="headerlink" title="2.1 相关环境"></a>2.1 相关环境</h2><p>确保JDK、Zookeeper、Hadoop、HBASE已安装，且版本适配。</p>
 <p>本人采用的版本为JDK1.8，Zookeeper3.4.9，Hadoop2.10，HBase1.6，Phoenix4.16，分布式环境。</p>
 <p><img src="/2021/12/21/%E5%A4%A7%E6%95%B0%E6%8D%AE/Phoenix/Phoenix/image-20211222162321025.png" srcset="/img/loading.gif" lazyload alt="image-20211222162321025"></p>
