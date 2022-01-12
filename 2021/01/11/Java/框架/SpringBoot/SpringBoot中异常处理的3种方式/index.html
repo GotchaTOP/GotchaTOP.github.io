@@ -1,0 +1,625 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="懂一点点">
+  <meta name="author" content="Gotcha">
+  <meta name="keywords" content="">
+  
+  <title>SpringBoot中异常处理的3种方式 - Gotcha的笔记总结</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"cd190160b5401a029cee361d013e32a1","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"U8yaiFQ2fUef4ujWTig83mSL-gzGzoHsz","app_key":"akCMytdeJqrMuKP84F4oblqz","server_url":"https://u8yaifq2.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Gotcha的笔记总结</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background/01.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="SpringBoot中异常处理的3种方式">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-01-11 00:00" pubdate>
+        2021年1月11日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      82
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">SpringBoot中异常处理的3种方式</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年1月11日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="一、不处理异常"><a href="#一、不处理异常" class="headerlink" title="一、不处理异常"></a>一、不处理异常</h1><p>假如SpringMvc我们不对异常进行任何处理，界面上显示的是这样的。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213505335-1513644054.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="二、解决方式"><a href="#二、解决方式" class="headerlink" title="二、解决方式"></a>二、解决方式</h1><h2 id="2-1-Controller层面处理-ExceptionHandler"><a href="#2-1-Controller层面处理-ExceptionHandler" class="headerlink" title="2.1 Controller层面处理@ExceptionHandler"></a>2.1 Controller层面处理@ExceptionHandler</h2><h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><ul>
+<li>说明:针对可能出问题的Controller，新增注解方法@ExceptionHandler。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span><br><span class="hljs-meta">@RequestMapping(&quot;/testController&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestController</span> </span>&#123;<br> <br>    <span class="hljs-meta">@RequestMapping(&quot;/demo1&quot;)</span><br>    <span class="hljs-meta">@ResponseBody</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">demo1</span><span class="hljs-params">()</span></span>&#123;<br>        <span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span> / <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Date();<br>    &#125;<br> <br>    <span class="hljs-meta">@ExceptionHandler(&#123;RuntimeException.class&#125;)</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> ModelAndView <span class="hljs-title">fix</span><span class="hljs-params">(Exception ex)</span></span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;do This&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;error&quot;</span>,<span class="hljs-keyword">new</span> ModelMap(<span class="hljs-string">&quot;ex&quot;</span>,ex.getMessage()));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意事项:</p>
+<ol>
+<li>一个Controller下多个@ExceptionHandler上的异常类型不能出现一样的，否则运行时抛异常：Ambiguous @ExceptionHandler method mapped for;</li>
+<li>@ExceptionHandler下方法返回值类型支持多种，常见的ModelAndView，@ResponseBody注解标注，ResponseEntity等类型都OK.</li>
+</ol>
+</blockquote>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>代码片段位于：<code>org.springframework.web.servlet.DispatcherServlet#doDispatch</code></p>
+<p>执行@RequestMapping方法抛出异常后，Spring框架 try-catch的方法捕获异常，正常逻辑发不发生异常都会走processDispatchResult流程 ，区别在于异常的参数是否为null。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java">HandlerExecutionChain mappedHandler = <span class="hljs-keyword">null</span>;<br>    Exception dispatchException = <span class="hljs-keyword">null</span>;<br>    ModelAndView mv = <span class="hljs-keyword">null</span>;<br>    <span class="hljs-keyword">try</span>&#123;  <br>        mappedHandler=getHandler(request); <span class="hljs-comment">//根据请求查找handlerMapping找到controller</span><br>        HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());<span class="hljs-comment">//找到处理器适配器HandlerAdapter</span><br>         <br>        <span class="hljs-keyword">if</span>(!mappedHandler.applyPreHandle(request,response))&#123; <span class="hljs-comment">//拦截器preHandle</span><br>            <span class="hljs-keyword">return</span> ;<br>        &#125;       <br>        mv=ha.handle(request,response); <span class="hljs-comment">//调用处理器适配器执行@RequestMapping方法</span><br>        mappedHandler.applyPostHandle(request,response,mv);  <span class="hljs-comment">//拦截器postHandle</span><br>    &#125;<span class="hljs-keyword">catch</span>(Exception ex)&#123;<br>        dispatchException=ex;<br>    &#125;<br>        processDispatchResult(request,response,mappedHandler,mv,dispatchException) <span class="hljs-comment">//将异常信息传入</span><br></code></pre></td></tr></table></figure>
+
+<p>代码片段位于：<code>org.springframework.web.servlet.DispatcherServlet#processDispatchResult</code></p>
+<p>如果@RequestMapping方法抛出异常，拦截器的postHandle方法不执行，进入 processDispatchResult，判断入参 dispatchException，不为null , 代表发生异常，调用processHandlerException处理。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213505888-2030203515.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.DispatcherServlet#processHandlerException</code></p>
+<p>this当前对象指dispatchServlet，handlerExceptionResolvers可以看到有三个HandlerExceptionResolver，这三个是&lt;mvc:annotation-driven /&gt;帮我们注册的。遍历有序集合handlerExceptionResolvers，调用接口的resolveException方法。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213506844-1654136479.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>记录<a href="mvc:annotation-driven/">mvc:annotation-driven/</a>注册的第一个 HandlerExceptionResolver : ExceptionHandlerExceptionResolver，继承关系如下面所示。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213507487-117467346.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver#resolveException</code></p>
+<p>AbstractHandlerExceptionResolver 和 AbstractHandlerMethodExceptionResolver名字看起来非常相似。这里AbstractHandlerExceptionResolver 的shouldApplyTo都返回 true，logException用来记录日志、prepareResponse方法用来设置response的Cache-Control。异常处理方法就位于doResolveException。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213508459-1480757473.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.handler.AbstractHandlerMethodExceptionResolver#shouldApplyTo</code></p>
+<p>接口方法实现是AbstractHandlerExceptionResolver的resolveException，先判断 shouldApplyTo，AbstractHandlerExceptionResolver 和子类AbstractHandlerMethodExceptionResolver都实现了shouldApplyTo方法，子类的shouldApplyTo都调用父类AbstractHandlerExceptionResolver的shouldApplyTo。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213509235-794344844.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>查看父类AbstractHandlerExceptionResolver的shouldApplyTo方法.</p>
+<p>代码片段位于：<code>org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver#shouldApplyTo</code></p>
+<p>Spring初始化的时候并没有额外配置，所以mappedHandlers和mappedHandlerClasses都为null，可以在这块扩展进行筛选 ，AbstractHandlerExceptionResolver提供了 setMappedHandlerClasses 、setMappedHandlers用于扩展。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213510217-865137658.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.handler.AbstractHandlerMethodExceptionResolver#doResolveException</code></p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213511032-81051857.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#doResolveHandlerMethodException</code></p>
+<p>似曾相识的ServletInvocableHandlerMethod，<strong>getExceptionHandlerMethod</strong>目的就是获取针对异常的处理方法，没找到的话这里就直接返回了，找到了执行异常处理方法；</p>
+<p>之后同Spring请求方法执行一样的处理方式，设置argumentResolvers、returnValueHandlers，之后进行调用异常处理方法，</p>
+<p><strong>@ExceptionHandler的方法入参支持：Exception ；SessionAttribute 、 RequestAttribute注解 ； HttpServletRequest 、HttpServletResponse、HttpSession.</strong></p>
+<p><strong>@ExceptionHandler方法返回值常见的可以是: ModelAndView 、@ResponseBody注解、ResponseEntity;</strong></p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213512288-1219310442.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p><strong>getExceptionHandlerMethod说明： 获取对应的@ExceptionHandler方法，封装成ServletInvocableHandlerMethod返回.</strong></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#getExceptionHandlerMethod</code></p>
+<p><strong>exceptionHandlerCache是针对Controller层面的@ExceptionHandler的处理方式，而exceptionHandlerAdviceCache是针对@ControllerAdvice的处理方式。这两个属性都位于ExceptionHandlerExceptionResolver中。</strong></p>
+<p>handlerType指代Controller的class属性，尝试从<strong>缓存A</strong> exceptionHandlerCache 中根据controller的class 查找ExceptionHandlerMethodResolver； <strong>缓存A</strong>之前没存储过Controller的class ，所以新建一个ExceptionHandlerMethodResolver 加入缓存中。ExceptionHandlerMethodResolver 的初始化工作一定做了某些工作。</p>
+<p>resolveMethod方法：根据异常对象让 ExceptionHandlerMethodResolver 解析得到 method ， 匹配到异常处理方法 就直接封装成对象 ServletInvocableHandlerMethod ； 就不会再去走@ControllerAdvice里的异常处理器了。这里说明了，ExceptionHandlerMethodResolver 初始化的时候完成存储 @ExceptionHandler。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213513211-1902635389.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p><strong>查看ExceptionHandlerMethodResolver 初始化工作内容:</strong></p>
+<p>代码片段位于：<code>org.springframework.web.method.annotation.ExceptionHandlerMethodResolver#ExceptionHandlerMethodResolver</code></p>
+<p>handlerType为传入的Controller的class属性，通过EXCEPTION_HANDLER_METHODS选出 class 中标注@ExceptionHandler的方法，解析@Exception注解的value值(class类型的数组)，并加入到当前ExceptionHandlerMethodResolver的mappedMethods集合中，key为 异常类型 ，value为 method。</p>
+<p><strong>如果@ExceptionHandler的 value属性为空，就会将方法入参中的Throwable的子类作为异常类型。@ExceptionHandler的value属性和方法入参不能同时都为空，否则会抛出异常。</strong></p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/image-20220112170104666.png" srcset="/img/loading.gif" lazyload alt="image-20220112170104666"></p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213515732-1845386764.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p><strong>ExceptionHandlerMethodResolver完成了初始化工作，如何根据当前发生异常类型查找到对应方法?</strong></p>
+<p>代码片段位于：<code>org.springframework.web.method.annotation.ExceptionHandlerMethodResolver#resolveMethod</code></p>
+<p><strong>resolveMethodByExceptionType</strong>根据当前抛出异常寻找 匹配的方法，并且做了缓存，以后遇到同样的异常可以直接走缓存取出method，</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213516357-941731817.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>代码片段位于：<code>org.springframework.web.method.annotation.ExceptionHandlerMethodResolver#resolveMethodByExceptionType</code></p>
+<p><strong>resolveMethodByExceptionType</strong>方法，尝试从<strong>缓存A</strong>：exceptionLookupCache中根据 异常class类型获取Method ，初始时候肯定缓存为空 ，就去遍历ExceptionHandlerMethodResolver的mappedMethods(上面提及了key为异常类型，value为method), exceptionType为当前@RequestMapping方法抛出的异常，判断当前异常类型是不是@ExceptionHandler中value声明的子类或本身，满足条件就代表匹配上了；可能存在多个匹配的方法，使用ExceptionDepthComparator排序，排序规则是按照继承顺序来(继承关系越靠近数值越小，当前类最小为0,顶级父类Throwable为int最大值)，排序之后选取继承关系最靠近的那个，并且存入ExceptionHandlerMethodResolver的exceptionLookupCache中，key为当前抛出的异常，value为解析出来的匹配method。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213517347-1230556380.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>至此 @ExceptionHandler Spring读取到并解析出来完毕了，后续流程和Spring正常请求流程一样，包括@ExceptionHandler的方法入参、方法返回值。</p>
+<p><strong>@ExceptionHandler的方法入参支持：Exception ；SessionAttribute 、 RequestAttribute注解 ； HttpServletRequest 、HttpServletResponse、HttpSession.</strong></p>
+<p><strong>@ExceptionHandler方法返回值常见的可以是: ModelAndView 、@ResponseBody注解、ResponseEntity;</strong></p>
+<hr>
+<h2 id="2-2-全局级别异常处理，实现HandlerExceptionResolver接口"><a href="#2-2-全局级别异常处理，实现HandlerExceptionResolver接口" class="headerlink" title="2.2 全局级别异常处理，实现HandlerExceptionResolver接口"></a>2.2 全局级别异常处理，实现HandlerExceptionResolver接口</h2><h3 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyHandlerExceptionResolver</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">HandlerExceptionResolver</span> </span>&#123;<br> <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> ModelAndView <span class="hljs-title">resolveException</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> </span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;发生全局异常!&quot;</span>);<br>        ModelMap mmp=<span class="hljs-keyword">new</span> ModelMap();<br>        mmp.addAttribute(<span class="hljs-string">&quot;ex&quot;</span>,ex.getMessage());<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;error&quot;</span>,mmp);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用方式： <strong>只需要将该Bean加入到Spring容器，可以通过Xml配置，也可以通过注解方式加入容器;</strong> </p>
+<p><strong>方法返回值不为null才有意义，如果方法返回值为null，可能异常就没有被捕获.</strong></p>
+<blockquote>
+<p>缺点分析：比如这种方式全局异常处理返回JSP、velocity等视图比较方便，返回json或者xml等格式的响应就需要自己实现了。如下是实现的发生全局异常返回JSON的简单例子。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyHandlerExceptionResolver</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">HandlerExceptionResolver</span> </span>&#123;<br> <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> ModelAndView <span class="hljs-title">resolveException</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> </span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;发生全局异常!&quot;</span>);<br>        ModelMap mmp=<span class="hljs-keyword">new</span> ModelMap();<br>        mmp.addAttribute(<span class="hljs-string">&quot;ex&quot;</span>,ex.getMessage());<br>        response.addHeader(<span class="hljs-string">&quot;Content-Type&quot;</span>,<span class="hljs-string">&quot;application/json;charset=UTF-8&quot;</span>);<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-keyword">new</span> ObjectMapper().writeValue(response.getWriter(),ex.getMessage());<br>            response.getWriter().flush();<br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            e.printStackTrace();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView();<br>    &#125;<br> <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h3><p>之前介绍了 DispatcherServlet的HandlerExceptionResolver集合，这种方式的HandlerExceptionResolver就是从DispatcherServlet的HandlerExceptionResolver集合入手的。</p>
+<p>代码片段位于：<code>org.springframework.web.servlet.DispatcherServlet#processHandlerException</code></p>
+<p>this对象指代DispatcherServlet，和上面方式对比，发现我们只是将MyHandlerExceptionResolver 加入到Spring容器，dispatchServlet 的 handlerExceptionResolvers属性就多了我们自己定义的全局异常解析器；</p>
+<p>ExceptionHandlerMethodResolver是用来解析@Controller层面的@ExceptionHandler注解，当前Controller没有找到@ExceptionHandler来处理自己抛出的异常，才遍历下一个HandlerExceptionResolver；</p>
+<p><strong>HandlerExceptionResolver是个有序集合，Spring注册的HandlerExceptionResolver调用resolveException都失败之后，才轮到我们自定义的MyHandlerExceptionResolver ；而且我们自定义的MyHandlerExceptionResolver 就没法使用SpringMvc的注解等等.</strong></p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213518226-1400160846.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p><strong>我们只是将HandlerExceptionResolver加入到Spring容器中,Spring是如何通知给DispatcherServlet呢?</strong></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.DispatcherServlet#initHandlerExceptionResolvers</code></p>
+<p><strong>initHandlerExceptionResolvers只是DispatcherServlet初始化策略方法initStrategies中的一小步，可以看到只要是SpringMvc父子容器中注册的HandlerExceptionResolver类型实例，DispatcherServlet都会自动将其加入到DispatcherServlet的handlerExceptionResolvers中。所以我们需要做的只是实现HandlerExceptionResolver接口，并且纳入Spring容器管理即可。</strong></p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213519385-76841028.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<hr>
+<h2 id="2-3-全局级别异常处理器-Controller-ExceptionHandler"><a href="#2-3-全局级别异常处理器-Controller-ExceptionHandler" class="headerlink" title="2.3 全局级别异常处理器@Controller+@ExceptionHandler"></a>2.3 全局级别异常处理器@Controller+@ExceptionHandler</h2><h3 id="解决方法-2"><a href="#解决方法-2" class="headerlink" title="解决方法"></a>解决方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GlobalController</span> </span>&#123;<br> <br>    <span class="hljs-meta">@ExceptionHandler(RuntimeException.class)</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> ModelAndView <span class="hljs-title">fix1</span><span class="hljs-params">(Exception e)</span></span>&#123;<br>        System.out.println(<span class="hljs-string">&quot;全局的异常处理器&quot;</span>);<br>        ModelMap mmp=<span class="hljs-keyword">new</span> ModelMap();<br>        mmp.addAttribute(<span class="hljs-string">&quot;ex&quot;</span>,e);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ModelAndView(<span class="hljs-string">&quot;error&quot;</span>,mmp);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>用法说明: <strong>这种情况下 @ExceptionHandler 与第一种方式用法相同，返回值支持ModelAndView，@ResponseBody等多种形式.</strong></p>
+<h3 id="实现原理-2"><a href="#实现原理-2" class="headerlink" title="实现原理"></a>实现原理</h3><p><strong>方式一提到ExceptionHandlerExceptionResolver不仅维护@Controller级别的@ExceptionHandler，同时还维护的@ControllerAdvice级别的@ExceptionHandler.</strong></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#getExceptionHandlerMethod</code></p>
+<p> isApplicableToBeanType方法是用来做条件判断的，@ControllerAdvice注解有很多属性用来设置条件，basePackageClasses、assignableTypes、annotations等，比如我限定了annotations为注解X， 那标注了@X 的ControllerA就可以走这个异常处理器，ControllerB就不能走这个异常处理器。</p>
+<p>现在问题的关键就只剩下了exceptionHandlerAdviceCache是什么时候扫描@ControllerAdvice的，下面的逻辑和@ExceptionHandler的逻辑一样了。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213520405-253670661.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p><strong>exceptionHandlerAdviceCache初始化逻辑:</strong></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#afterPropertiesSet</code></p>
+<p>afterPropertiesSet是Spring bean创建过程中一个重要环节。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213521107-576988204.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>代码片段位于：<code>org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver#initExceptionHandlerAdviceCache</code></p>
+<p>ControllerAdviceBean.findAnnotatedBeans方法查找了SpringMvc父子容器中标注 @ControllerAdvice 的bean，new ExceptionHandlerMethodResolver初始化时候解析了当前的@ControllerAdvice的bean的@ExceptionHandler，加入到<strong>ExceptionHandlerExceptionResolver</strong>的<strong>exceptionHandlerAdviceCache</strong>中，key为ControllerAdviceBean，value为ExceptionHandlerMethodResolver 。到这里exceptionHandlerAdviceCache就初始化完毕。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213522102-1856948808.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p><strong>查找SpringMvc父子容器中所有@ControllerAdivce的bean的方法</strong></p>
+<p>代码片段位于：org.springframework.web.method.ControllerAdviceBean#findAnnotatedBeans</p>
+<p>遍历了SpringMVC父子容器中所有的bean，标注ControllerAdvice注解的bean加入集合返回。</p>
+<p><img src="/2021/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/1550387-20190321213523591-764129054.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<hr>
+<h1 id="三、比较"><a href="#三、比较" class="headerlink" title="三、比较"></a>三、比较</h1><p>@Controller+@ExceptionHandler、HandlerExceptionResolver接口形式、@ControllerAdvice+@ExceptionHandler优缺点说明：</p>
+<p>在Spring4.3.0版本下，</p>
+<ol>
+<li>优先级来说，@Controller+@ExceptionHandler优先级最高，其次是@ControllerAdvice+@ExceptionHandler，最后才是HandlerExceptionResolver，说明假设三种方式并存的情况优先级越高的越先选择，而且被一个捕获处理了就不去执行其他的。</li>
+<li> 三种方式都支持多种返回类型，@Controller+@ExceptionHandler、@ControllerAdvice+@ExceptionHandler可以使用Spring支持的@ResponseBody、ResponseEntity，而HandlerExceptionResolver方法声明返回值类型只能是 ModelAndView，如果需要返回JSON、xml等需要自己实现。</li>
+<li>缓存利用，@Controller+@ExceptionHandler的缓存信息在<strong>ExceptionHandlerExceptionResolver的</strong>exceptionHandlerCache，@ControllerAdvice+@ExceptionHandler的缓存信息在<strong>ExceptionHandlerExceptionResolver的exceptionHandlerAdviceCache</strong>中，而HandlerExceptionResolver接口是不做缓存的，在前面两种方式都fail的情况下才会走自己的HandlerExceptionResolver实现类，多少有点性能损耗。</li>
+</ol>
+<hr>
+<p>文章参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/lvbinbin2yujie/p/10574812.html">此处</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/%E6%A1%86%E6%9E%B6/">框架</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/">Spring</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringBoot/">SpringBoot</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%BC%82%E5%B8%B8/">异常</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/25/Java/%E6%A1%86%E6%9E%B6/SpringCloud/SpringCloud%E5%85%A5%E9%97%A8/SpringCloud%E5%85%A5%E9%97%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SpringCloud入门</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/01/04/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%9F%BA%E7%A1%80/">
+                        <span class="hidden-mobile">大数据基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?cd190160b5401a029cee361d013e32a1";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
