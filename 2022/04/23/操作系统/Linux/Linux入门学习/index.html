@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      581 字
+      4.5k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      124
        分钟
     </span>
   
@@ -244,7 +244,389 @@
 </ul>
 <p>作为操作系统，GNU的发展仍未完成，其中最大的问题是具有完备功能的内核尚未被开发成功。GNU的内核，称为Hurd，是自由软件基金会发展的重点，但是其发展尚未成熟。在实际使用上，多半使用Linux内核、FreeBSD等替代方案，作为系统核心，其中主要的操作系统是Linux的发行版。Linux操作系统包涵了Linux内核与其他自由软件项目中的GNU组件和软件，可以被称为GNU/Linux。</p>
 <p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220423223105055.png" srcset="/img/loading.gif" lazyload alt="image-20220423223105055"></p>
-<h2 id="1-4-GPL"><a href="#1-4-GPL" class="headerlink" title="1.4 GPL"></a>1.4 GPL</h2><p>GNU通用公共许可证简称为GPL，是由自由软件基金会发行的用于计算机软件的协议证书，使用该证书的软件被称为自由软件。大多数的GNU程序和超过半数的自由软件使用它。Linux操作系统以及与它有关的大量软件是在GPL的推动下开发和发布的。如果打算为了发布的目的修改，更新或改进任何受通用公共许可证约束的软件，所修改的软件同样必须受到GNU通用许可证条款的约束。</p>
+<h2 id="1-4-GPL"><a href="#1-4-GPL" class="headerlink" title="1.4 GPL"></a>1.4 GPL</h2><p><strong>GNU通用公共许可证简称为GPL</strong>，是由自由软件基金会发行的用于计算机软件的协议证书，使用该证书的软件被称为自由软件。大多数的GNU程序和超过半数的自由软件使用它。Linux操作系统以及与它有关的大量软件是在GPL的推动下开发和发布的。如果打算为了发布的目的修改，更新或改进任何受通用公共许可证约束的软件，所修改的软件同样必须受到GNU通用许可证条款的约束。</p>
+<h2 id="1-5-Linux文件与目录结构"><a href="#1-5-Linux文件与目录结构" class="headerlink" title="1.5 Linux文件与目录结构"></a>1.5 Linux文件与目录结构</h2><p>Linux 系统中一切皆文件，整个系统都是当做文件来管理，挂载点相当于磁盘文件系统的入口目录。</p>
+<ul>
+<li>挂载点实际上就是linux中的磁盘文件系统的入口目录。</li>
+</ul>
+<p>Linux目录结构如下图所示：</p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220714170827344.png" srcset="/img/loading.gif" lazyload alt="image-20220714170827344"></p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220714225810630.png" srcset="/img/loading.gif" lazyload alt="image-20220714225810630"></p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220714230822384.png" srcset="/img/loading.gif" lazyload alt="image-20220714230822384"></p>
+<ul>
+<li><p>  <strong>/</strong> ：根目录，Linux系统中最重要的目录，文件系统的入口，所有子目录都是在根下创建的，同时根目录还跟系统开机，关机和系统修复动作有关，只有root用户才有此目录读写权限，而且/root是root用户主目录。</p>
+</li>
+<li><p>  <strong>/bin</strong>：其中bin是Binary的缩写，该目录存放常用的可执行二进制命令文件。</p>
+</li>
+<li><p>  <strong>/sbin</strong>：其中s是System的缩写，和bin目录相似，存放标准系统管理命令文件，一般只有超级用户才能使用。</p>
+</li>
+<li><p>  <strong>/lib</strong>：存放32位系统所需要的基本动态链接库，类似于Windows里的DLL文件，是库文件和内核模块存放目录。</p>
+</li>
+<li><p>  <strong>/lib64</strong>：存放64位系统所需要的基本动态链接库，类似于Windows里的DLL文件，是库文件和内核模块存放目录。</p>
+</li>
+<li><p><strong>/usr</strong>：存放用户使用系统命令和应用程序等信息，像命令，帮助文件等。其中/bin链接到了/usr/bin，/sbin链接到了/usr/sbin，/lib链接到了/usr/lib，/lib64链接到了/usr/lib64。</p>
+<ul>
+<li>/usr/local：本地软件或用户安装的软件目录。</li>
+<li>/usr/share：存放共享文件的目录，其中/usr/share/man存放在线帮助文档，/usr/share/doc存放软件杂项文档说明。</li>
+<li>/usr/src：存放一般源码。</li>
+</ul>
+</li>
+<li><p><strong>/boot</strong>：包含了操作系统的内核和在启动系统过程中所要用到的文件，用作引导启动分区，grub系统引导管理器也在此目录下。即使主要的根分区出现了问题，计算机依然能够启动。个人使用的程序尽量不要安装在这里。</p>
+</li>
+<li><p><strong>/dev</strong>：其中dev是Device的缩写，存放所有设备文件，如fd0为软盘设备，cdrom为光盘设备。</p>
+</li>
+<li><p><strong>/etc</strong>：其中etc是Etcetra的缩写，用于存放所有的系统管理所需要的配置文件和子目录，也包含了用于启动/停止单个程序的启动和关闭shell脚本。</p>
+</li>
+<li><p><strong>/home</strong>：用于存放普通用户的主目录，这个分区的大小取决于有多少用户。在Linux中每个用户都有一个自己的目录，并且通常以用户账号命名（普通用户），root用户可以利用此目录很好地控制普通用户使用计算机。</p>
+</li>
+<li><p>**/root **：用于存放root用户的主目录。</p>
+</li>
+<li><p><strong>/opt</strong>：其中opt是Optional的缩写（Optional application software packages），用于存放第三方软件的目录，默认为空。</p>
+</li>
+<li><p><strong>/media</strong>（CentOS6）：Linux会自动的识别一些设备，如U盘、光驱等，Linux会把识别的设备挂载到这个目录下。此外，CentOS7中该目录迁移至/run/media。</p>
+</li>
+<li><p><strong>/mnt</strong>：其中mnt是Mount的缩写，用于让用户临时挂载其他文件系统，可以将外部的存储设备挂载在/mnt后进行操作。</p>
+</li>
+<li><p><strong>/proc</strong>：其中proc是Process的缩写，这个目录是一个虚拟目录，是系统内存的映射，它只存在内存当中，而不占用外存空间。它以文件系统的方式为访问系统内核数据的操作提供接口。可以通过该目录获取系统信息。</p>
+</li>
+<li><p> <strong>/run</strong>：用于保存系统运行时需要的内容，系统下次启动时重新生成。</p>
+</li>
+<li><p><strong>/srv</strong>：其中srv是Service的缩写，用于保存一些系统启动之后需要提取的数据。</p>
+</li>
+<li><p><strong>/sys</strong>：其中sys是System的缩写，这是Linux2.6内核的一个明显变化，该目录下安装了2.6内核中新出现的文件系统sysfs。sysfs文件系统是一个类似于proc文件系统的特殊文件系统，用于将系统中的设备组织成层次结构，并向用户模式程序提供详细的内核数据结构信息。其实，就是在用户态可以通过对sys文件系统的访问，来看内核态的一些驱动或者设备等。</p>
+</li>
+<li><p><strong>/lost+found</strong>：这个目录一般情况下是空的，当系统非法关机后，这里就存放了一些文件。</p>
+</li>
+<li><p><strong>/tmp</strong>：其中tem是Temporary的缩写，这么目录用来存放临时文件，即使程序运行时生成大量的临时文件，或者用户对系统进行了错误的操作，文件系统的其它部分仍然是安全的。</p>
+</li>
+<li><p><strong>/var</strong>：其中var是Variable的缩写（Variable data file），用于存放不断变化的数据文件，如程序日志。</p>
+<ul>
+<li>/var/lib：保存引用程序状态信息数据。</li>
+<li>/var/local：用于为/usr/local下的应用程序存储可变数据。</li>
+<li>/var/lock：锁文件。</li>
+<li>/var/log：日志目录及文件。</li>
+<li>/var/opt：专用于为/opt下的应用程序存储的可变数据。</li>
+<li>/var/spool：用于程序数据池。</li>
+<li>/var/tmp：用于保存系统重启两次之间产生的临时数据。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="二、VI-VIM-编辑器"><a href="#二、VI-VIM-编辑器" class="headerlink" title="二、VI/VIM 编辑器"></a>二、VI/VIM 编辑器</h1><h2 id="2-1-概述"><a href="#2-1-概述" class="headerlink" title="2.1 概述"></a>2.1 概述</h2><ul>
+<li><p>VI 是 Unix 操作系统和类 Unix 操作系统中最通用的文本编辑器。</p>
+</li>
+<li><p>VIM 编辑器是从 VI 发展出来的一个性能更强大的文本编辑器。可以主动的以字体颜 色辨别语法的正确性，方便程序设计。</p>
+</li>
+</ul>
+<blockquote>
+<p>VIM 与 VI 编辑器完全兼容。</p>
+</blockquote>
+<h2 id="2-2-一般模式"><a href="#2-2-一般模式" class="headerlink" title="2.2 一般模式"></a>2.2 一般模式</h2><p>以 vi 打开一个档案就直接进入一般模式（这是默认的模式）。在这个模式中，可以使用『上下左右』按键来移动光标，可以使用『删除字符』或『删除整行』来处理档案内容，也可以使用『复制、粘贴』来处理文件数据。</p>
+<h3 id="常用语法"><a href="#常用语法" class="headerlink" title="常用语法"></a>常用语法</h3><p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220715113052195.png" srcset="/img/loading.gif" lazyload alt="image-20220715113052195"></p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220717225824683.png" srcset="/img/loading.gif" lazyload alt="image-20220717225824683"></p>
+<h3 id="键盘布局"><a href="#键盘布局" class="headerlink" title="键盘布局"></a>键盘布局</h3><p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220715113305860.png" srcset="/img/loading.gif" lazyload alt="image-20220715113305860"></p>
+<h2 id="2-3-编辑模式"><a href="#2-3-编辑模式" class="headerlink" title="2.3 编辑模式"></a>2.3 编辑模式</h2><ul>
+<li>在一般模式中可以进行删除、复制、粘贴等的动作，但是却无法编辑文件的内容。</li>
+<li>只有按下『i, I, o, O, a, A』等任何一个字母之后才会进入编辑模式。</li>
+</ul>
+<blockquote>
+<p>通常在Linux中，按下『i, I, o, O, a, A』这些按键时，在画面的左下方会出现『INSERT或 REPLACE』的字样，此时才可以进行编辑。而如果要回到一般模式时， 则必须要按下 『Esc』按键即可退出编辑模式。</p>
+</blockquote>
+<h3 id="进入编辑模式"><a href="#进入编辑模式" class="headerlink" title="进入编辑模式"></a>进入编辑模式</h3><p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220717224138238.png" srcset="/img/loading.gif" lazyload alt="image-20220717224138238"></p>
+<h3 id="退出编辑模式"><a href="#退出编辑模式" class="headerlink" title="退出编辑模式"></a>退出编辑模式</h3><p>按『Esc』键退出编辑模式，进入一般模式。</p>
+<h2 id="2-4-命令模式"><a href="#2-4-命令模式" class="headerlink" title="2.4 命令模式"></a>2.4 命令模式</h2><p>在一般模式当中，输入『 : / ?』中的任何一个按钮，就可以将光标移动到最底下一行。</p>
+<p>在命令模式当中，可以进行检索、读取、存盘、替换、 离开 vi、显示行号等动作。</p>
+<p>基本语法如下：</p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220717231302594.png" srcset="/img/loading.gif" lazyload alt="image-20220717231302594"></p>
+<h2 id="2-5-模式切换"><a href="#2-5-模式切换" class="headerlink" title="2.5 模式切换"></a>2.5 模式切换</h2><p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220717224554098.png" srcset="/img/loading.gif" lazyload alt="image-20220717224554098"></p>
+<hr>
+<h1 id="三、基本设置"><a href="#三、基本设置" class="headerlink" title="三、基本设置"></a>三、基本设置</h1><h2 id="3-1-虚拟机网络配置"><a href="#3-1-虚拟机网络配置" class="headerlink" title="3.1 虚拟机网络配置"></a>3.1 虚拟机网络配置</h2><p>以VMware为例，配置过程如下：</p>
+<ul>
+<li>安装完成虚拟机与CentOS后，对<strong>VmWare生成的网关地址</strong>进行配置，使用NAT模式</li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.2.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="网络模式"><a href="#网络模式" class="headerlink" title="网络模式"></a>网络模式</h3><h4 id="桥接"><a href="#桥接" class="headerlink" title="桥接"></a>桥接</h4><ul>
+<li>把虚拟出来的网卡直接连接外部的路由器，主机起到了网桥的作用。看起来就好像是网络中多出了一台真正的计算机一样</li>
+<li>从路由器来看， 虚拟机等同于局域网内其它的物理机，且虚拟机对外部网络可见。</li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.3.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h4><p>NAT（Network Address Translation，网络地址转换），借助于NAT，私有地址的”内部”网络通过路由器发送数据包时，私有地址被转换成合法的IP地址，一个局域网只需使用少量IP地址（甚至是1个）即可实现私有地址网络内所有计算机与Internet的通信需求。</p>
+<p>NAT将自动修改IP报文的源IP地址和目的IP地址，Ip地址校验则在NAT处理过程中自动完成。有些应用程序将源IP地址嵌入到IP报文的数据部分中，所以还需要同时对报文的数据部分进行修改，以匹配IP头中已经修改过的源IP地址。否则，在报文数据部分嵌入IP地址的应用程序就不能正常工作。</p>
+<ul>
+<li><p>在宿主机中创建一个子网， 把虚拟机放入子网中， 子网中有一个NAT服务</p>
+</li>
+<li><p>虚拟机通过共享主机IP访问外部网络，但是<strong>外部网络无法直接访问虚拟机</strong>。</p>
+<blockquote>
+<p>对应VMnet8虚拟网卡</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.4.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="仅主机"><a href="#仅主机" class="headerlink" title="仅主机"></a>仅主机</h4><ul>
+<li>创建子网， 把虚拟机放入这个子网。</li>
+<li>虚拟机与中间共享子网，与外界网络无法通信。</li>
+</ul>
+<blockquote>
+<p>对应VMnet1虚拟网卡</p>
+</blockquote>
+<h3 id="物理机网络适配器配置"><a href="#物理机网络适配器配置" class="headerlink" title="物理机网络适配器配置"></a>物理机网络适配器配置</h3><p>对物理机中虚拟机网络适配器进行设置，IP设为静态IP，<strong>与VmWare生成的网关地址放在同一个子网内</strong></p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.10.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="设置MAC地址"><a href="#设置MAC地址" class="headerlink" title="设置MAC地址"></a>设置MAC地址</h3><ul>
+<li>找到台虚拟机的MAC地址，并在虚拟机<code>/etc/udev/rules.d/70-persistent-net.rules</code>文件下配置<ul>
+<li>  <code>vim /etc/udev/rules.d/70-persistent-net.rules</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.5.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.6.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="设置IP地址"><a href="#设置IP地址" class="headerlink" title="设置IP地址"></a>设置IP地址</h3><p>在虚拟机的<code>/etc/sysconfig/network-scripts/ifcfg-eth0</code>文件下配置IP地址</p>
+<blockquote>
+<p>也可能是<strong>ifcfg-ens33</strong>，原因如下：</p>
+<p>目前的主流网卡为使用以太网络协定所开发出来的以太网卡 (Ethernet)，因此Linux称呼这种网络接口为 ethN (N 为数字)。 </p>
+<p>举例来说，主机上面有一张以太网卡，因此主机的网络接口就是 eth0 (第一张为 0 号开始)。</p>
+<p>新的 CentOS 7 开始对于网卡的编号有另一套规则，网卡的界面代号与网卡的来源有关，网卡名称是这样分类的：</p>
+<ul>
+<li>eno1 ：代表由主板 BIOS 内置的网卡</li>
+<li>ens1 ：代表由主板 BIOS 内置的 PCI-E 界面的网卡</li>
+<li>enp2s0 ：代表 PCI-E 界面的独立网卡，可能有多个插孔，因此会有 s0, s1… 的编号～</li>
+<li>eth0 ：如果上述的名称都不适用，就回到原本的默认网卡编号</li>
+</ul>
+<p>所以会有ens33这种网卡表现形式。</p>
+</blockquote>
+<ul>
+<li>  <code>vim /etc/sysconfig/network-scripts/ifcfg-eth0</code></li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.7.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="设置主机名"><a href="#设置主机名" class="headerlink" title="设置主机名"></a>设置主机名</h3><p>在虚拟机的<code>/ect/sysconfig/network</code>文件下配置主机名</p>
+<ul>
+<li><code>vim /ect/sysconfig/network</code></li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.8.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>也可以编辑/etc/hostname文件设置</p>
+</blockquote>
+<p>重启后生效</p>
+<h3 id="设置IP与域名映射"><a href="#设置IP与域名映射" class="headerlink" title="设置IP与域名映射"></a>设置IP与域名映射</h3><p>分别在每一台虚拟机的<code>/ect/hosts</code>文件下配置IP与域名映射关系</p>
+<ul>
+<li>  <code>vim /etc/hosts</code></li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.9.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="3-2-其他设置"><a href="#3-2-其他设置" class="headerlink" title="3.2 其他设置"></a>3.2 其他设置</h2><h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><p>机器执行以下命令（root用户来执行）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">service iptables stop   #关闭防火墙<br>chkconfig iptables off  #禁止开机启动<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.11.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>关闭防火墙时，如果提示下图</p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20211104092404746.png" srcset="/img/loading.gif" lazyload alt="image-20211104092404746"></p>
+<p>是因为centos7后是使用的基于iptable的systemctl stop firewalld</p>
+<p>解决方法：</p>
+<p><code>yum install iptables-services</code></p>
+<p>查看防火墙状态</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">firewall-cmd <span class="hljs-comment">--state</span><br></code></pre></td></tr></table></figure>
+
+<p>停止firewall</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">systemctl stop firewalld.service<br></code></pre></td></tr></table></figure>
+
+<p>禁止firewall开机启动</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">systemctl <span class="hljs-builtin-name">disable</span> firewalld.service<br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h3><ul>
+<li>什么是SELinux<ul>
+<li>SELinux是Linux的一种安全子系统</li>
+<li>Linux中的权限管理是针对于文件的， 而不是针对进程的， 也就是说， 如果root启动了某个进程， 则这个进程可以操作任何一个文件</li>
+<li>SELinux在Linux的文件权限之外， 增加了对进程的限制， 进程只能在进程允许的范围内操作资源</li>
+</ul>
+</li>
+<li>为什么要关闭SELinux<ul>
+<li>如果开启了SELinux， 需要做非常复杂的配置， 才能正常使用系统， 在学习阶段， 在非生产环境， 一般不使用SELinux</li>
+</ul>
+</li>
+<li>SELinux的工作模式<ul>
+<li><code>enforcing</code> 强制模式</li>
+<li><code>permissive</code> 宽容模式</li>
+<li><code>disable</code> 关闭</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 修改selinux的配置文件</span><br>vi /etc/selinux/config<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.12.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="3-3-service服务管理（CentOS-6-版本）"><a href="#3-3-service服务管理（CentOS-6-版本）" class="headerlink" title="3.3 service服务管理（CentOS 6 版本）"></a>3.3 service服务管理（CentOS 6 版本）</h2><h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><p><code>service 服务名 start | stop | restart | status</code></p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718222613831.png" srcset="/img/loading.gif" lazyload alt="image-20220718222613831"></p>
+<h3 id="经验技巧"><a href="#经验技巧" class="headerlink" title="经验技巧"></a>经验技巧</h3><p>查看服务的方法：/etc/init.d/服务名</p>
+<p>只有在里面的服务，才能进行命令操作。</p>
+<blockquote>
+<p>d的是daemon的缩写，表示守护进程。</p>
+</blockquote>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718222519481.png" srcset="/img/loading.gif" lazyload alt="image-20220718222519481"></p>
+<h3 id="案例实操"><a href="#案例实操" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li>查看网络服务的状态</li>
+</ul>
+<p><code>service network status</code></p>
+<ul>
+<li>停止网络服务</li>
+</ul>
+<p><code>service network stop</code></p>
+<ul>
+<li>启动网络服务</li>
+</ul>
+<p><code>service network start</code></p>
+<ul>
+<li>重启网络服务</li>
+</ul>
+<p><code>service network restart</code></p>
+<h2 id="3-4-chkconfig-配置后台服务的自启（CentOS-6-版本）"><a href="#3-4-chkconfig-配置后台服务的自启（CentOS-6-版本）" class="headerlink" title="3.4 chkconfig 配置后台服务的自启（CentOS 6 版本）"></a>3.4 chkconfig 配置后台服务的自启（CentOS 6 版本）</h2><h3 id="基本语法-1"><a href="#基本语法-1" class="headerlink" title="基本语法"></a>基本语法</h3><ul>
+<li><code>chkconfig</code> （功能描述：查看所有服务器自启配置）</li>
+<li><code>chkconfig 服务名 off</code> （功能描述：关掉指定服务的自动启动）</li>
+<li><code>chkconfig 服务名 on</code> （功能描述：开启指定服务的自动启动）</li>
+<li> <code>chkconfig 服务名 --list</code> （功能描述：查看服务开机启动状态）</li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718225852965.png" srcset="/img/loading.gif" lazyload alt="image-20220718225852965"></p>
+<h3 id="案例实操-1"><a href="#案例实操-1" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li><p>开启/关闭 network服务的自动启动</p>
+<ul>
+<li><code>chkconfig network on</code></li>
+<li><code>chkconfig network off</code></li>
+</ul>
+</li>
+<li><p>开启/关闭 network 服务指定级别的自动启动</p>
+<ul>
+<li><code>chkconfig --level 指定级别 network on</code> </li>
+<li><code>chkconfig --level 指定级别 network off</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-5-systemctl（CentOS-7-版本）"><a href="#3-5-systemctl（CentOS-7-版本）" class="headerlink" title="3.5 systemctl（CentOS 7 版本）"></a>3.5 systemctl（CentOS 7 版本）</h2><h3 id="基本语法-2"><a href="#基本语法-2" class="headerlink" title="基本语法"></a>基本语法</h3><p><code>systemctl  start | stop | restart | status 服务名</code></p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718223750377.png" srcset="/img/loading.gif" lazyload alt="image-20220718223750377"></p>
+<h3 id="经验技巧-1"><a href="#经验技巧-1" class="headerlink" title="经验技巧"></a>经验技巧</h3><p>查看服务的方法：/usr/lib/systemd/system</p>
+<p>只有在里面的服务，才能进行命令操作。</p>
+<blockquote>
+<p>systemctl中ctl的是control的缩写。</p>
+</blockquote>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718223619656.png" srcset="/img/loading.gif" lazyload alt="image-20220718223619656"></p>
+<h3 id="案例实操-2"><a href="#案例实操-2" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li>查看防火墙服务的状态</li>
+</ul>
+<p><code>systemctl status firewalld</code></p>
+<ul>
+<li>停止防火墙服务</li>
+</ul>
+<p><code>systemctl stop firewalld</code></p>
+<ul>
+<li>启动防火墙服务</li>
+</ul>
+<p><code>systemctl start firewalld</code></p>
+<ul>
+<li>重启防火墙服务</li>
+</ul>
+<p><code>systemctl restart firewalld</code></p>
+<h2 id="3-6-systemctl-配置后台服务的自启"><a href="#3-6-systemctl-配置后台服务的自启" class="headerlink" title="3.6 systemctl 配置后台服务的自启"></a>3.6 systemctl 配置后台服务的自启</h2><h3 id="基本语法-3"><a href="#基本语法-3" class="headerlink" title="基本语法"></a>基本语法</h3><ul>
+<li><p><code>systemctl list-unit-files</code> （功能描述：查看服务开机启动状态）</p>
+</li>
+<li><p><code>systemctl disable service_name</code> （功能描述：关掉指定服务的自动启动）</p>
+</li>
+<li><p><code>systemctl enable service_name</code> （功能描述：开启指定服务的自动启动）</p>
+</li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718230318060.png" srcset="/img/loading.gif" lazyload alt="image-20220718230318060"></p>
+<h3 id="案例实操-3"><a href="#案例实操-3" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li>开启/关闭 iptables(防火墙)服务的自动启动<ul>
+<li><code>systemctl enable firewalld.service</code></li>
+<li><code>systemctl disable firewalld.service</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-7-系统运行级别"><a href="#3-7-系统运行级别" class="headerlink" title="3.7 系统运行级别"></a>3.7 系统运行级别</h2><h3 id="CentOS-6运行级别"><a href="#CentOS-6运行级别" class="headerlink" title="CentOS 6运行级别"></a>CentOS 6运行级别</h3><p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718224733049.png" srcset="/img/loading.gif" lazyload alt="image-20220718224733049"></p>
+<h3 id="CentOS-7运行级别"><a href="#CentOS-7运行级别" class="headerlink" title="CentOS 7运行级别"></a>CentOS 7运行级别</h3><ul>
+<li><p>CentOS7 的运行级别简化为：</p>
+<ul>
+<li>multi-user.target 等价于原运行级别 3（多用户有网，无图形界面）</li>
+<li>graphical.target 等价于原运行级别 5（多用户有网，有图形界面）</li>
+</ul>
+</li>
+<li><p>查看当前运行级别：</p>
+</li>
+</ul>
+<p><code>systemctl get-default</code></p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718225040851.png" srcset="/img/loading.gif" lazyload alt="image-20220718225040851"></p>
+<ul>
+<li>修改当前运行级别：</li>
+</ul>
+<p><code>systemctl set-default TARGET.target</code>（这里 target取 multi-user 或者 graphical）</p>
+<ul>
+<li>切换图形化和终端命令：<ul>
+<li><code>init 3</code> </li>
+<li> <code>init 5</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="四、常用命令"><a href="#四、常用命令" class="headerlink" title="四、常用命令"></a>四、常用命令</h1><p>Shell可以看作是一个命令解释器，它提供了交互式的文本控制台界面。可以通过终端控制台来输入命令，由shell进行解释并最终交给内核执行。 </p>
+<h2 id="4-1-关机重启命令"><a href="#4-1-关机重启命令" class="headerlink" title="4.1 关机重启命令"></a>4.1 关机重启命令</h2><h3 id="基本语法-4"><a href="#基本语法-4" class="headerlink" title="基本语法"></a>基本语法</h3><ul>
+<li>sync （功能描述：将数据由内存同步到硬盘中）</li>
+<li>halt （功能描述：停机，关闭系统，但不断电） </li>
+<li>poweroff （功能描述：关机，断电）</li>
+<li>reboot （功能描述：就是重启，等同于 shutdown -r now）</li>
+<li>shutdown [选项] 时间</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-H</td>
+<td>相当于–halt，停机</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>-r=reboot 重启</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>now</td>
+<td>立刻关机</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>等待多久后关机（时间单位是分钟）。</td>
+</tr>
+</tbody></table>
+<h3 id="经验技巧-2"><a href="#经验技巧-2" class="headerlink" title="经验技巧"></a>经验技巧</h3><p>Linux系统为了提高磁盘的读写效率，对磁盘采取了”预读迟写”操作方式。</p>
+<p>当用户保存文件时，Linux核心并不一定立即将保存数据写入物理磁盘中，而是将数据保存在缓冲区中，等缓冲区满时再写入磁盘，这种方式可以极大的提高磁盘写入数据的效率。但是，也带来了安全隐患，如果数据还未写入磁盘时，系统掉电或者其他严重问题出现，将导致数据丢失。可以使用<code>sync</code>指令立即将缓冲区的数据写入磁盘。</p>
+<h3 id="案例实操-4"><a href="#案例实操-4" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li>将数据由内存同步到硬盘中</li>
+</ul>
+<p><code>sync</code></p>
+<ul>
+<li>重启</li>
+</ul>
+<p><code>reboot</code></p>
+<ul>
+<li>停机（不断电）</li>
+</ul>
+<p><code>halt</code></p>
+<ul>
+<li>计算机将在 1 分钟后关机，并且会显示在登录用户的当前屏幕中</li>
+</ul>
+<p><code>shutdown -h 1 ‘This server will shutdown after 1 mins’</code></p>
+<ul>
+<li> 立即关机（等同于 poweroff）</li>
+</ul>
+<p><code>shutdown -h now</code></p>
+<ul>
+<li>立即重启（等同于 reboot）</li>
+</ul>
+<p><code>shutdown -r now</code></p>
 
             </div>
             <hr>
