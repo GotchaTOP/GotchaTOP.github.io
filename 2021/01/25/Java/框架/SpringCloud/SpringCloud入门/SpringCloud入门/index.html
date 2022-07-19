@@ -690,7 +690,7 @@
 <h4 id="运行项目-1"><a href="#运行项目-1" class="headerlink" title="运行项目"></a>运行项目</h4><p>以debug模式重启<code>consumer-demo</code>，查看控制台</p>
 <p><img src="/2021/01/25/Java/%E6%A1%86%E6%9E%B6/SpringCloud/SpringCloud%E5%85%A5%E9%97%A8/SpringCloud%E5%85%A5%E9%97%A8/2.23.png" srcset="/img/loading.gif" lazyload></p>
 <hr>
-<h1 id="三、-Spring-Cloud-Gateway网关"><a href="#三、-Spring-Cloud-Gateway网关" class="headerlink" title="三、 Spring Cloud Gateway网关"></a>三、 Spring Cloud Gateway网关</h1><h2 id="3-1-概述"><a href="#3-1-概述" class="headerlink" title="3.1 概述"></a>3.1 概述</h2><ul>
+<h1 id="三、Spring-Cloud-Gateway网关"><a href="#三、Spring-Cloud-Gateway网关" class="headerlink" title="三、Spring Cloud Gateway网关"></a>三、Spring Cloud Gateway网关</h1><h2 id="3-1-概述"><a href="#3-1-概述" class="headerlink" title="3.1 概述"></a>3.1 概述</h2><ul>
 <li><p>Spring Cloud Gateway基于<strong>Filter</strong>链提供网关基本功能：安全、监控／埋点、限流等。 </p>
 </li>
 <li><p>Spring Cloud Gateway组件的核心是一系列的过滤器，通过这些过滤器可以将客户端发送的请求转发（路由）到对应的微服务。 Spring Cloud Gateway是加在整个微服务最前沿的防火墙和代理器，<strong>隐藏微服务结点IP端口信息</strong>，从而加强安全保护。<strong>Spring Cloud Gateway本身也是一个微服务，需要注册到Eureka服务注册中心</strong>。</p>
@@ -822,7 +822,7 @@
 <p>Gateway网关一般直接给终端请求使用；Feign一般用在微服务之间调用。</p>
 </blockquote>
 <hr>
-<h1 id="四、-Spring-Cloud-Config分布式配置中心"><a href="#四、-Spring-Cloud-Config分布式配置中心" class="headerlink" title="四、 Spring Cloud Config分布式配置中心"></a>四、 Spring Cloud Config分布式配置中心</h1><h2 id="4-1-概述"><a href="#4-1-概述" class="headerlink" title="4.1 概述"></a>4.1 概述</h2><p>在分布式系统中，由于服务数量非常多，配置文件分散在不同的微服务项目中，管理不方便。为了方便配置文件集中管理，需要分布式配置中心组件。</p>
+<h1 id="四、Spring-Cloud-Config分布式配置中心"><a href="#四、Spring-Cloud-Config分布式配置中心" class="headerlink" title="四、Spring Cloud Config分布式配置中心"></a>四、Spring Cloud Config分布式配置中心</h1><h2 id="4-1-概述"><a href="#4-1-概述" class="headerlink" title="4.1 概述"></a>4.1 概述</h2><p>在分布式系统中，由于服务数量非常多，配置文件分散在不同的微服务项目中，管理不方便。为了方便配置文件集中管理，需要分布式配置中心组件。</p>
 <p>在Spring Cloud中，提供了Spring Cloud Config，它支持配置文件放在配置服务的本地，也支持放在远程Git仓库（GitHub、码云）。 使用Spring Cloud Config配置中心后的架构如下图：</p>
 <p><img src="/2021/01/25/Java/%E6%A1%86%E6%9E%B6/SpringCloud/SpringCloud%E5%85%A5%E9%97%A8/SpringCloud%E5%85%A5%E9%97%A8/4.1.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
