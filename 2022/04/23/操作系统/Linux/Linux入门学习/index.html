@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      17.9k 字
+      20.8k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      513
+      607
        分钟
     </span>
   
@@ -2689,6 +2689,26 @@
 <li>在 bash 中，变量默认类型都是字符串类型，无法直接进行数值运算。 </li>
 <li>变量的值如果有空格，需要使用双引号或单引号括起来。</li>
 </ul>
+<h4 id="变量升级"><a href="#变量升级" class="headerlink" title="变量升级"></a>变量升级</h4><p><strong>自定义的变量在切换用户和重启后就会失效</strong>，变量可以升级为<strong>全局生效</strong>和<strong>永久生效</strong>。</p>
+<ul>
+<li><p>全局生效，就是所有用户都可以使用。</p>
+<ul>
+<li><p>如果想要变量设置成全局变量，需要在定义完变量之后执行export命令升级，使用如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">ABC=123<br>export ABC<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>永久生效，就是变量重启之后依旧存在。</p>
+<ul>
+<li><p>如果想要将变量设置成永久变量，需要修改配置文件，如果想要该永久变量只对当前用户生效，则需要修改在用户家目录下的.bashrc文件，如果想要该永久变量对所有用户都生效，则可以修改/etc/environment和/etc/profile文件，在文件下面添加内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">export ABC=123<br></code></pre></td></tr></table></figure></li>
+<li><p>在修改文件后，重新启动系统后就会生效，但是如果想要该变量立即生效，则可以执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">source /root/.bashrc<br></code></pre></td></tr></table></figure>
+
+<p>如果修改的是其他的配置文件，则需要把上一条命令中的文件换成修改的配置文件</p>
+</li>
+</ul>
+</li>
+</ul>
 <h4 id="案例实操-62"><a href="#案例实操-62" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
 <li>定义变量 A</li>
 </ul>
@@ -2725,7 +2745,7 @@
 <li>可把变量提升为全局环境变量，可供其他 Shell 程序使用</li>
 </ul>
 <p><code>export 变量名</code></p>
-<h2 id="6-4-特殊变量"><a href="#6-4-特殊变量" class="headerlink" title="6.4 特殊变量"></a>6.4 特殊变量</h2><h3 id="6-4-1-n"><a href="#6-4-1-n" class="headerlink" title="6.4.1 $n"></a>6.4.1 $n</h3><h4 id="基本语法-63"><a href="#基本语法-63" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>$n</code>（功能描述：n 为数字，$0 代表该脚本名称，$1-$9 代表第一到第九个参数，十以上的参数，十以上的参数需要用大括号包含，如${10}）</p>
+<h2 id="6-4-特殊变量"><a href="#6-4-特殊变量" class="headerlink" title="6.4 特殊变量"></a>6.4 特殊变量</h2><h3 id="6-4-1-n"><a href="#6-4-1-n" class="headerlink" title="6.4.1 $n"></a>6.4.1 $n</h3><h4 id="基本语法-63"><a href="#基本语法-63" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>$n</code>（功能描述：n 为数字，**$0 代表该脚本名称**，$1-$9 代表第一到第九个参数，十以上的参数，十以上的参数需要用大括号包含，如${10}）</p>
 <h4 id="案例实操-63"><a href="#案例实操-63" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch parameter.sh<br>vim parameter.sh<br></code></pre></td></tr></table></figure>
 
 <p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726174040477.png" srcset="/img/loading.gif" lazyload alt="image-20220726174040477"></p>
@@ -2767,7 +2787,7 @@
 <p>expr表达式规则</p>
 <ul>
 <li>用空格隔开每个项</li>
-<li>用反斜杠 *<em>*</em> 放在 shell 特定的字符前面</li>
+<li>用反斜杠 \ 放在 shell 特定的字符前面</li>
 <li>对包含空格和其他特殊字符的字符串要用引号括起来</li>
 </ul>
 </blockquote>
@@ -2793,13 +2813,21 @@
 <p>如果是字符串之间的比较 ，用等号“=”判断相等；用“!=”判断不等。 </p>
 </blockquote>
 <ul>
-<li>按照文件权限进行判断<ul>
+<li><p>两个条件间判断</p>
+<ul>
+<li>-a表示与</li>
+<li>-o表示或 </li>
+</ul>
+</li>
+<li><p>按照文件权限进行判断</p>
+<ul>
 <li>-r 有读的权限（read）</li>
 <li>-w 有写的权限（write）</li>
 <li>-x 有执行的权限（execute）</li>
 </ul>
 </li>
-<li>按照文件类型进行判断<ul>
+<li><p>按照文件类型进行判断</p>
+<ul>
 <li>-e 文件存在（existence）</li>
 <li>-f 文件存在并且是一个常规的文件（file）</li>
 <li>-d 文件存在并且是一个目录（directory）</li>
@@ -2816,11 +2844,275 @@
 
 <p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726225826914.png" srcset="/img/loading.gif" lazyload alt="image-20220726225826914"></p>
 <ul>
-<li><p>多条件判断（&amp;&amp; 表示且，前一条命令执行成功时，才执行后一条命令，|| 表示或，上一条命令执行失败后，才执行下一条命令）</p>
+<li><p>多条件判断（&amp;&amp; 表示与，前一条命令执行成功时，才执行后一条命令，|| 表示或，上一条命令执行失败后，才执行下一条命令）</p>
 <p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726230145087.png" srcset="/img/loading.gif" lazyload alt="image-20220726230145087"></p>
 </li>
 </ul>
-<h2 id="6-7-流程控制"><a href="#6-7-流程控制" class="headerlink" title="6.7 流程控制"></a>6.7 流程控制</h2><h3 id="6-7-1-if-判断"><a href="#6-7-1-if-判断" class="headerlink" title="6.7.1 if 判断"></a>6.7.1 if 判断</h3><h4 id="基本语法-69"><a href="#基本语法-69" class="headerlink" title="基本语法"></a>基本语法</h4><hr>
+<h2 id="6-7-流程控制"><a href="#6-7-流程控制" class="headerlink" title="6.7 流程控制"></a>6.7 流程控制</h2><h3 id="6-7-1-if-判断"><a href="#6-7-1-if-判断" class="headerlink" title="6.7.1 if 判断"></a>6.7.1 if 判断</h3><h4 id="基本语法-69"><a href="#基本语法-69" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li>单分支</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">if [ 条件判断式 ];then<br>	程序<br>fi<br><br>或者<br><br>if [ 条件判断式 ]<br>then<br>	程序<br>fi<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>多分支</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">if [ 条件判断式 ]<br>then<br>	程序<br>elif [ 条件判断式 ]<br>then<br>	程序<br>else<br>	程序<br>fi<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<ul>
+<li>[ 条件判断式 ]，中括号和条件判断式之间必须有空格</li>
+<li>if 后要有空格</li>
+</ul>
+</blockquote>
+<h4 id="案例实操-69"><a href="#案例实操-69" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>输入一个数字，如果是 1，则输出 it is 1，如果是 2，则输出 it is 2，如果是其它，什么也不输出。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch if.sh<br>vim if.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><br>if [ $1 -eq 1 ]<br>then<br>	echo &quot;it is 1&quot;<br>elif [ $1 -eq 2 ]<br>then<br>	echo &quot;it is 2&quot;<br>fi<br>------------------------------------------------<br>chmod 777 if.sh <br>./if.sh 1<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727110319676.png" srcset="/img/loading.gif" lazyload alt="image-20220727110319676"></p>
+<h3 id="6-7-2-case-语句"><a href="#6-7-2-case-语句" class="headerlink" title="6.7.2 case 语句"></a>6.7.2 case 语句</h3><h4 id="基本语法-70"><a href="#基本语法-70" class="headerlink" title="基本语法"></a>基本语法</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">case $变量名 in<br>&quot; 值 1&quot; ）<br>	如果变量的值等于值 1，则执行程序 1<br>;;<br>&quot; 值 2&quot; ）<br>	如果变量的值等于值 2，则执行程序 2<br>;;<br>	…省略其他分支…<br>*）<br>	如果变量的值都不是以上的值，则执行此程序<br>;;<br>esac<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>注意事项：</p>
+<p>（1）case 行尾必须为单词“in”，每一个模式匹配必须以右括号“）”结束。</p>
+<p>（2）双分号“;;”表示命令序列结束，相当于 java 中的 break。</p>
+<p>（3）最后的“*）”表示默认模式，相当于 java 中的 default。</p>
+</blockquote>
+<h4 id="案例实操-70"><a href="#案例实操-70" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>输入一个数字，如果是 1，则输出 it is 1，如果是 2，则输出 it is 2，如果是其它，则输出 i do not know。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch case.sh<br>vim case.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br>case $1 in<br>&quot;1&quot; )<br>        echo &quot;it is 1&quot;<br>;;<br>&quot;2&quot; )<br>        echo &quot;it is 2&quot;<br>;;<br>*)<br>        echo &quot;i do not know&quot;<br>;;<br>esac<br>------------------------------------------------<br>chmod 777 case.sh <br>./case.sh 1<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727110156833.png" srcset="/img/loading.gif" lazyload alt="image-20220727110156833"></p>
+<h3 id="6-7-3-for-循环"><a href="#6-7-3-for-循环" class="headerlink" title="6.7.3 for 循环"></a>6.7.3 for 循环</h3><h4 id="基本语法-1"><a href="#基本语法-1" class="headerlink" title="基本语法 1"></a>基本语法 1</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">for (( 初始值;循环控制条件;变量变化 ))<br>do<br>	程序<br>done<br></code></pre></td></tr></table></figure>
+
+<h4 id="案例实操1"><a href="#案例实操1" class="headerlink" title="案例实操1"></a>案例实操1</h4><ul>
+<li>从 1 加到 100</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch for1.sh<br>vim for1.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><br>sum=0<br>for((i=1;i&lt;=$1;i++))<br>do<br>        sum=$[$sum+$i]<br>done<br>echo $sum<br>-----------------------------------------------<br>chmod 777 for1.sh<br>./for1.sh 100<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="基本语法-2"><a href="#基本语法-2" class="headerlink" title="基本语法 2"></a>基本语法 2</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">for 变量 in 值 1 值 2 值 3… <br>do<br>	程序<br>done<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="案例实操2"><a href="#案例实操2" class="headerlink" title="案例实操2"></a>案例实操2</h4><ul>
+<li>打印所有输入参数</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch for2.sh<br>vim for2.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br>for i in windowx linux macos<br>do<br>	echo &quot;system is $i&quot;<br>done<br>-----------------------------------------------<br>chmod 777 for2.sh<br>./for2.sh<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727113056776.png" srcset="/img/loading.gif" lazyload alt="image-20220727113056776"></p>
+<ul>
+<li><p>比较<code>$*</code>和<code>$@</code>区别</p>
+<p><code> $*</code>和<code>$@</code>都表示传递给函数或脚本的所有参数，不被双引号””包含时，都以$1 $2 …$n 的形式输出所有参数。</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch for3.sh<br>vim for3.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br>echo &#x27;=============$*=============&#x27;<br>for i in $* <br>do <br>	echo &quot;system is $i&quot;<br>done<br>echo &#x27;=============$@=============&#x27;<br>for j in $@<br>do<br>	echo &quot;system is $j&quot;<br>done<br>------------------------------------------------<br>chmod 777 for3.sh<br>./for3.sh windowx linux macos<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727142623380.png" srcset="/img/loading.gif" lazyload alt="image-20220727142623380"></p>
+<p>当它们被双引号””包含时，<code>$*</code>会将所有的参数作为一个整体，以“$1 $2 …$n”的形式输 出所有参数；<code>$@</code>会将各个参数分开，以“$1” “$2”…“$n”的形式输出所有参数。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch for4.sh<br>vim for4.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span> <br>echo &#x27;=============$*=============&#x27;<br>for i in &quot;$*&quot;<br><span class="hljs-meta">#</span><span class="bash">$*中的所有参数看成是一个整体，所以这个 <span class="hljs-keyword">for</span> 循环只会循环一次</span><br>do<br>        echo &quot;system is $i&quot;<br>done<br><br>echo &#x27;=============$@=============&#x27;<br>for j in &quot;$@&quot;<br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-variable">$@</span>中的每个参数都看成是独立的，所以“<span class="hljs-variable">$@</span>”中有几个参数，就会循环几次</span> <br>do<br>        echo &quot;system is $j&quot; <br>done<br>------------------------------------------------<br>chmod 777 for4.sh<br>./for4.sh windowx linux macos<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727143618867.png" srcset="/img/loading.gif" lazyload alt="image-20220727143618867"></p>
+<h3 id="6-7-4-while-循环"><a href="#6-7-4-while-循环" class="headerlink" title="6.7.4 while 循环"></a>6.7.4 while 循环</h3><h4 id="基本语法-71"><a href="#基本语法-71" class="headerlink" title="基本语法"></a>基本语法</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">while [ 条件判断式 ]<br>do<br>	程序<br>done<br></code></pre></td></tr></table></figure>
+
+<h4 id="案例实操-71"><a href="#案例实操-71" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>从 1 加到 100</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch while.sh<br>vim while.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br>sum=0<br>i=1<br>while [ $i -le 100 ]<br>do<br>	sum=$[$sum+$i]<br>    i=$[$i+1]<br>done<br><br>echo $sum<br>------------------------------------------------<br>chmod 777 while.sh<br>./while.sh<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-8-read-读取控制台输入"><a href="#6-8-read-读取控制台输入" class="headerlink" title="6.8 read 读取控制台输入"></a>6.8 read 读取控制台输入</h2><h4 id="基本语法-72"><a href="#基本语法-72" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>read (选项)(参数)</code> ：</p>
+<ul>
+<li><p>选项</p>
+<ul>
+<li>-p：指定读取值时的提示符；</li>
+<li>-t：指定读取值时等待的时间（秒）如果-t 不加表示一直等待</li>
+</ul>
+</li>
+<li><p>参数变量</p>
+<ul>
+<li>指定读取值的变量名</li>
+</ul>
+</li>
+</ul>
+<h4 id="案例实操-72"><a href="#案例实操-72" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>提示 7 秒内，读取控制台输入的名称</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch read.sh<br>vim read.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br><br>read -t 7 -p &quot;Enter your name in 7 seconds :&quot; NN<br>echo $NN<br>------------------------------------------------<br>chmod 777 read.sh<br>./read.sh<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727171800683.png" srcset="/img/loading.gif" lazyload alt="image-20220727171800683"></p>
+<h2 id="6-9-函数"><a href="#6-9-函数" class="headerlink" title="6.9 函数"></a>6.9 函数</h2><h3 id="6-9-1-系统函数"><a href="#6-9-1-系统函数" class="headerlink" title="6.9.1 系统函数"></a>6.9.1 系统函数</h3><h4 id="basename"><a href="#basename" class="headerlink" title="basename"></a>basename</h4><h5 id="基本语法-73"><a href="#基本语法-73" class="headerlink" title="基本语法"></a>基本语法</h5><ul>
+<li><code>basename [string / pathname] [suffix]</code></li>
+</ul>
+<p>功能描述：basename命令会删掉所有的前缀包括最后一个（‘/’）字符，然后将字符串显示出来。</p>
+<p><strong>basename 可以理解为取路径里的文件名称</strong></p>
+<ul>
+<li>选项<ul>
+<li>suffix 为后缀，如果 suffix 被指定了，basename 会将 pathname 或 string 中的 suffix 去掉。</li>
+</ul>
+</li>
+</ul>
+<h5 id="案例实操-73"><a href="#案例实操-73" class="headerlink" title="案例实操"></a>案例实操</h5><ul>
+<li>截取/root/mySh/for1.sh路径的文件名称 </li>
+</ul>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727173225686.png" srcset="/img/loading.gif" lazyload alt="image-20220727173225686"></p>
+<h4 id="dirname"><a href="#dirname" class="headerlink" title="dirname"></a>dirname</h4><h5 id="基本语法-74"><a href="#基本语法-74" class="headerlink" title="基本语法"></a>基本语法</h5><ul>
+<li><code>dirname 文件路径</code></li>
+</ul>
+<p>功能描述：从给定的包含路径的文件名中去除文件名 （非目录的部分），然后返回剩下的路径（目录的部分）</p>
+<p><strong>dirname 可以理解为取文件的路径</strong></p>
+<h5 id="案例实操-74"><a href="#案例实操-74" class="headerlink" title="案例实操"></a>案例实操</h5><p>获取./for1.sh文件的路径。</p>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727175640041.png" srcset="/img/loading.gif" lazyload alt="image-20220727175640041"></p>
+<h3 id="6-9-2-自定义函数"><a href="#6-9-2-自定义函数" class="headerlink" title="6.9.2 自定义函数"></a>6.9.2 自定义函数</h3><h4 id="基本语法-75"><a href="#基本语法-75" class="headerlink" title="基本语法"></a>基本语法</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">[ function ] funname[()]<br>&#123;<br>	Action;<br>	[return int;]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="经验技巧-14"><a href="#经验技巧-14" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li><p>必须在调用函数地方之前，先声明函数，shell 脚本是逐行运行。不会像其它语言一样先编译。</p>
+</li>
+<li><p>函数返回值，只能通过$?系统变量获得，可以显示地增加return 返回，如果不加，将以最后一条命令运行结果，作为返回值。<strong>return 后跟数值 n(范围0-255)</strong> </p>
+</li>
+</ul>
+<h4 id="案例实操-75"><a href="#案例实操-75" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>计算两个输入参数的和。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch fun_test.sh<br>vim fun_test.sh<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">!/bin/bash</span><br>function sum()&#123;<br>	s=0<br>	s=$[$1+$2]<br>	echo &quot;$s&quot; <br>&#125;<br><br>read -p &quot;Please input the number1: &quot; n1; <br>read -p &quot;Please input the number2: &quot; n2;<br>sum $n1 $n2;<br><br>------------------------------------------------<br>chmod 777 fun_test.sh<br>./fun_test.sh<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220728142923900.png" srcset="/img/loading.gif" lazyload alt="image-20220728142923900"></p>
+<h2 id="6-10-正则表达式"><a href="#6-10-正则表达式" class="headerlink" title="6.10 正则表达式"></a>6.10 正则表达式</h2><p>正则表达式使用单个字符串来描述、匹配一系列符合某个语法规则的字符串。</p>
+<p>在很多文本编辑器里，正则表达式通常被用来检索、替换那些符合某个模式的文本。</p>
+<p>在 Linux 中，grep， sed，awk 等文本处理工具都支持通过正则表达式进行模式匹配。</p>
+<h3 id="6-10-1-常规匹配"><a href="#6-10-1-常规匹配" class="headerlink" title="6.10.1 常规匹配"></a>6.10.1 常规匹配</h3><p>一串不包含特殊字符的正则表达式匹配它自己，例如：</p>
+<p><code>cat /etc/passwd | grep gotcha</code></p>
+<p>就会匹配所有包含 gotcha 的行。</p>
+<h3 id="6-10-2-常用特殊字符"><a href="#6-10-2-常用特殊字符" class="headerlink" title="6.10.2 常用特殊字符"></a>6.10.2 常用特殊字符</h3><h4 id="特殊字符："><a href="#特殊字符：" class="headerlink" title="特殊字符：^"></a>特殊字符：^</h4><ul>
+<li>^ 匹配一行的开头，例如：</li>
+</ul>
+<p><code>cat /etc/passwd | grep ^a</code>会匹配出所有以 a 开头的行</p>
+<h4 id="特殊字符：-1"><a href="#特殊字符：-1" class="headerlink" title="特殊字符：$"></a>特殊字符：$</h4><ul>
+<li>$ 匹配一行的结束，例如</li>
+</ul>
+<p><code>cat /etc/passwd | grep t$</code></p>
+<p>会匹配出所有以 t 结尾的行</p>
+<blockquote>
+<p>^$ 匹配空</p>
+</blockquote>
+<h4 id="特殊字符：-2"><a href="#特殊字符：-2" class="headerlink" title="特殊字符：."></a>特殊字符：.</h4><ul>
+<li>. 匹配一个任意的字符，例如</li>
+</ul>
+<p><code>cat /etc/passwd | grep r..t</code></p>
+<p>会匹配包含 rabt,rbbt,rxdt,root 等的所有行</p>
+<h4 id="特殊字符：-3"><a href="#特殊字符：-3" class="headerlink" title="特殊字符：*"></a>特殊字符：*</h4><ul>
+<li>不单独使用，它和上一个字符连用，表示匹配上一个字符 0 次或多次，例如</li>
+</ul>
+<p><code>cat /etc/passwd | grep ro*t</code></p>
+<p>会匹配 rt, rot, root, rooot, roooot 等所有行</p>
+<blockquote>
+<p>.* 匹配任意字符出现任意次，比如要找一行r开t结尾的，使用^r.*t$即可</p>
+</blockquote>
+<h4 id="字符区间（中括号）："><a href="#字符区间（中括号）：" class="headerlink" title="字符区间（中括号）：[ ]"></a>字符区间（中括号）：[ ]</h4><p>[ ] 表示匹配某个范围内的一个字符，例如 </p>
+<p>[6,8]——匹配 6 或者 8 </p>
+<p>[0-9]——匹配一个 0-9 的数字 </p>
+<p>[0-9]*——匹配任意长度的数字字符串 </p>
+<p>[a-z]——匹配一个 a-z 之间的字符 </p>
+<p>[a-z]* ——匹配任意长度的字母字符串</p>
+<p>[a-c, e-f]——匹配 a-c 或者 e-f 之间的任意字符</p>
+<p><code>cat /etc/passwd | grep r[a,b,c]*t</code></p>
+<p>会匹配 rt,rat, rbt, rabt, rbact,rabccbaaacbt 等等所有行</p>
+<h4 id="特殊字符：-4"><a href="#特殊字符：-4" class="headerlink" title="特殊字符：\"></a>特殊字符：\</h4><p>\ 表示转义，并不会单独使用。由于所有特殊字符都有其特定匹配模式，当想匹配某一特殊字符本身时（例如，想找出所有包含 ‘$’ 的行），就会碰到困难。此时就要将转义字符和特殊字符连用，来表示特殊字符本身，例如</p>
+<p><code>cat /etc/passwd | grep ‘a\$b’</code></p>
+<p>会匹配所有包含 a$b 的行。注意需要使用单引号将表达式引起来。</p>
+<h2 id="6-11文本处理工具"><a href="#6-11文本处理工具" class="headerlink" title="6.11文本处理工具"></a>6.11文本处理工具</h2><h3 id="6-11-1-cut"><a href="#6-11-1-cut" class="headerlink" title="6.11.1 cut"></a>6.11.1 cut</h3><p>cut 的工作就是“剪”，是在文件中负责剪切数据用的。</p>
+<p>cut 命令从文件的每一行剪切字节、字符和字段并将这些字节、字符和字段输出。</p>
+<h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><p><code>cut [选项参数] filename</code></p>
+<p>说明：默认分隔符是制表符</p>
+<h4 id="选项参数"><a href="#选项参数" class="headerlink" title="选项参数"></a>选项参数</h4><table>
+<thead>
+<tr>
+<th>选项参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-f</td>
+<td>列号，提取第几列</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>分隔符，按照指定分隔符分割列，默认是制表符“\t”</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>按字符进行切割 后加加 n 表示取第几列比如 -c 1</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-76"><a href="#案例实操-76" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">数据准备</span><br><br>touch cut.txt<br>vim cut.txt<br>------------------------------------------------<br>dong shen<br>guan zhen<br>wo wo<br>lai lai<br>le le<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">切割 cut.txt 第一列</span><br><br>cut -d &quot; &quot; -f 1 cut.txt<br>------------------------------------------------<br>dong<br>guan<br>wo<br>lai<br>le<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">切割 cut.txt 第二、三列</span><br><br>cut -d &quot; &quot; -f 2,3 cut.txt<br>------------------------------------------------<br>shen<br>zhen<br> wo<br> lai<br> le<br>------------------------------------------------<br><span class="hljs-meta">#</span><span class="bash">在 cut.txt 文件中切割出 guan</span><br>cat cut.txt |grep guan | cut -d &quot; &quot; -f 1<br>------------------------------------------------<br>guan<br>------------------------------------------------<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">选取系统 PATH 变量值，第 2 个“：”开始后的所有路径：</span><br>echo $PATH | cut -d &quot;:&quot; -f 3-<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">切割 ifconfig 后打印的 IP 地址</span><br>ifconfig eth0 | grep netmask | cut -d &quot; &quot; -f 10<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-11-2-awk"><a href="#6-11-2-awk" class="headerlink" title="6.11.2 awk"></a>6.11.2 awk</h3><p>awk是一个强大的文本分析工具，把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行分析处理。</p>
+<h4 id="基本用法-1"><a href="#基本用法-1" class="headerlink" title="基本用法"></a>基本用法</h4><p><code>awk [选项参数] ‘/pattern1/&#123;action1&#125; /pattern2/&#123;action2&#125;...’ filename</code></p>
+<ul>
+<li><p>pattern：表示 awk 在数据中查找的内容，就是匹配模式</p>
+</li>
+<li><p>action：在找到匹配内容时所执行的一系列命令</p>
+</li>
+</ul>
+<blockquote>
+<p>只有匹配了 pattern 的行才会执行 action。</p>
+</blockquote>
+<h4 id="选项参数-1"><a href="#选项参数-1" class="headerlink" title="选项参数"></a>选项参数</h4><table>
+<thead>
+<tr>
+<th>选项参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-F</td>
+<td>指定输入文件分隔符</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>赋值一个用户定义变量</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-77"><a href="#案例实操-77" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">数据准备</span><br>sudo cp /etc/passwd ./<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">搜索 passwd 文件以 root 关键字开头的所有行，并输出该行的第 7 列。</span><br>awk -F : &#x27;/^root/&#123;print $7&#125;&#x27; passwd<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">搜索 passwd 文件以 root 关键字开头的所有行，并输出该行的第 1 列和第 7 列， 中间以“，”号分割。</span><br>awk -F : &#x27;/^root/&#123;print $1&quot;,&quot;$7&#125;&#x27; passwd<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">只显示/etc/passwd 的第一列和第七列，以逗号分割，且在所有行前面添加列名 user， shell 在最后一行添加<span class="hljs-string">&quot;dahaige，/bin/zuishuai&quot;</span>。</span><br>awk -F : &#x27;BEGIN&#123;print &quot;user, shell&quot;&#125; &#123;print $1&quot;,&quot;$7&#125; END&#123;print &quot;dahaige,/bin/zuishuai&quot;&#125;&#x27; passwd<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">将 passwd 文件中的用户 id 增加数值 1 并输出</span><br>awk -v i=1 -F : &#x27;&#123;print $3+i&#125;&#x27; passwd<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>BEGIN 在所有数据读取行之前执行；END 在所有数据执行之后执行</p>
+</blockquote>
+<p><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220729163954422.png" srcset="/img/loading.gif" lazyload alt="image-20220729163954422"></p>
+<h4 id="awk-内置变量"><a href="#awk-内置变量" class="headerlink" title="awk 内置变量"></a>awk 内置变量</h4><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FILENAME</td>
+<td>文件名</td>
+</tr>
+<tr>
+<td>NR</td>
+<td>已读的记录数（行号）</td>
+</tr>
+<tr>
+<td>NF</td>
+<td>浏览记录的域的个数（切割后，列的个数）</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-78"><a href="#案例实操-78" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">统计 passwd 文件名，每行的行号，每行的列数</span><br>awk -F : &#x27;&#123;print &quot;filename:&quot; FILENAME NR &quot;,col:&quot;NF&#125;&#x27; passwd<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">查询 ifconfig 命令输出结果中的空行所在的行号</span><br>ifconfig | awk &#x27;/^$/&#123;print NR&#125;&#x27;<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">切割 IP</span><br>ifconfig eth0 | awk &#x27;/netmask/ &#123;print $2&#125;&#x27;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
 <h1 id="十、其他知识"><a href="#十、其他知识" class="headerlink" title="十、其他知识"></a>十、其他知识</h1><h2 id="10-1-inode索引节点"><a href="#10-1-inode索引节点" class="headerlink" title="10.1 inode索引节点"></a>10.1 inode索引节点</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>理解inode，要从文件储存说起。文件储存在硬盘上，硬盘的最小存储单位叫做”扇区”（Sector）。每个扇区储存512字节（相当于0.5KB）。</p>
 <p>操作系统读取硬盘的时候，不会一个个扇区地读取，这样效率太低，而是一次性连续读取多个扇区，即<strong>一次性读取一个”块”（block）</strong>。这种由多个扇区组成的”块”，是文件存取的最小单位。”块”的大小，最常见的是4KB，即连续八个 sector组成一个 block。</p>
 <p>文件数据都储存在”块”中，那么很显然，我们还必须找到一个地方储存文件的元信息，比如文件的创建者、文件的创建日期、文件的大小等等。这种储存文件元信息的区域就叫做inode，中文译名为”索引节点”。inode的内容（inode是一个结构体）</p>
