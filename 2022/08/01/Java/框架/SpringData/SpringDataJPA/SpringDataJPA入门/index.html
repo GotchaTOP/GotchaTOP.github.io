@@ -1,0 +1,975 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="懂一点点">
+  <meta name="author" content="Gotcha">
+  <meta name="keywords" content="">
+  
+  <title>SpringDataJPA入门 - Gotcha的笔记总结</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"cd190160b5401a029cee361d013e32a1","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"U8yaiFQ2fUef4ujWTig83mSL-gzGzoHsz","app_key":"akCMytdeJqrMuKP84F4oblqz","server_url":"https://u8yaifq2.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Gotcha的笔记总结</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background/01.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="SpringDataJPA入门">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-08-01 00:00" pubdate>
+        2022年8月1日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      9.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      330
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">SpringDataJPA入门</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年8月3日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="一、JPA"><a href="#一、JPA" class="headerlink" title="一、JPA"></a>一、JPA</h1><h2 id="1-1-JPA概述"><a href="#1-1-JPA概述" class="headerlink" title="1.1 JPA概述"></a>1.1 JPA概述</h2><p>JPA的全称是Java Persistence API， 即Java 持久化API，是SUN公司推出的一套基于ORM的规范，内部是由一系列的接口和抽象类构成。</p>
+<p>JPA通过JDK 5.0注解描述对象－关系表的映射关系，并将运行期的实体对象持久化到数据库中。</p>
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220801112646064.png" srcset="/img/loading.gif" lazyload alt="image-20220801112646064"></p>
+<h2 id="1-2-JPA与JDBC"><a href="#1-2-JPA与JDBC" class="headerlink" title="1.2 JPA与JDBC"></a>1.2 JPA与JDBC</h2><ul>
+<li>相同点<ul>
+<li>都与数据库操作有关</li>
+<li>JPA与JDBC都是一组由SUN官方推出的规范接口</li>
+</ul>
+</li>
+<li>不同点<ul>
+<li>JDBC是由各个关系型数据库实现，JPA是由ORM框架实现</li>
+<li>JDBC使用SQL语句和数据库通信，JPA采用面向对象方式，通过ORM框架生成SQL，进行操作。</li>
+<li>JPA在JDBC之上，依赖于JDBC操作数据库。</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-3-JPA与Hibernate"><a href="#1-3-JPA与Hibernate" class="headerlink" title="1.3 JPA与Hibernate"></a>1.3 JPA与Hibernate</h2><p>JPA规范本质上就是一种ORM规范，而不是ORM框架——因为JPA并未提供ORM实现，它只是制订了一些规范，提供了一些编程的API接口，但具体实现则由服务厂商来提供实现。</p>
+<p>JPA和Hibernate的关系就像JDBC和JDBC驱动的关系，JPA是规范，Hibernate除了作为ORM框架之外，它也是一种JPA实现。</p>
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220801133806687.png" srcset="/img/loading.gif" lazyload alt="image-20220801133806687"></p>
+<h2 id="1-4-通过JPA操作数据"><a href="#1-4-通过JPA操作数据" class="headerlink" title="1.4 通过JPA操作数据"></a>1.4 通过JPA操作数据</h2><ul>
+<li>创建maven工程，依赖如下</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.13<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!--hibernate对jpa的支持--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.hibernate<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hibernate-entitymanager<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.4.32.Final<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>8.0.18<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- log日志 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>log4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>log4j<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.17<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.18.18<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>建立实体类<a id="customer"></a>Customer</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> top.igotcha.jpaHibernate.entity;<br><br><span class="hljs-keyword">import</span> lombok.Getter;<br><span class="hljs-keyword">import</span> lombok.Setter;<br><span class="hljs-keyword">import</span> javax.persistence.*;<br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 客户的实体类</span><br><span class="hljs-comment"> *      配置映射关系</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *   1.实体类和表的映射关系</span><br><span class="hljs-comment"> *      <span class="hljs-doctag">@Entity</span>:声明实体类</span><br><span class="hljs-comment"> *      <span class="hljs-doctag">@Table</span> : 配置实体类和表的映射关系</span><br><span class="hljs-comment"> *          name : 配置数据库表的名称</span><br><span class="hljs-comment"> *   2.实体类中属性和表中字段的映射关系</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;gotcha_customer&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Customer</span> </span>&#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@Id</span>：声明主键的配置</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@GeneratedValue</span>:配置主键的生成策略</span><br><span class="hljs-comment">     *      strategy</span><br><span class="hljs-comment">     *          GenerationType.IDENTITY ：自增，mysql</span><br><span class="hljs-comment">     *                 * 底层数据库必须支持自动增长（底层数据库支持的自动增长方式，对id自增）</span><br><span class="hljs-comment">     *          GenerationType.SEQUENCE : 序列，oracle</span><br><span class="hljs-comment">     *                  * 底层数据库必须支持序列</span><br><span class="hljs-comment">     *          GenerationType.TABLE : jpa提供的一种机制，通过一张数据库表的形式帮助我们完成主键自增</span><br><span class="hljs-comment">     *          GenerationType.AUTO ： 由程序自动的帮助我们选择主键生成策略</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@Column</span>:配置属性和字段的映射关系</span><br><span class="hljs-comment">     *      name：数据库表中字段的名称</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-meta">@Column(name = &quot;cust_id&quot;)</span><br>    <span class="hljs-keyword">private</span> Long custId; <span class="hljs-comment">//客户的主键</span><br><br>    <span class="hljs-meta">@Column(name = &quot;cust_name&quot;)</span><br>    <span class="hljs-keyword">private</span> String custName;<span class="hljs-comment">//客户名称</span><br><br>    <span class="hljs-meta">@Column(name=&quot;cust_source&quot;)</span><br>    <span class="hljs-keyword">private</span> String custSource;<span class="hljs-comment">//客户来源</span><br><br>    <span class="hljs-meta">@Column(name=&quot;cust_level&quot;)</span><br>    <span class="hljs-keyword">private</span> String custLevel;<span class="hljs-comment">//客户级别</span><br><br>    <span class="hljs-meta">@Column(name=&quot;cust_industry&quot;)</span><br>    <span class="hljs-keyword">private</span> String custIndustry;<span class="hljs-comment">//客户所属行业</span><br><br>    <span class="hljs-meta">@Column(name=&quot;cust_phone&quot;)</span><br>    <span class="hljs-keyword">private</span> String custPhone;<span class="hljs-comment">//客户的联系方式</span><br><br>    <span class="hljs-meta">@Column(name=&quot;cust_address&quot;)</span><br>    <span class="hljs-keyword">private</span> String custAddress;<span class="hljs-comment">//客户地址</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在resouces文件夹下建立META-INF文件夹，建立persistence.xml配置文件</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">persistence</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://java.sun.com/xml/ns/persistence&quot;</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;2.0&quot;</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--需要配置persistence-unit节点</span><br><span class="hljs-comment">        持久化单元：</span><br><span class="hljs-comment">            name：持久化单元名称</span><br><span class="hljs-comment">            transaction-type：事务管理的方式</span><br><span class="hljs-comment">                    JTA：分布式事务管理</span><br><span class="hljs-comment">                    RESOURCE_LOCAL：本地事务管理</span><br><span class="hljs-comment">    --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">persistence-unit</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;myJpa&quot;</span> <span class="hljs-attr">transaction-type</span>=<span class="hljs-string">&quot;RESOURCE_LOCAL&quot;</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--jpa的实现方式 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">provider</span>&gt;</span>org.hibernate.jpa.HibernatePersistenceProvider<span class="hljs-tag">&lt;/<span class="hljs-name">provider</span>&gt;</span><br><br>        <span class="hljs-comment">&lt;!--可选配置：配置jpa实现方的配置信息--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span><br>            <span class="hljs-comment">&lt;!-- 数据库信息</span><br><span class="hljs-comment">                用户名，javax.persistence.jdbc.user</span><br><span class="hljs-comment">                密码，  javax.persistence.jdbc.password</span><br><span class="hljs-comment">                驱动，  javax.persistence.jdbc.driver</span><br><span class="hljs-comment">                数据库地址   javax.persistence.jdbc.url</span><br><span class="hljs-comment">            --&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;javax.persistence.jdbc.user&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;root&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;javax.persistence.jdbc.password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;XXXXX&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;javax.persistence.jdbc.driver&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;javax.persistence.jdbc.url&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot; jdbc:mysql://localhost:3306/XXX?characterEncoding=UTF-8&quot;</span>/&gt;</span><br><br>            <span class="hljs-comment">&lt;!--配置jpa实现方(hibernate)的配置信息</span><br><span class="hljs-comment">                显示sql           ：   false|true</span><br><span class="hljs-comment">                自动创建数据库表    ：  hibernate.hbm2ddl.auto</span><br><span class="hljs-comment">                        create      : 程序运行时创建数据库表（如果有表，先删除表再创建）</span><br><span class="hljs-comment">                        update      ：程序运行时创建表（如果有表，不会创建表）</span><br><span class="hljs-comment">                        none        ：不会创建表</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">            --&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;hibernate.show_sql&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;hibernate.hbm2ddl.auto&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;update&quot;</span> /&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">persistence-unit</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">persistence</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>测试保存数据功能</li>
+</ul>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs n1ql">JPA的操作步骤<br>		1.加载配置文件创建实体管理器工厂<br>			Persisitence：静态方法（根据持久化单元名称创建实体管理器工厂）<br>				createEntityMnagerFactory（持久化单元名称）<br>			作用：创建实体管理器工厂<br>			<br>		2.根据实体管理器工厂，创建实体管理器<br>			EntityManagerFactory ：获取EntityManager对象<br>			方法：createEntityManager<br>			* 内部维护的很多的内容<br>				内部维护了数据库信息，<br>				维护了缓存信息<br>				维护了所有的实体管理器对象<br>				再创建EntityManagerFactory的过程中会根据配置创建数据库表<br>			* EntityManagerFactory的创建过程比较浪费资源<br>			特点：线程安全的对象<br>				多个线程访问同一个EntityManagerFactory不会有线程安全问题<br>			* 如何解决EntityManagerFactory的创建过程浪费资源（耗时）的问题？<br>			思路：创建一个公共的EntityManagerFactory的对象<br>			* 静态代码块的形式创建EntityManagerFactory<br>			<br>		3.创建事务对象，开启事务<br>			EntityManager对象：实体类管理器<br>				beginTransaction : 创建事务对象<br>				presist ： 保存<br>				<span class="hljs-keyword">merge</span>  ： 更新<br>				remove ： 删除<br>				find/getRefrence ： 根据id查询<br>				<br>			<span class="hljs-keyword">Transaction</span> 对象 ： 事务<br>				<span class="hljs-keyword">begin</span>：开启事务<br>				<span class="hljs-keyword">commit</span>：提交事务<br>				<span class="hljs-keyword">rollback</span>：回滚<br>		<span class="hljs-number">4.</span>增删改查操作<br>		<span class="hljs-number">5.</span>提交事务<br>		<span class="hljs-number">6.</span>释放资源<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 测试jpa的保存</span><br><span class="hljs-comment"> *      案例：保存一个客户到数据库中</span><br><span class="hljs-comment"> *  Jpa的操作步骤</span><br><span class="hljs-comment"> *     1.加载配置文件创建工厂（实体管理器工厂）对象</span><br><span class="hljs-comment"> *     2.通过实体管理器工厂获取实体管理器</span><br><span class="hljs-comment"> *     3.获取事务对象，开启事务</span><br><span class="hljs-comment"> *     4.完成增删改查操作</span><br><span class="hljs-comment"> *     5.提交事务（回滚事务）</span><br><span class="hljs-comment"> *     6.释放资源</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSave</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//1.加载配置文件创建工厂（实体管理器工厂）对象</span><br>    EntityManagerFactory factory = Persistence.createEntityManagerFactory(<span class="hljs-string">&quot;myJpa&quot;</span>);<br>    <span class="hljs-comment">//2.通过实体管理器工厂获取实体管理器</span><br>    EntityManager em = factory.createEntityManager();<br>    <span class="hljs-comment">//3.获取事务对象，开启事务</span><br>    EntityTransaction tx = em.getTransaction(); <span class="hljs-comment">//获取事务对象</span><br>    tx.begin();<span class="hljs-comment">//开启事务</span><br>    <span class="hljs-comment">//4.完成增删改查操作：保存一个客户到数据库中</span><br>    Customer customer = <span class="hljs-keyword">new</span> Customer();<br>    customer.setCustName(<span class="hljs-string">&quot;gotcha&quot;</span>);<br>    customer.setCustIndustry(<span class="hljs-string">&quot;IT&quot;</span>);<br>    <span class="hljs-comment">//保存，</span><br>    em.persist(customer); <span class="hljs-comment">//保存操作</span><br>    <span class="hljs-comment">//5.提交事务</span><br>    tx.commit();<br>    <span class="hljs-comment">//6.释放资源</span><br>    em.close();<br>    factory.close();<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220801154854584.png" srcset="/img/loading.gif" lazyload alt="image-20220801154854584"><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220801154907428.png" srcset="/img/loading.gif" lazyload alt="image-20220801154907428"></p>
+<h2 id="1-5-JPQL"><a href="#1-5-JPQL" class="headerlink" title="1.5 JPQL"></a>1.5 JPQL</h2><p>JPQL全称Java Persistence Query Language，Java持久化查询语言。</p>
+<p>JPQL基于首次在EJB2.0中引入的EJB查询语言(EJB QL)，是一种可移植的查询语言，旨在以面向对象表达式语言的表达式，将SQL语法和简单查询语义绑定在一起。使用这种语言编写的查询是可移植的，可以被编译成所有主流数据库服务器上的SQL。 </p>
+<p>其特征与原生SQL语句类似，并且完全面向对象，通过类名和属性访问，而不是表名和表的属性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">JpqlTest</span> </span>&#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 查询全部</span><br><span class="hljs-comment">     *      jqpl：from top.igotcha.entity.Customer</span><br><span class="hljs-comment">     *      sql：SELECT * FROM gotcha_customer</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testFindAll</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-comment">//1.获取entityManager对象</span><br>        EntityManager em = JpaUtils.getEntityManager();<br>        <span class="hljs-comment">//2.开启事务</span><br>        EntityTransaction tx = em.getTransaction();<br>        tx.begin();<br>        <span class="hljs-comment">//3.查询全部</span><br>        String jpql = <span class="hljs-string">&quot;from Customer &quot;</span>;<br>        Query query = em.createQuery(jpql);<span class="hljs-comment">//创建Query查询对象，query对象才是执行jqpl的对象</span><br><br>        <span class="hljs-comment">//发送查询，并封装结果集</span><br>        List list = query.getResultList();<br><br>        <span class="hljs-keyword">for</span> (Object obj : list) &#123;<br>            System.out.print(obj);<br>        &#125;<br><br>        <span class="hljs-comment">//4.提交事务</span><br>        tx.commit();<br>        <span class="hljs-comment">//5.释放资源</span><br>        em.close();<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 排序查询： 倒序查询全部客户（根据id倒序）</span><br><span class="hljs-comment">     *      sql：SELECT * FROM gotcha_customer ORDER BY cust_id DESC</span><br><span class="hljs-comment">     *      jpql：from Customer order by custId desc</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * 进行jpql查询</span><br><span class="hljs-comment">     *      1.创建query查询对象</span><br><span class="hljs-comment">     *      2.对参数进行赋值</span><br><span class="hljs-comment">     *      3.查询，并得到返回结果</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testOrders</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-comment">//1.获取entityManager对象</span><br>        EntityManager em = JpaUtils.getEntityManager();<br>        <span class="hljs-comment">//2.开启事务</span><br>        EntityTransaction tx = em.getTransaction();<br>        tx.begin();<br>        <span class="hljs-comment">//3.查询全部</span><br>        String jpql = <span class="hljs-string">&quot;from Customer order by custId desc&quot;</span>;<br>        Query query = em.createQuery(jpql);<span class="hljs-comment">//创建Query查询对象，query对象才是执行jqpl的对象</span><br><br>        <span class="hljs-comment">//发送查询，并封装结果集</span><br>        List list = query.getResultList();<br><br>        <span class="hljs-keyword">for</span> (Object obj : list) &#123;<br>            System.out.println(obj);<br>        &#125;<br><br>        <span class="hljs-comment">//4.提交事务</span><br>        tx.commit();<br>        <span class="hljs-comment">//5.释放资源</span><br>        em.close();<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 使用jpql查询，统计客户的总数</span><br><span class="hljs-comment">     *      sql：SELECT COUNT(cust_id) FROM gotcha_customer</span><br><span class="hljs-comment">     *      jpql：select count(custId) from Customer</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testCount</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-comment">//1.获取entityManager对象</span><br>        EntityManager em = JpaUtils.getEntityManager();<br>        <span class="hljs-comment">//2.开启事务</span><br>        EntityTransaction tx = em.getTransaction();<br>        tx.begin();<br>        <span class="hljs-comment">//3.查询全部</span><br>        <span class="hljs-comment">//i.根据jpql语句创建Query查询对象</span><br>        String jpql = <span class="hljs-string">&quot;select count(custId) from Customer&quot;</span>;<br>        Query query = em.createQuery(jpql);<br>        <span class="hljs-comment">//ii.对参数赋值</span><br>        <span class="hljs-comment">//iii.发送查询，并封装结果</span><br><br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * getResultList ： 直接将查询结果封装为list集合</span><br><span class="hljs-comment">         * getSingleResult : 得到唯一的结果集</span><br><span class="hljs-comment">         */</span><br>        Object result = query.getSingleResult();<br><br>        System.out.println(result);<br><br>        <span class="hljs-comment">//4.提交事务</span><br>        tx.commit();<br>        <span class="hljs-comment">//5.释放资源</span><br>        em.close();<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 分页查询</span><br><span class="hljs-comment">     *      sql：select * from gotcha_customer limit 0,2</span><br><span class="hljs-comment">     *      jqpl : from Customer</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testPaged</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-comment">//1.获取entityManager对象</span><br>        EntityManager em = JpaUtils.getEntityManager();<br>        <span class="hljs-comment">//2.开启事务</span><br>        EntityTransaction tx = em.getTransaction();<br>        tx.begin();<br>        <span class="hljs-comment">//3.查询全部</span><br>        <span class="hljs-comment">//i.根据jpql语句创建Query查询对象</span><br>        String jpql = <span class="hljs-string">&quot;from Customer&quot;</span>;<br>        Query query = em.createQuery(jpql);<br>        <span class="hljs-comment">//ii.对参数赋值 -- 分页参数</span><br>        <span class="hljs-comment">//起始索引</span><br>        query.setFirstResult(<span class="hljs-number">0</span>);<br>        <span class="hljs-comment">//每页查询的条数</span><br>        query.setMaxResults(<span class="hljs-number">2</span>);<br><br>        <span class="hljs-comment">//iii.发送查询，并封装结果</span><br><br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * getResultList ： 直接将查询结果封装为list集合</span><br><span class="hljs-comment">         * getSingleResult : 得到唯一的结果集</span><br><span class="hljs-comment">         */</span><br>        List list = query.getResultList();<br><br>        <span class="hljs-keyword">for</span>(Object obj : list) &#123;<br>            System.out.println(obj);<br>        &#125;<br><br>        <span class="hljs-comment">//4.提交事务</span><br>        tx.commit();<br>        <span class="hljs-comment">//5.释放资源</span><br>        em.close();<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 条件查询</span><br><span class="hljs-comment">     *     案例：查询客户名称以‘g’开头的客户</span><br><span class="hljs-comment">     *          sql：SELECT * FROM gotcha_customer WHERE cust_name LIKE  ?</span><br><span class="hljs-comment">     *          jpql : from Customer where custName like ?</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testCondition</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-comment">//1.获取entityManager对象</span><br>        EntityManager em = JpaUtils.getEntityManager();<br>        <span class="hljs-comment">//2.开启事务</span><br>        EntityTransaction tx = em.getTransaction();<br>        tx.begin();<br>        <span class="hljs-comment">//3.查询全部</span><br>        <span class="hljs-comment">//i.根据jpql语句创建Query查询对象</span><br>        String jpql = <span class="hljs-string">&quot;from Customer where custName like ?1 &quot;</span>;<br>        Query query = em.createQuery(jpql);<br>        <span class="hljs-comment">//ii.对参数赋值 -- 占位符参数</span><br>        <span class="hljs-comment">//第一个参数：占位符的索引位置（从1开始），第二个参数：取值</span><br>        query.setParameter(<span class="hljs-number">1</span>,<span class="hljs-string">&quot;g%&quot;</span>);<br><br>        <span class="hljs-comment">//iii.发送查询，并封装结果</span><br><br>        <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * getResultList ： 直接将查询结果封装为list集合</span><br><span class="hljs-comment">         * getSingleResult : 得到唯一的结果集</span><br><span class="hljs-comment">         */</span><br>        List list = query.getResultList();<br><br>        <span class="hljs-keyword">for</span>(Object obj : list) &#123;<br>            System.out.println(obj);<br>        &#125;<br><br>        <span class="hljs-comment">//4.提交事务</span><br>        tx.commit();<br>        <span class="hljs-comment">//5.释放资源</span><br>        em.close();<br>    &#125;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="二、SpringDataJPA"><a href="#二、SpringDataJPA" class="headerlink" title="二、SpringDataJPA"></a>二、SpringDataJPA</h1><h2 id="2-1-SpringData概述"><a href="#2-1-SpringData概述" class="headerlink" title="2.1 SpringData概述"></a>2.1 SpringData概述</h2><p>Spring Data是Spring 的一个子项目。用于简化数据库访问，支持NoSQL和关系数据存储。</p>
+<p>其主要目标是使数据库的访问变得方便快捷。SpringData 项目所支持 NoSQL 存储：MongoDB （文档数据库）Neo4j（图形数据库）Redis（键/值存储）Hbase（列族数据库）SpringData 项目所支持的关系数据存储技术：JDBC、JPA。</p>
+<h2 id="2-2-SpringDataJPA概述"><a href="#2-2-SpringDataJPA概述" class="headerlink" title="2.2 SpringDataJPA概述"></a>2.2 SpringDataJPA概述</h2><p>Spring Data JPA 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套JPA应用框架，可使开发者用极简的代码即可实现对数据库的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展。</p>
+<p>Spring Data JPA 让程序员解脱了DAO层的操作，基本上所有CRUD都可以依赖于它来实现，在实际的工作工程中，推荐使用Spring Data JPA + ORM（如：hibernate）完成操作。</p>
+<h2 id="2-3-SpringDataJPA-与-JPA和Hibernate之间的关系"><a href="#2-3-SpringDataJPA-与-JPA和Hibernate之间的关系" class="headerlink" title="2.3 SpringDataJPA 与 JPA和Hibernate之间的关系"></a>2.3 SpringDataJPA 与 JPA和Hibernate之间的关系</h2><p>JPA是一套规范，内部是由接口和抽象类组成的。Hibernate是一套成熟的ORM框架，而且Hibernate实现了JPA规范，所以也可以称Hibernate是JPA的一种实现方式，使用JPA的API编程，意味着站在更高的角度上看待问题（面向接口编程）</p>
+<p>Spring Data JPA是Spring提供的一套对JPA操作更加高级的封装，是在JPA规范下的专门用来进行数据持久化的解决方案。</p>
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220802153839888.png" srcset="/img/loading.gif" lazyload alt="image-20220802153839888"></p>
+<h2 id="2-4-基本操作"><a href="#2-4-基本操作" class="headerlink" title="2.4 基本操作"></a>2.4 基本操作</h2><ul>
+<li>创建maven工程，依赖如下</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.source</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.source</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.target</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.target</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">spring.version</span>&gt;</span>5.0.2.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">spring.version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">hibernate.version</span>&gt;</span>5.0.7.Final<span class="hljs-tag">&lt;/<span class="hljs-name">hibernate.version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">slf4j.version</span>&gt;</span>1.6.6<span class="hljs-tag">&lt;/<span class="hljs-name">slf4j.version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">log4j.version</span>&gt;</span>1.2.12<span class="hljs-tag">&lt;/<span class="hljs-name">log4j.version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">c3p0.version</span>&gt;</span>0.9.1.2<span class="hljs-tag">&lt;/<span class="hljs-name">c3p0.version</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">mysql.version</span>&gt;</span>8.0.18<span class="hljs-tag">&lt;/<span class="hljs-name">mysql.version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- junit单元测试 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>junit<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.12<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-comment">&lt;!-- spring beg --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.aspectj<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>aspectjweaver<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.6.8<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-aop<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-context<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-context-support<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-comment">&lt;!-- spring对orm框架的支持包--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-orm<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-beans<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-comment">&lt;!-- spring end --&gt;</span><br><br>        <span class="hljs-comment">&lt;!-- hibernate beg --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.hibernate<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hibernate-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;hibernate.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.hibernate<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hibernate-entitymanager<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;hibernate.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.hibernate<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hibernate-validator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.2.1.Final<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- hibernate end --&gt;</span><br><br>        <span class="hljs-comment">&lt;!-- c3p0 beg --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>c3p0<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>c3p0<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;c3p0.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- c3p0 end --&gt;</span><br><br>        <span class="hljs-comment">&lt;!-- log end --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>log4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>log4j<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;log4j.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.slf4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>slf4j-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.slf4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>slf4j-log4j12<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;slf4j.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- log end --&gt;</span><br><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;mysql.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-comment">&lt;!-- spring data jpa 的坐标--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.data<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-data-jpa<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.9.0.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-comment">&lt;!-- el beg 使用spring data jpa 必须引入 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>javax.el<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>javax.el-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.2.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.glassfish.web<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>javax.el<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.2.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- el end --&gt;</span><br>        <br>        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.18.18<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在resouces文件夹下建立applicationContexte.xml配置文件，整合Spring</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><code class="hljs xml">    <span class="hljs-comment">&lt;!--spring 和 spring data jpa的配置--&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 1.创建entityManagerFactory对象交给spring容器管理--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;entityManagerFactoty&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dataSource&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;dataSource&quot;</span> /&gt;</span><br>        <span class="hljs-comment">&lt;!--配置的扫描的包（实体类所在的包） --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;packagesToScan&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;top.igotcha.domain&quot;</span> /&gt;</span><br>        <span class="hljs-comment">&lt;!-- jpa的实现厂家 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;persistenceProvider&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.hibernate.jpa.HibernatePersistenceProvider&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><br>        <span class="hljs-comment">&lt;!--jpa的供应商适配器 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;jpaVendorAdapter&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter&quot;</span>&gt;</span><br>                <span class="hljs-comment">&lt;!--配置是否自动创建数据库表 --&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;generateDdl&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;false&quot;</span> /&gt;</span><br>                <span class="hljs-comment">&lt;!--指定数据库类型 --&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;database&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;MYSQL&quot;</span> /&gt;</span><br>                <span class="hljs-comment">&lt;!--数据库方言：支持的特有语法 --&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;databasePlatform&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;org.hibernate.dialect.MySQLDialect&quot;</span> /&gt;</span><br>                <span class="hljs-comment">&lt;!--是否显示sql --&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;showSql&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;true&quot;</span> /&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><br>        <span class="hljs-comment">&lt;!--jpa的方言 ：高级的特性 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;jpaDialect&quot;</span> &gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.orm.jpa.vendor.HibernateJpaDialect&quot;</span> /&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--注入jpa的配置信息</span><br><span class="hljs-comment">            加载jpa的基本配置信息和jpa实现方式（hibernate）的配置信息</span><br><span class="hljs-comment">            hibernate.hbm2ddl.auto : 自动创建数据库表</span><br><span class="hljs-comment">                create ： 每次都会重新创建数据库表</span><br><span class="hljs-comment">                update：有表不会重新创建，没有表会重新创建表</span><br><span class="hljs-comment">        --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;jpaProperties&quot;</span> &gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">props</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">prop</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&quot;hibernate.hbm2ddl.auto&quot;</span>&gt;</span>update<span class="hljs-tag">&lt;/<span class="hljs-name">prop</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">props</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!--2.创建数据库连接池 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;dataSource&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;com.mchange.v2.c3p0.ComboPooledDataSource&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;user&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;root&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;gb10242048&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;jdbcUrl&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/springdata_jpa?characterEncoding=UTF-8&quot;</span> &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;driverClass&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!--3.整合spring dataJpa--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">jpa:repositories</span> <span class="hljs-attr">base-package</span>=<span class="hljs-string">&quot;top.igotcha.dao&quot;</span> <span class="hljs-attr">transaction-manager-ref</span>=<span class="hljs-string">&quot;transactionManager&quot;</span></span><br><span class="hljs-tag">                      <span class="hljs-attr">entity-manager-factory-ref</span>=<span class="hljs-string">&quot;entityManagerFactoty&quot;</span> &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">jpa:repositories</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!--4.配置事务管理器 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;transactionManager&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.springframework.orm.jpa.JpaTransactionManager&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;entityManagerFactory&quot;</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;entityManagerFactoty&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 4.txAdvice--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">tx:advice</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;txAdvice&quot;</span> <span class="hljs-attr">transaction-manager</span>=<span class="hljs-string">&quot;transactionManager&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">tx:attributes</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">tx:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;save*&quot;</span> <span class="hljs-attr">propagation</span>=<span class="hljs-string">&quot;REQUIRED&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">tx:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;insert*&quot;</span> <span class="hljs-attr">propagation</span>=<span class="hljs-string">&quot;REQUIRED&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">tx:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;update*&quot;</span> <span class="hljs-attr">propagation</span>=<span class="hljs-string">&quot;REQUIRED&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">tx:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;delete*&quot;</span> <span class="hljs-attr">propagation</span>=<span class="hljs-string">&quot;REQUIRED&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">tx:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;get*&quot;</span> <span class="hljs-attr">read-only</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">tx:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;find*&quot;</span> <span class="hljs-attr">read-only</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">tx:method</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;*&quot;</span> <span class="hljs-attr">propagation</span>=<span class="hljs-string">&quot;REQUIRED&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">tx:attributes</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">tx:advice</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 5.aop--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">aop:config</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">aop:pointcut</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;pointcut&quot;</span> <span class="hljs-attr">expression</span>=<span class="hljs-string">&quot;execution(* top.igotcha.service.*.*(..))&quot;</span> /&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">aop:advisor</span> <span class="hljs-attr">advice-ref</span>=<span class="hljs-string">&quot;txAdvice&quot;</span> <span class="hljs-attr">pointcut-ref</span>=<span class="hljs-string">&quot;pointcut&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">aop:config</span>&gt;</span><br><br><br>    <span class="hljs-comment">&lt;!--5.声明式事务 --&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 6. 配置包扫描--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">context:component-scan</span> <span class="hljs-attr">base-package</span>=<span class="hljs-string">&quot;top.igotcha&quot;</span> &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">context:component-scan</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">beans</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>使用上一节中<a href="#customer">Customer</a>作为实体类</p>
+<ul>
+<li>需要继承两个接口（JpaRepository，JpaSpecificationExecutor）。</li>
+<li>需要提供响应的泛型。</li>
+</ul>
+</li>
+<li><p>编写符合Spring Data JPA规范的Dao层接口</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 符合SpringDataJpa的dao层接口规范</span><br><span class="hljs-comment"> *      JpaRepository&lt;操作的实体类类型，实体类中主键属性的类型&gt;</span><br><span class="hljs-comment"> *          * 封装了基本CRUD操作</span><br><span class="hljs-comment"> *      JpaSpecificationExecutor&lt;操作的实体类类型&gt;</span><br><span class="hljs-comment"> *          * 封装了复杂查询（分页）</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">CustomerDao</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">JpaRepository</span>&lt;<span class="hljs-title">Customer</span>,<span class="hljs-title">Long</span>&gt; ,<span class="hljs-title">JpaSpecificationExecutor</span>&lt;<span class="hljs-title">Customer</span>&gt; </span>&#123;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220802170214907.png" srcset="/img/loading.gif" lazyload alt="image-20220802170214907"></p>
+<ul>
+<li><p>测试操作数据功能</p>
+<ul>
+<li><p>findOne（id） ：根据id查询</p>
+</li>
+<li><p>save(customer):保存或者更新（依据：传递的实体类对象中，是否包含id属性）</p>
+</li>
+<li><p>delete（id） ：根据id删除</p>
+</li>
+<li><p>findAll() : 查询全部</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>SpringBootJPA 2.x版改掉了部分方法，如findOne改为了findById，delete改为了deleteById。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RunWith(SpringJUnit4ClassRunner.class)</span> <span class="hljs-comment">//声明spring提供的单元测试环境</span><br><span class="hljs-meta">@ContextConfiguration(locations = &quot;classpath:applicationContext.xml&quot;)</span><span class="hljs-comment">//指定spring容器的配置信息</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomerDaoTest</span> </span>&#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> CustomerDao customerDao;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据id查询</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testFindOne</span><span class="hljs-params">()</span> </span>&#123;<br>        Customer customer = customerDao.findOne(<span class="hljs-number">1l</span>);<br>        System.out.println(customer);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * save : 保存或者更新</span><br><span class="hljs-comment">     *      根据传递的对象是否存在主键id，</span><br><span class="hljs-comment">     *      如果没有id主键属性：保存</span><br><span class="hljs-comment">     *      存在id主键属性，根据id查询数据，更新数据</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSave</span><span class="hljs-params">()</span> </span>&#123;<br>        Customer customer  = <span class="hljs-keyword">new</span> Customer();<br>        customer.setCustName(<span class="hljs-string">&quot;程序员&quot;</span>);<br>        customer.setCustLevel(<span class="hljs-string">&quot;vip&quot;</span>);<br>        customer.setCustIndustry(<span class="hljs-string">&quot;it教育&quot;</span>);<br>        customerDao.save(customer);<br>    &#125;<br><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testUpdate</span><span class="hljs-params">()</span> </span>&#123;<br>        Customer customer  = <span class="hljs-keyword">new</span> Customer();<br>        customer.setCustId(<span class="hljs-number">4l</span>);<br>        customer.setCustName(<span class="hljs-string">&quot;程序员很厉害&quot;</span>);<br>        customerDao.save(customer);<br>    &#125;<br><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testDelete</span> <span class="hljs-params">()</span> </span>&#123;<br>        customerDao.delete(<span class="hljs-number">3l</span>);<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 查询所有</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testFindAll</span><span class="hljs-params">()</span> </span>&#123;<br>        List&lt;Customer&gt; list = customerDao.findAll();<br>        <span class="hljs-keyword">for</span>(Customer customer : list) &#123;<br>            System.out.println(customer);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 测试统计查询：查询客户的总数量</span><br><span class="hljs-comment">     *      count:统计总条数</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testCount</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">long</span> count = customerDao.count();<span class="hljs-comment">//查询全部的客户数量</span><br>        System.out.println(count);<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 测试：判断id为4的客户是否存在</span><br><span class="hljs-comment">     *      1. 可以查询以下id为4的客户</span><br><span class="hljs-comment">     *          如果值为空，代表不存在，如果不为空，代表存在</span><br><span class="hljs-comment">     *      2. 判断数据库中id为4的客户的数量</span><br><span class="hljs-comment">     *          如果数量为0，代表不存在，如果大于0，代表存在</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span>  <span class="hljs-title">testExists</span><span class="hljs-params">()</span> </span>&#123;<br>        <span class="hljs-keyword">boolean</span> exists = customerDao.exists(<span class="hljs-number">4l</span>);<br>        System.out.println(<span class="hljs-string">&quot;id为4的客户 是否存在：&quot;</span>+exists);<br>    &#125;<br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 根据id从数据库查询</span><br><span class="hljs-comment">     *      <span class="hljs-doctag">@Transactional</span> : 保证getOne正常运行</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     *  findOne：</span><br><span class="hljs-comment">     *      em.find()           :立即加载</span><br><span class="hljs-comment">     *  getOne：</span><br><span class="hljs-comment">     *      em.getReference     :延迟加载</span><br><span class="hljs-comment">     *      * 返回的是一个客户的动态代理对象</span><br><span class="hljs-comment">     *      * 什么时候用，什么时候查询</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span>  <span class="hljs-title">testGetOne</span><span class="hljs-params">()</span> </span>&#123;<br>        Customer customer = customerDao.getOne(<span class="hljs-number">1l</span>);<br>        System.out.println(customer);<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-5-运行过程"><a href="#2-5-运行过程" class="headerlink" title="2.5 运行过程"></a>2.5 运行过程</h2><ol>
+<li>通过JdkDynamicAopProxy的invoke方法创建了一个动态代理对象</li>
+<li>SimpleJpaRepository当中封装了JPA的操作（借助JPA的api完成数据库的CRUD）</li>
+<li>通过hibernate完成数据库操作（封装了jdbc）</li>
+</ol>
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220802173942888.png" srcset="/img/loading.gif" lazyload alt="image-20220802173942888"></p>
+<h1 id="三、SpringDataJPA操作"><a href="#三、SpringDataJPA操作" class="headerlink" title="三、SpringDataJPA操作"></a>三、SpringDataJPA操作</h1><h2 id="3-1-借助接口中的定义好的方法完成操作"><a href="#3-1-借助接口中的定义好的方法完成操作" class="headerlink" title="3.1 借助接口中的定义好的方法完成操作"></a>3.1 借助接口中的定义好的方法完成操作</h2><ul>
+<li><p>findOne（id） ：根据id查询</p>
+</li>
+<li><p>save(customer):保存或者更新（依据：传递的实体类对象中，是否包含id属性）</p>
+</li>
+<li><p>delete（id） ：根据id删除</p>
+</li>
+<li><p>findAll() : 查询全部</p>
+</li>
+</ul>
+<h2 id="3-2-jpql操作方式"><a href="#3-2-jpql操作方式" class="headerlink" title="3.2 jpql操作方式"></a>3.2 jpql操作方式</h2><ul>
+<li>jpql语法或关键字和sql语句类似，查询的是类和类中的属性。            </li>
+</ul>
+<ul>
+<li>需要将JPQL语句配置到接口方法上<ul>
+<li>特有的查询：需要在dao接口上配置方法</li>
+<li>在新添加的方法上，使用注解的形式配置jpql查询语句</li>
+<li>注解 ： @Query</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-1-单条件查询"><a href="#3-2-1-单条件查询" class="headerlink" title="3.2.1 单条件查询"></a>3.2.1 单条件查询</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 案例：根据客户名称查询客户</span><br><span class="hljs-comment"> *      使用jpql的形式查询</span><br><span class="hljs-comment"> *  jpql：from Customer where custName = ?</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  配置jpql语句，使用的<span class="hljs-doctag">@Query</span>注解</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Query(value=&quot;from Customer where custName = ?&quot;)</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> Customer <span class="hljs-title">findJpql</span><span class="hljs-params">(String custName)</span></span>;<br></code></pre></td></tr></table></figure>
+<h3 id="3-2-2-多条件查询"><a href="#3-2-2-多条件查询" class="headerlink" title="3.2.2 多条件查询"></a>3.2.2 多条件查询</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 案例：根据客户名称和客户id查询客户</span><br><span class="hljs-comment"> *      jpql： from Customer where custName = ? and custId = ?</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  对于多个占位符参数</span><br><span class="hljs-comment"> *      赋值的时候，默认的情况下，占位符的位置需要和方法参数中的位置保持一致</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  可以指定占位符参数的位置</span><br><span class="hljs-comment"> *      ? 索引的方式，指定此占位的取值来源</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Query(value = &quot;from Customer where custName = ?2 and custId = ?1&quot;)</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> Customer <span class="hljs-title">findCustNameAndId</span><span class="hljs-params">(Long id,String name)</span></span>;<br></code></pre></td></tr></table></figure>
+<h3 id="3-2-3-更新"><a href="#3-2-3-更新" class="headerlink" title="3.2.3 更新"></a>3.2.3 更新</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 使用jpql完成更新操作</span><br><span class="hljs-comment"> *      案例 ： 根据id更新，客户的名称</span><br><span class="hljs-comment"> *          更新4号客户的名称，将名称改为“成为程序员”</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  sql  ：update gotcha_customer set cust_name = ? where cust_id = ?</span><br><span class="hljs-comment"> *  jpql : update Customer set custName = ? where custId = ?</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  <span class="hljs-doctag">@Query</span> : 代表的是进行查询</span><br><span class="hljs-comment"> *      * 声明此方法是用来进行更新操作</span><br><span class="hljs-comment"> *  <span class="hljs-doctag">@Modifying</span></span><br><span class="hljs-comment"> *      * 当前执行的是一个更新操作</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@Query(value = &quot; update Customer set custName = ?2 where custId = ?1 &quot;)</span><br><span class="hljs-meta">@Modifying</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">updateCustomer</span><span class="hljs-params">(<span class="hljs-keyword">long</span> custId,String custName)</span></span>;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="3-3-sql语句操做方式"><a href="#3-3-sql语句操做方式" class="headerlink" title="3.3 sql语句操做方式"></a>3.3 sql语句操做方式</h2><ul>
+<li>特有的查询：需要在dao接口上配置方法</li>
+<li>在新添加的方法上，使用注解的形式配置sql查询语句</li>
+<li>注解 ： <ul>
+<li>@Query<ul>
+<li>value ：jpql语句 | sql语句</li>
+<li>nativeQuery ：false（使用jpql查询） | true（使用本地查询：sql查询）<pre><code>            是否使用本地查询
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">  * 使用sql的形式查询：</span><br><span class="hljs-comment">  *     模糊查询客户</span><br><span class="hljs-comment">  *  sql ： select * from gotcha_customer where cust_name like ?;</span><br><span class="hljs-comment">  *  Query : 配置sql查询</span><br><span class="hljs-comment">  *      value ： sql语句</span><br><span class="hljs-comment">  *      nativeQuery ： 查询方式</span><br><span class="hljs-comment">  *          true ： sql查询</span><br><span class="hljs-comment">  *          false：jpql查询</span><br><span class="hljs-comment">  *</span><br><span class="hljs-comment">  */</span><br> <span class="hljs-meta">@Query(value=&quot;select * from gotcha_customer where cust_name like ?1&quot;,nativeQuery = true)</span><br> <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Customer&gt; <span class="hljs-title">findSql</span><span class="hljs-params">(String name)</span></span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-4-方法名称规则操作方式"><a href="#3-4-方法名称规则操作方式" class="headerlink" title="3.4 方法名称规则操作方式"></a>3.4 方法名称规则操作方式</h2><p>方法命名规则查询是根据方法的名字，创建查询。是对JPQL更加深入的一层封装。只需要按照Spring Data JPA提供的方法命名规则定义方法的名称，就可以完成查询工作。</p>
+<p>Spring Data JPA在程序执行的时候会根据方法名称进行解析，并自动生成查询语句进行查询。</p>
+<p>按照Spring Data JPA 定义的规则，<strong>查询方法以findBy开头</strong>，涉及条件查询时，<strong>条件的属性用条件关键字连接</strong>，要注意的是：<strong>条件属性首字母需大写</strong>。</p>
+<p>框架在进行方法名解析时，会先把方法名多余的前缀截取掉，然后对剩下部分进行解析。</p>
+<ul>
+<li>findBy  + 属性名称 （根据属性名称进行完成匹配的查询=）</li>
+<li>findBy  + 属性名称 + “查询方式（Like | isnull）”  </li>
+<li>多条件查询<pre><code>     findBy + 属性名 + “查询方式”   + “多条件的连接符（and|or）”  + 属性名 + “查询方式”
+</code></pre>
+</li>
+</ul>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 方法名的约定：</span><br><span class="hljs-comment"> *      findBy : 查询</span><br><span class="hljs-comment"> *            对象中的属性名（首字母大写） ： 查询的条件</span><br><span class="hljs-comment"> *            CustName</span><br><span class="hljs-comment"> *            * 默认情况 ： 使用 等于的方式查询</span><br><span class="hljs-comment"> *                  特殊的查询方式</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  findByCustName   --   根据客户名称查询</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *  再springdataJpa的运行阶段</span><br><span class="hljs-comment"> *          会根据方法名称进行解析  findBy from xxx(实体类) 属性名称 where  custName =</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> *      1.findBy  + 属性名称 （根据属性名称进行完成匹配的查询=）</span><br><span class="hljs-comment"> *      2.findBy  + 属性名称 + “查询方式（Like | isnull）”</span><br><span class="hljs-comment"> *      3.多条件查询</span><br><span class="hljs-comment"> *          findBy + 属性名 + “查询方式”   + “多条件的连接符（and|or）”  + 属性名 + “查询方式”</span><br><span class="hljs-comment"> */</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> Customer <span class="hljs-title">findByCustName</span><span class="hljs-params">(String custName)</span></span>;<br> <br> <br><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Customer&gt; <span class="hljs-title">findByCustNameLike</span><span class="hljs-params">(String custName)</span></span>;<br> <br><span class="hljs-comment">//使用客户名称模糊匹配和客户所属行业精准匹配的查询</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> Customer <span class="hljs-title">findByCustNameLikeAndCustIndustry</span><span class="hljs-params">(String custName,String custIndustry)</span></span>;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<p>关键字的使用方法和生成的SQL如下表所示</p>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Sample</th>
+<th>JPQL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>And</td>
+<td>findByLastnameAndFirstname</td>
+<td>… where x.lastname = ?1 and x.firstname = ?2</td>
+</tr>
+<tr>
+<td>Or</td>
+<td>findByLastnameOrFirstname</td>
+<td>… where x.lastname = ?1 or x.firstname = ?2</td>
+</tr>
+<tr>
+<td>Is,Equals</td>
+<td>findByFirstnameIs,findByFirstnameEquals</td>
+<td>… where x.firstname = ?1</td>
+</tr>
+<tr>
+<td>Between</td>
+<td>findByStartDateBetween</td>
+<td>… where x.startDate between ?1 and ?2</td>
+</tr>
+<tr>
+<td>LessThan</td>
+<td>findByAgeLessThan</td>
+<td>… where x.age &lt; ?1</td>
+</tr>
+<tr>
+<td>LessThanEqual</td>
+<td>findByAgeLessThanEqual</td>
+<td>… where x.age ⇐ ?1</td>
+</tr>
+<tr>
+<td>GreaterThan</td>
+<td>findByAgeGreaterThan</td>
+<td>… where x.age &gt; ?1</td>
+</tr>
+<tr>
+<td>GreaterThanEqual</td>
+<td>findByAgeGreaterThanEqual</td>
+<td>… where x.age &gt;= ?1</td>
+</tr>
+<tr>
+<td>After</td>
+<td>findByStartDateAfter</td>
+<td>… where x.startDate &gt; ?1</td>
+</tr>
+<tr>
+<td>Before</td>
+<td>findByStartDateBefore</td>
+<td>… where x.startDate &lt; ?1</td>
+</tr>
+<tr>
+<td>IsNull</td>
+<td>findByAgeIsNull</td>
+<td>… where x.age is null</td>
+</tr>
+<tr>
+<td>IsNotNull,NotNull</td>
+<td>findByAge(Is)NotNull</td>
+<td>… where x.age not null</td>
+</tr>
+<tr>
+<td>Like</td>
+<td>findByFirstnameLike</td>
+<td>… where x.firstname like ?1</td>
+</tr>
+<tr>
+<td>NotLike</td>
+<td>findByFirstnameNotLike</td>
+<td>… where x.firstname not like ?1</td>
+</tr>
+<tr>
+<td>StartingWith</td>
+<td>findByFirstnameStartingWith</td>
+<td>… where x.firstname like ?1 (parameter bound with appended %)</td>
+</tr>
+<tr>
+<td>EndingWith</td>
+<td>findByFirstnameEndingWith</td>
+<td>… where x.firstname like ?1 (parameter bound with prepended %)</td>
+</tr>
+<tr>
+<td>Containing</td>
+<td>findByFirstnameContaining</td>
+<td>… where x.firstname like ?1 (parameter bound wrapped in %)</td>
+</tr>
+<tr>
+<td>OrderBy</td>
+<td>findByAgeOrderByLastnameDesc</td>
+<td>… where x.age = ?1 order by x.lastname desc</td>
+</tr>
+<tr>
+<td>Not</td>
+<td>findByLastnameNot</td>
+<td>… where x.lastname &lt;&gt; ?1</td>
+</tr>
+<tr>
+<td>In</td>
+<td>findByAgeIn(Collection ages)</td>
+<td>… where x.age in ?1</td>
+</tr>
+<tr>
+<td>NotIn</td>
+<td>findByAgeNotIn(Collection age)</td>
+<td>… where x.age not in ?1</td>
+</tr>
+<tr>
+<td>TRUE</td>
+<td>findByActiveTrue()</td>
+<td>… where x.active = true</td>
+</tr>
+<tr>
+<td>FALSE</td>
+<td>findByActiveFalse()</td>
+<td>… where x.active = false</td>
+</tr>
+<tr>
+<td>IgnoreCase</td>
+<td>findByFirstnameIgnoreCase</td>
+<td>… where UPPER(x.firstame) = UPPER(?1)</td>
+</tr>
+</tbody></table>
+<h1 id="四、Specifications动态查询"><a href="#四、Specifications动态查询" class="headerlink" title="四、Specifications动态查询"></a>四、Specifications动态查询</h1><p>在查询某个实体的时候，给定的条件是不固定的，这时需要动态构建相应的查询语句，在Spring Data JPA中可以通过JpaSpecificationExecutor接口查询。相比JPQL，其优势是类型安全，更加的面向对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> *	JpaSpecificationExecutor中定义的方法</span><br><span class="hljs-comment"> **/</span><br> <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">JpaSpecificationExecutor</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;<br>   	<span class="hljs-comment">//根据条件查询一个对象</span><br> 	<span class="hljs-function">T <span class="hljs-title">findOne</span><span class="hljs-params">(Specification&lt;T&gt; spec)</span></span>;	<br>   	<span class="hljs-comment">//根据条件查询集合</span><br> 	<span class="hljs-function">List&lt;T&gt; <span class="hljs-title">findAll</span><span class="hljs-params">(Specification&lt;T&gt; spec)</span></span>;<br>   	<span class="hljs-comment">//根据条件分页查询,Page是springdatajpa提供的</span><br> 	<span class="hljs-function">Page&lt;T&gt; <span class="hljs-title">findAll</span><span class="hljs-params">(Specification&lt;T&gt; spec, Pageable pageable)</span></span>;<br>   	<span class="hljs-comment">//排序查询查询,Sort排序参数</span><br> 	<span class="hljs-function">List&lt;T&gt; <span class="hljs-title">findAll</span><span class="hljs-params">(Specification&lt;T&gt; spec, Sort sort)</span></span>;<br>   	<span class="hljs-comment">//统计查询</span><br> 	<span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">count</span><span class="hljs-params">(Specification&lt;T&gt; spec)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>JpaSpecificationExecutor这个接口，基本是围绕着Specification接口来定义的。</p>
+<p>可以简单的理解为，Specification构造的就是查询条件。</p>
+</blockquote>
+<p>Specification接口中只定义了一个抽象方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> *	Specification ：查询条件，自定义自己的Specification实现类</span><br><span class="hljs-comment"> **/</span> <br>	<span class="hljs-comment">//root：查询的根对象（查询的任何属性都可以从根对象中获取）</span><br>	<span class="hljs-comment">//CriteriaQuery：顶层查询对象，自定义查询方式（了解：一般不用）</span><br>	<span class="hljs-comment">//CriteriaBuilder：查询的构造器，封装了很多的查询条件</span><br>	<span class="hljs-function">Predicate <span class="hljs-title">toPredicate</span><span class="hljs-params">(Root&lt;T&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span></span>; <span class="hljs-comment">//封装查询条件</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-1-使用Specifications完成条件查询"><a href="#4-1-使用Specifications完成条件查询" class="headerlink" title="4.1 使用Specifications完成条件查询"></a>4.1 使用Specifications完成条件查询</h2><h3 id="单条件查询"><a href="#单条件查询" class="headerlink" title="单条件查询"></a>单条件查询</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSpec</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//匿名内部类</span><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">    * 自定义查询条件</span><br><span class="hljs-comment">    *      1.实现Specification接口（提供泛型：查询的对象类型）</span><br><span class="hljs-comment">    *      2.实现toPredicate方法（构造查询条件）(</span><br><span class="hljs-comment">    *          root：获取需要查询的对象属性</span><br><span class="hljs-comment">    *          CriteriaBuilder：构造查询条件的，内部封装了很多的查询条件（模糊匹配，精准匹配）</span><br><span class="hljs-comment">    *       )</span><br><span class="hljs-comment">    *  案例：根据客户名称查询，查询客户名为gotcha的客户</span><br><span class="hljs-comment">    *          查询条件</span><br><span class="hljs-comment">    *              1.查询方式</span><br><span class="hljs-comment">    *                  cb对象</span><br><span class="hljs-comment">    *              2.比较的属性名称</span><br><span class="hljs-comment">    *                  root对象</span><br><span class="hljs-comment">    *</span><br><span class="hljs-comment">    */</span><br>    Specification&lt;Customer&gt; spec = <span class="hljs-keyword">new</span> Specification&lt;Customer&gt;() &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> Predicate <span class="hljs-title">toPredicate</span><span class="hljs-params">(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span> </span>&#123;<br>            <span class="hljs-comment">//1.获取比较的属性名称</span><br>            Path&lt;Object&gt; custName = root.get(<span class="hljs-string">&quot;custName&quot;</span>);<br>            <span class="hljs-comment">//2.构造查询条件  ：    select * from cst_customer where cust_name = &#x27;gotcha&#x27;</span><br>            <span class="hljs-comment">/**</span><br><span class="hljs-comment">             * 第一个参数：需要比较的属性（path对象）</span><br><span class="hljs-comment">             * 第二个参数：当前需要比较的取值</span><br><span class="hljs-comment">             */</span><br>            Predicate predicate = cb.equal(custName, <span class="hljs-string">&quot;gotcha&quot;</span>);<span class="hljs-comment">//进行精准的匹配  （比较的属性，比较的属性的取值）</span><br>            <span class="hljs-keyword">return</span> predicate;<br>        &#125;<br>    &#125;;<br>    Customer customer = customerDao.findOne(spec);<br>    System.out.println(customer);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="多条件查询"><a href="#多条件查询" class="headerlink" title="多条件查询"></a>多条件查询</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSpec1</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     *  root:获取属性</span><br><span class="hljs-comment">     *      客户名</span><br><span class="hljs-comment">     *      所属行业</span><br><span class="hljs-comment">     *  cb：构造查询</span><br><span class="hljs-comment">     *      1.构造客户名的精准匹配查询</span><br><span class="hljs-comment">     *      2.构造所属行业的精准匹配查询</span><br><span class="hljs-comment">     *      3.将以上两个查询联系起来</span><br><span class="hljs-comment">     */</span><br>    Specification&lt;Customer&gt; spec = (root, query, cb) -&gt; &#123;<span class="hljs-comment">//匿名内部类改为lambda表达式</span><br>        Path&lt;Object&gt; custName = root.get(<span class="hljs-string">&quot;custName&quot;</span>);<span class="hljs-comment">//客户名</span><br>        Path&lt;Object&gt; custIndustry = root.get(<span class="hljs-string">&quot;custIndustry&quot;</span>);<span class="hljs-comment">//所属行业</span><br><br>        <span class="hljs-comment">//构造查询</span><br>        <span class="hljs-comment">//1.构造客户名的精准匹配查询</span><br>        Predicate p1 = cb.equal(custName, <span class="hljs-string">&quot;成程序员&quot;</span>);<span class="hljs-comment">//第一个参数，path（属性），第二个参数，属性的取值</span><br>        <span class="hljs-comment">//2..构造所属行业的精准匹配查询</span><br>        Predicate p2 = cb.equal(custIndustry, <span class="hljs-string">&quot;it教育&quot;</span>);<br>        <span class="hljs-comment">//3.将多个查询条件组合到一起：</span><br>        	<span class="hljs-comment">//满足条件一并且满足条件二：与关系，满足条件一或满足条件二即可：或关系</span><br>        Predicate and = cb.and(p1, p2);<span class="hljs-comment">//以与的形式拼接多个查询条件</span><br>        <span class="hljs-comment">// cb.or();//以或的形式拼接多个查询条件</span><br>        <span class="hljs-keyword">return</span> and;<br>    &#125;;<br>    Customer customer = customerDao.findOne(spec);<br>    System.out.println(customer);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<table>
+<thead>
+<tr>
+<th>方法名称</th>
+<th>Sql对应关系</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>equle</td>
+<td>filed = value</td>
+</tr>
+<tr>
+<td>gt（greaterThan ）</td>
+<td>filed &gt; value</td>
+</tr>
+<tr>
+<td>lt（lessThan ）</td>
+<td>filed &lt; value</td>
+</tr>
+<tr>
+<td>ge（greaterThanOrEqualTo ）</td>
+<td>filed &gt;= value</td>
+</tr>
+<tr>
+<td>le（ lessThanOrEqualTo）</td>
+<td>filed &lt;= value</td>
+</tr>
+<tr>
+<td>notEqule</td>
+<td>filed != value</td>
+</tr>
+<tr>
+<td>like</td>
+<td>filed like value</td>
+</tr>
+<tr>
+<td>notLike</td>
+<td>filed not like value</td>
+</tr>
+</tbody></table>
+<h2 id="4-2-模糊查询、排序"><a href="#4-2-模糊查询、排序" class="headerlink" title="4.2 模糊查询、排序"></a>4.2 模糊查询、排序</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">* equal ：直接的到path对象（属性），然后进行比较即可</span><br><span class="hljs-comment">* gt，lt,ge,le,like : 得到path对象，根据path指定比较的参数类型，再去进行比较</span><br><span class="hljs-comment">*      指定参数类型：path.as(类型的字节码对象)</span><br><span class="hljs-comment">*/</span><br><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSpec3</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//构造查询条件</span><br>    Specification&lt;Customer&gt; spec = <span class="hljs-keyword">new</span> Specification&lt;Customer&gt;() &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-function"><span class="hljs-keyword">public</span> Predicate <span class="hljs-title">toPredicate</span><span class="hljs-params">(Root&lt;Customer&gt; root, CriteriaQuery&lt;?&gt; query, CriteriaBuilder cb)</span> </span>&#123;<br>            <span class="hljs-comment">//查询属性：客户名</span><br>            Path&lt;Object&gt; custName = root.get(<span class="hljs-string">&quot;custName&quot;</span>);<br>            <span class="hljs-comment">//查询方式：模糊匹配</span><br>            Predicate like = cb.like(custName.as(String.class), <span class="hljs-string">&quot;%员&quot;</span>);<br>            <span class="hljs-keyword">return</span> like;<br>        &#125;<br>    &#125;;<br>    <span class="hljs-comment">/**添加排序</span><br><span class="hljs-comment">    *   创建排序对象,需要调用构造方法实例化sort对象</span><br><span class="hljs-comment">    *	第一个参数：排序的顺序（倒序，正序）</span><br><span class="hljs-comment">    *   Sort.Direction.DESC:倒序</span><br><span class="hljs-comment">    *   Sort.Direction.ASC ： 升序</span><br><span class="hljs-comment">    *   第二个参数：排序的属性名称</span><br><span class="hljs-comment">    */</span><br>    Sort sort = <span class="hljs-keyword">new</span> Sort(Sort.Direction.DESC,<span class="hljs-string">&quot;custId&quot;</span>);<br>    List&lt;Customer&gt; list = customerDao.findAll(spec, sort);<br>    <span class="hljs-keyword">for</span> (Customer customer : list) &#123;<br>        System.out.println(customer);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-3-分页查询"><a href="#4-3-分页查询" class="headerlink" title="4.3 分页查询"></a>4.3 分页查询</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 分页查询</span><br><span class="hljs-comment">*      Specification: 查询条件</span><br><span class="hljs-comment">*      Pageable：分页参数</span><br><span class="hljs-comment">*          分页参数：查询的页码，每页查询的条数</span><br><span class="hljs-comment">*          findAll(Specification,Pageable)：带有条件的分页</span><br><span class="hljs-comment">*          findAll(Pageable)：没有条件的分页</span><br><span class="hljs-comment">*  返回：Page（springDataJpa为我们封装好的pageBean对象，数据列表，共条数）</span><br><span class="hljs-comment">*/</span><br><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSpec4</span><span class="hljs-params">()</span> </span>&#123;<br><br>    Specification spec = <span class="hljs-keyword">null</span>;<br>    <span class="hljs-comment">//PageRequest对象是Pageable接口的实现类</span><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">         * 创建PageRequest的过程中，需要调用他的构造方法传入两个参数</span><br><span class="hljs-comment">         *      第一个参数：当前查询的页数（从0开始）</span><br><span class="hljs-comment">         *      第二个参数：每页查询的数量</span><br><span class="hljs-comment">         */</span><br>    Pageable pageable = <span class="hljs-keyword">new</span> PageRequest(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>);<br>    <span class="hljs-comment">//分页查询</span><br>    Page&lt;Customer&gt; page = customerDao.findAll(<span class="hljs-keyword">null</span>, pageable);<br>    System.out.println(page.getContent()); <span class="hljs-comment">//得到数据集合列表</span><br>    System.out.println(page.getTotalElements());<span class="hljs-comment">//得到总条数</span><br>    System.out.println(page.getTotalPages());<span class="hljs-comment">//得到总页数</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>Spring Data JPA中的分页查询，是其内部自动实现的封装过程，返回的是一个Spring Data JPA提供的pageBean对象。其中的方法说明如下：</p>
+<ul>
+<li>获取总页数</li>
+</ul>
+<p>int getTotalPages();</p>
+<ul>
+<li>获取总记录数    </li>
+</ul>
+<p>long getTotalElements();</p>
+<ul>
+<li>获取列表数据</li>
+</ul>
+<p>List<T> getContent(); </T></p>
+<h2 id="4-4-多表查询"><a href="#4-4-多表查询" class="headerlink" title="4.4 多表查询"></a>4.4 多表查询</h2><h3 id="一对多"><a href="#一对多" class="headerlink" title="一对多"></a>一对多</h3><ul>
+<li><p>案例，客户和联系人的案例（一对多关系）</p>
+<ul>
+<li>客户：一家公司</li>
+<li>联系人：这家公司的员工</li>
+</ul>
+<blockquote>
+<p>一个客户可以具有多个联系人，一个联系人从属于一家公司</p>
+</blockquote>
+</li>
+<li><p>分析步骤</p>
+<ul>
+<li><p>明确表关系，一对多关系。</p>
+</li>
+<li><p>确定表关系。</p>
+<ul>
+<li>主表：客户表。</li>
+<li>从表：联系人表，从表中有外键。</li>
+</ul>
+</li>
+<li><p>编写实体类，在实体类中描述表关系（包含关系）</p>
+<ul>
+<li><p>客户：在客户的实体类中维护一个联系人的集合。</p>
+</li>
+<li><p>在联系人的实体类中维护一个客户的对象。</p>
+</li>
+</ul>
+</li>
+<li><p>配置映射关系，使用jpa注解配置一对多映射关系。</p>
+</li>
+</ul>
+</li>
+<li><p>级联操作，操作一个对象的同时操作它的关联对象</p>
+<ul>
+<li><p>需要区分操作主体</p>
+</li>
+<li><p>需要在操作主体的实体类上，添加级联属性（需要添加到多表映射关系的注解上）</p>
+</li>
+<li><p>cascade（配置级联）</p>
+</li>
+</ul>
+<blockquote>
+<p>级联添加</p>
+<pre><code>案例：当保存一个客户的同时保存联系人
+</code></pre>
+<p>级联删除</p>
+<pre><code>案例：当删除一个客户的同时删除此客户的所有联系人
+</code></pre>
+</blockquote>
+</li>
+</ul>
+<h4 id="添加操作"><a href="#添加操作" class="headerlink" title="添加操作"></a>添加操作</h4><ol>
+<li>使用上一节中<a href="#customer">Customer</a>作为客户实体类，但是需要增加LinkMan集合属性，用于保存关系</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//配置客户和联系人之间的关系（一对多关系）</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 使用注解的形式配置多表关系</span><br><span class="hljs-comment">*      1.声明关系</span><br><span class="hljs-comment">*          <span class="hljs-doctag">@OneToMany</span> : 配置一对多关系</span><br><span class="hljs-comment">*              targetEntity ：对方对象的字节码对象</span><br><span class="hljs-comment">*      2.配置外键（中间表）</span><br><span class="hljs-comment">*          <span class="hljs-doctag">@JoinColumn</span> : 配置外键</span><br><span class="hljs-comment">*              name：外键字段名称</span><br><span class="hljs-comment">*              referencedColumnName：参照的主表的主键字段名称</span><br><span class="hljs-comment">*</span><br><span class="hljs-comment">*     在客户实体类上（一的一方）添加了外键了配置，所以对于客户而言，也具备了维护外键的作用</span><br><span class="hljs-comment">*</span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-meta">@OneToMany(targetEntity = LinkMan.class)</span><br><span class="hljs-meta">@JoinColumn(name = &quot;lkm_cust_id&quot;,referencedColumnName = &quot;cust_id&quot;)</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 放弃外键维护权</span><br><span class="hljs-comment">*      mappedBy：对方配置关系的属性名称</span><br><span class="hljs-comment">* 	   cascade : 配置级联（可以配置到设置多表的映射关系的注解上）</span><br><span class="hljs-comment">*      CascadeType.all         : 所有</span><br><span class="hljs-comment">*                  MERGE       ：更新</span><br><span class="hljs-comment">*                  PERSIST     ：保存</span><br><span class="hljs-comment">*                  REMOVE      ：删除</span><br><span class="hljs-comment">*</span><br><span class="hljs-comment">*	   fetch : 配置关联对象的加载方式</span><br><span class="hljs-comment">*      			EAGER   ：立即加载</span><br><span class="hljs-comment">*      			LAZY    ：延迟加载</span><br><span class="hljs-comment">*/</span><br><span class="hljs-meta">@OneToMany(mappedBy = &quot;customer&quot;,cascade = CascadeType.ALL)</span><br><span class="hljs-keyword">private</span> Set&lt;LinkMan&gt; linkMans = <span class="hljs-keyword">new</span> HashSet&lt;&gt;();<br></code></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li>建立实体类LinkMan</li>
+</ol>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;gotcha_linkman&quot;)</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LinkMan</span> </span>&#123;<br><br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-meta">@Column(name = &quot;lkm_id&quot;)</span><br>    <span class="hljs-keyword">private</span> Long lkmId; <span class="hljs-comment">//联系人编号(主键)</span><br>    <span class="hljs-meta">@Column(name = &quot;lkm_name&quot;)</span><br>    <span class="hljs-keyword">private</span> String lkmName;<span class="hljs-comment">//联系人姓名</span><br>    <span class="hljs-meta">@Column(name = &quot;lkm_gender&quot;)</span><br>    <span class="hljs-keyword">private</span> String lkmGender;<span class="hljs-comment">//联系人性别</span><br>    <span class="hljs-meta">@Column(name = &quot;lkm_phone&quot;)</span><br>    <span class="hljs-keyword">private</span> String lkmPhone;<span class="hljs-comment">//联系人办公电话</span><br>    <span class="hljs-meta">@Column(name = &quot;lkm_mobile&quot;)</span><br>    <span class="hljs-keyword">private</span> String lkmMobile;<span class="hljs-comment">//联系人手机</span><br>    <span class="hljs-meta">@Column(name = &quot;lkm_email&quot;)</span><br>    <span class="hljs-keyword">private</span> String lkmEmail;<span class="hljs-comment">//联系人邮箱</span><br>    <span class="hljs-meta">@Column(name = &quot;lkm_position&quot;)</span><br>    <span class="hljs-keyword">private</span> String lkmPosition;<span class="hljs-comment">//联系人职位</span><br>    <span class="hljs-meta">@Column(name = &quot;lkm_memo&quot;)</span><br>    <span class="hljs-keyword">private</span> String lkmMemo;<span class="hljs-comment">//联系人备注</span><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 配置联系人到客户的多对一关系</span><br><span class="hljs-comment">     *     使用注解的形式配置多对一关系</span><br><span class="hljs-comment">     *      1.配置表关系</span><br><span class="hljs-comment">     *          <span class="hljs-doctag">@ManyToOne</span> : 配置多对一关系</span><br><span class="hljs-comment">     *              targetEntity：对方的实体类字节码</span><br><span class="hljs-comment">     *      2.配置外键（中间表）</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * * 配置外键的过程，配置到了多的一方，就会在多的一方维护外键</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@ManyToOne(targetEntity = Customer.class,fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@JoinColumn(name = &quot;lkm_cust_id&quot;,referencedColumnName = &quot;cust_id&quot;)</span><br>    <span class="hljs-keyword">private</span> Customer customer;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li>dao接口</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">CustomerDao</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">JpaRepository</span>&lt;<span class="hljs-title">Customer</span>,<span class="hljs-title">Long</span>&gt; ,<span class="hljs-title">JpaSpecificationExecutor</span>&lt;<span class="hljs-title">Customer</span>&gt; </span>&#123;<br><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">LinkManDao</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">JpaRepository</span>&lt;<span class="hljs-title">LinkMan</span>,<span class="hljs-title">Long</span>&gt;, <span class="hljs-title">JpaSpecificationExecutor</span>&lt;<span class="hljs-title">LinkMan</span>&gt; </span>&#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<ol start="4">
+<li>根据有不同情况</li>
+</ol>
+<p>情况一：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-meta">@Transactional</span> <span class="hljs-comment">//配置事务</span><br><span class="hljs-meta">@Rollback(false)</span> <span class="hljs-comment">//不自动回滚</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testAdd1</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//创建一个客户，创建一个联系人</span><br>    Customer customer = <span class="hljs-keyword">new</span> Customer();<br>    customer.setCustName(<span class="hljs-string">&quot;百度&quot;</span>);<br><br>    LinkMan linkMan = <span class="hljs-keyword">new</span> LinkMan();<br>    linkMan.setLkmName(<span class="hljs-string">&quot;小李&quot;</span>);<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">    *	配置了客户到联系人的关系</span><br><span class="hljs-comment">    *		从客户的角度上：发送两条insert语句，发送一条更新语句更新数据库（更新外键）</span><br><span class="hljs-comment">    *		由于配置了客户到联系人的关系(</span><br><span class="hljs-comment">    *			    <span class="hljs-doctag">@OneToMany</span>(targetEntity = LinkMan.class)</span><br><span class="hljs-comment">    *				<span class="hljs-doctag">@JoinColumn</span>(name = &quot;lkm_cust_id&quot;,referencedColumnName = &quot;cust_id&quot;)</span><br><span class="hljs-comment">    *		)：客户可以对外键进行维护</span><br><span class="hljs-comment">    */</span><br>    customer.getLinkMans().add(linkMan);<br><br><br>    customerDao.save(customer);<br>    linkManDao.save(linkMan);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220803174534127.png" srcset="/img/loading.gif" lazyload alt="image-20220803174534127"></p>
+<p>情况二：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-meta">@Transactional</span> <span class="hljs-comment">//配置事务</span><br><span class="hljs-meta">@Rollback(false)</span> <span class="hljs-comment">//不自动回滚</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testAdd2</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//创建一个客户，创建一个联系人</span><br>    Customer customer = <span class="hljs-keyword">new</span> Customer();<br>    customer.setCustName(<span class="hljs-string">&quot;百度&quot;</span>);<br><br>    LinkMan linkMan = <span class="hljs-keyword">new</span> LinkMan();<br>    linkMan.setLkmName(<span class="hljs-string">&quot;小李&quot;</span>);<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">    * 配置联系人到客户的关系（多对一）</span><br><span class="hljs-comment">    *   只发送了两条insert语句，其中插入联系人时，会自动插入外键客户id</span><br><span class="hljs-comment">    * 	因为配置了联系人到客户的映射关系（多对一）</span><br><span class="hljs-comment">    */</span><br>    linkMan.setCustomer(customer);<br><br>    customerDao.save(customer);<br>    linkManDao.save(linkMan);<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220803174826826.png" srcset="/img/loading.gif" lazyload alt="image-20220803174826826"></p>
+<p>情况三：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment">* 会有一条多余的update语句</span><br><span class="hljs-comment">*   由于一的一方可以维护外键：会发送update语句</span><br><span class="hljs-comment">*   解决此问题：只需要在一的一方放弃维护权即可(</span><br><span class="hljs-comment">*		在Customer中配置<span class="hljs-doctag">@OneToMany</span>(mappedBy = &quot;customer&quot;,cascade = CascadeType.ALL)</span><br><span class="hljs-comment">*	)</span><br><span class="hljs-comment">*/</span><br><span class="hljs-meta">@Test</span><br><span class="hljs-meta">@Transactional</span> <span class="hljs-comment">//配置事务</span><br><span class="hljs-meta">@Rollback(false)</span> <span class="hljs-comment">//不自动回滚</span><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testAdd2</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">//创建一个客户，创建一个联系人</span><br>    Customer customer = <span class="hljs-keyword">new</span> Customer();<br>    customer.setCustName(<span class="hljs-string">&quot;百度&quot;</span>);<br><br>    LinkMan linkMan = <span class="hljs-keyword">new</span> LinkMan();<br>    linkMan.setLkmName(<span class="hljs-string">&quot;小李&quot;</span>);<br><br><br>    linkMan.setCustomer(customer);<span class="hljs-comment">//由于配置了多的一方到一的一方的关联关系（当保存的时候，就已经对外键赋值）</span><br>    customer.getLinkMans().add(linkMan);<span class="hljs-comment">//由于配置了一的一方到多的一方的关联关系（发送一条update语句）</span><br><br>    customerDao.save(customer);<br>    linkManDao.save(linkMan);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/image-20220803175855476.png" srcset="/img/loading.gif" lazyload alt="image-20220803175855476"></p>
+<h3 id="多对多"><a href="#多对多" class="headerlink" title="多对多"></a>多对多</h3>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/%E6%A1%86%E6%9E%B6/">框架</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/">Spring</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringData/">SpringData</a>
+                    
+                      <a class="hover-with-bg" href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringData/SpringDataJPA/">SpringDataJPA</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SpringDataJPA/">SpringDataJPA</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/">
+                        <span class="hidden-mobile">Linux入门学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?cd190160b5401a029cee361d013e32a1";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
