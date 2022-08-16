@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      6k 字
+      7.5k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      187
+      234
        分钟
     </span>
   
@@ -507,12 +507,33 @@
 <h3 id="查看数据卷是否挂载成功"><a href="#查看数据卷是否挂载成功" class="headerlink" title="查看数据卷是否挂载成功"></a>查看数据卷是否挂载成功</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker inspect 容器ID<br></code></pre></td></tr></table></figure>
 
 <p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220812170913788.png" srcset="/img/loading.gif" lazyload alt="image-20220812170913788"></p>
-<h2 id="4-4-卷的继承和共享"><a href="#4-4-卷的继承和共享" class="headerlink" title="4.4 卷的继承和共享"></a>4.4 卷的继承和共享</h2><h2 id="4-10-可能遇到的问题"><a href="#4-10-可能遇到的问题" class="headerlink" title="4.10 可能遇到的问题"></a>4.10 可能遇到的问题</h2><p>Docker挂载主机目录访问如果出现cannot open directory .: Permission denied</p>
+<h2 id="4-4-卷的继承和共享"><a href="#4-4-卷的继承和共享" class="headerlink" title="4.4 卷的继承和共享"></a>4.4 卷的继承和共享</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">privileged=true --volumes-from 父类 --name u2 ubuntu<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220816143116584.png" srcset="/img/loading.gif" lazyload alt="image-20220816143116584"></p>
+<h2 id="4-5-可能遇到的问题"><a href="#4-5-可能遇到的问题" class="headerlink" title="4.5 可能遇到的问题"></a>4.5 可能遇到的问题</h2><p>Docker挂载主机目录访问如果出现cannot open directory .: Permission denied</p>
 <p>解决办法：在挂载目录后多加一个<code>--privileged=true</code>参数即可</p>
 <p>如果是CentOS7，其安全模块会比之前系统版本加强，不安全的会先禁止，所以目录挂载的情况被默认为不安全的行为。在SELinux里面挂载目录被禁止掉了，如果要开启，一般使用<code>--privileged=true</code>命令，扩大容器的权限，以解决挂载目录没有权限的问题。</p>
 <p>使用该参数，容器内的root拥有真正的root权限，否则，容器内的root只是外部的一个普通用户。</p>
 <hr>
-<h1 id="五、应用部署"><a href="#五、应用部署" class="headerlink" title="五、应用部署"></a>五、应用部署</h1><h2 id="5-1-MySQL部署"><a href="#5-1-MySQL部署" class="headerlink" title="5.1 MySQL部署"></a>5.1 MySQL部署</h2><ol>
+<h1 id="五、常用应用部署"><a href="#五、常用应用部署" class="headerlink" title="五、常用应用部署"></a>五、常用应用部署</h1><h2 id="5-1-总体步骤"><a href="#5-1-总体步骤" class="headerlink" title="5.1 总体步骤"></a>5.1 总体步骤</h2><ul>
+<li><p>搜索镜像</p>
+</li>
+<li><p>拉取镜像</p>
+</li>
+<li><p>查看镜像</p>
+</li>
+<li><p>启动镜像</p>
+<ul>
+<li>服务端口映射</li>
+<li>数据卷配置</li>
+</ul>
+</li>
+<li><p>停止容器</p>
+</li>
+<li><p>移除容器</p>
+</li>
+</ul>
+<h2 id="5-2-MySQL部署"><a href="#5-2-MySQL部署" class="headerlink" title="5.2 MySQL部署"></a>5.2 MySQL部署</h2><ol>
 <li>搜索mysql镜像</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search mysql<br></code></pre></td></tr></table></figure>
@@ -554,7 +575,15 @@
 <ol start="5">
 <li>使用外部机器连接容器中的mysql</li>
 </ol>
-<h2 id="5-2-Nginx部署"><a href="#5-2-Nginx部署" class="headerlink" title="5.2 Nginx部署"></a>5.2 Nginx部署</h2><ol>
+<blockquote>
+<p>使用 docker 启动 mysql 容器可能会出现中文乱码，这是由于容器中默认字符集编码为latin1。</p>
+<p>因此建立容器时，需要挂载容器卷，并新建my.cnf，配置字符集编码。重启容器</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cnf">[client]<br>default_character_set=utf8<br>[mysqld]<br>collation_server = utf8_general_ci<br>character_set_server = utf8<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-3-Nginx部署"><a href="#5-3-Nginx部署" class="headerlink" title="5.3 Nginx部署"></a>5.3 Nginx部署</h2><ol>
 <li>搜索nginx镜像</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search nginx<br></code></pre></td></tr></table></figure>
@@ -586,7 +615,7 @@
 <ol start="4">
 <li>使用外部机器访问nginx</li>
 </ol>
-<h2 id="5-3-Redis部署"><a href="#5-3-Redis部署" class="headerlink" title="5.3 Redis部署"></a>5.3 Redis部署</h2><ol>
+<h2 id="5-4-Redis部署"><a href="#5-4-Redis部署" class="headerlink" title="5.4 Redis部署"></a>5.4 Redis部署</h2><ol>
 <li>搜索redis镜像</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search redis<br></code></pre></td></tr></table></figure>
@@ -604,7 +633,7 @@
 <ol start="4">
 <li>使用外部机器连接redis</li>
 </ol>
-<h2 id="5-4-InfluxDB部署"><a href="#5-4-InfluxDB部署" class="headerlink" title="5.4 InfluxDB部署"></a>5.4 InfluxDB部署</h2><ol>
+<h2 id="5-5-InfluxDB部署"><a href="#5-5-InfluxDB部署" class="headerlink" title="5.5 InfluxDB部署"></a>5.5 InfluxDB部署</h2><ol>
 <li>搜索InfluxDB镜像</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search influxdb<br></code></pre></td></tr></table></figure>
@@ -623,7 +652,7 @@
 <ol start="4">
 <li>使用外部机器连接influxdb</li>
 </ol>
-<h2 id="5-5-Tomcat部署"><a href="#5-5-Tomcat部署" class="headerlink" title="5.5 Tomcat部署"></a>5.5 Tomcat部署</h2><ol>
+<h2 id="5-6-Tomcat部署"><a href="#5-6-Tomcat部署" class="headerlink" title="5.6 Tomcat部署"></a>5.6 Tomcat部署</h2><ol>
 <li>搜索tomcat镜像</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search tomcat<br></code></pre></td></tr></table></figure>
@@ -636,7 +665,7 @@
 <ol start="3">
 <li>创建容器，设置端口映射、目录映射</li>
 </ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在/root目录下创建tomcat目录用于存储tomcat数据信息</span><br>mkdir ~/tomcat<br>cd ~/tomcat<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在/root目录下创建tomcat目录用于存储tomcat数据信息，可以不执行创建文件夹步骤，因为docker run时会自动创建</span><br>mkdir ~/tomcat<br>cd ~/tomcat<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -id --name=c_tomcat -p 8080:8080 -v $PWD:/usr/local/tomcat/webapps tomcat <br></code></pre></td></tr></table></figure>
 
@@ -651,7 +680,10 @@
 <ol start="4">
 <li>使用外部机器访问tomcat</li>
 </ol>
-<h2 id="5-6-grafana部署"><a href="#5-6-grafana部署" class="headerlink" title="5.6 grafana部署"></a>5.6 grafana部署</h2><ol>
+<blockquote>
+<p>如果无法访问报错404，把webapps.dist里面的全部文件复制到 webapps下面就行。</p>
+</blockquote>
+<h2 id="5-7-Grafana部署"><a href="#5-7-Grafana部署" class="headerlink" title="5.7 Grafana部署"></a>5.7 Grafana部署</h2><ol>
 <li>搜索grafana镜像</li>
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search grafana<br></code></pre></td></tr></table></figure>
@@ -679,6 +711,62 @@
 </li>
 </ul>
 <p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20210510152639624.png" srcset="/img/loading.gif" lazyload alt="image-20210510152639624"></p>
+<hr>
+<h1 id="六、集群应用部署"><a href="#六、集群应用部署" class="headerlink" title="六、集群应用部署"></a>六、集群应用部署</h1><h2 id="6-1-主从MySQL部署"><a href="#6-1-主从MySQL部署" class="headerlink" title="6.1 主从MySQL部署"></a>6.1 主从MySQL部署</h2><h3 id="主从复制原理"><a href="#主从复制原理" class="headerlink" title="主从复制原理"></a>主从复制原理</h3><p>原理详见数据库篇<a target="_blank" rel="noopener" href="https://igotcha.gitee.io/2020/11/10/%E6%95%B0%E6%8D%AE%E5%BA%93/Mysql/Mysql%E9%AB%98%E7%BA%A7/mysql%E9%AB%98%E7%BA%A7/">MySQL进阶</a>。</p>
+<p>主从复制主要涉及三个线程：binlog 线程、I/O 线程和 SQL 线程。</p>
+<ul>
+<li><strong>binlog 线程</strong> ：负责将主服务器上的数据更改<strong>写入二进制日志</strong>（Binary log）中。</li>
+<li><strong>I/O 线程</strong> ：负责从主服务器上读取二进制日志，并<strong>写入从服务器的中继日志</strong>（Relay log）。</li>
+<li><strong>SQL 线程</strong> ：负责<strong>读取中继日志</strong>，解析出主服务器已经执行的数据更改并在从服务器中重放（Replay）。</li>
+</ul>
+<p>复制过程分成三步：</p>
+<ul>
+<li>master 将改变记录到二进制日志（binary log）。这些记录过程叫做二进制日志事件，binary log events</li>
+<li>slave 将master 的binary log events 拷贝到它的中继日志（relay log）</li>
+<li>slave 重做中继日志中的事件，将改变应用到自己的数据库中</li>
+</ul>
+<h2 id="6-2-搭建步骤"><a href="#6-2-搭建步骤" class="headerlink" title="6.2 搭建步骤"></a>6.2 搭建步骤</h2><ol>
+<li><p>新建主服务器容器实例3307</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -p 3307:3306 --name mysql-master \<br>-v /Users/gotcha/Software/data/docker_data/mysql-master/log:/var/log/mysql \<br>-v /Users/gotcha/Software/data/docker_data/mysql-master/data:/var/lib/mysql \<br>-v /Users/gotcha/Software/data/docker_data/mysql-master/conf:/etc/mysql/conf.d \<br>-e MYSQL_ROOT_PASSWORD=root  \<br>-d mysql:5.7<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>M1芯片mac如果报错<code>no matching manifest for linux/arm64/v8 in the manifest list entries</code>， 这是由于M1芯片是arm64架构，也称作aarch64架构，只能运行arm64/aarch64架构的程序。而MySQL5.7是amd64的架构，也就是Intel CPU的架构，也叫做x86_64， 也就是说，存在适配型问题。可以使用<code>docker pull --platform linux/x86_64 mysql:5.7</code>命令拉取</p>
+</blockquote>
+</li>
+<li><p>进入/Users/gotcha/Software/data/docker_data/mysql-master/conf目录下新建my.cnf</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cnf">[mysqld]<br>## 设置server_id，同一局域网中需要唯一<br>server_id=101 <br>## 指定不需要同步的数据库名称<br>binlog-ignore-db=mysql  <br>## 开启二进制日志功能<br>log-bin=mall-mysql-bin  <br>## 设置二进制日志使用内存大小（事务）<br>binlog_cache_size=1M  <br>## 设置使用的二进制日志格式（mixed,statement,row）<br>binlog_format=mixed  <br>## 二进制日志过期清理时间。默认值为0，表示不自动清理。<br>expire_logs_days=7  <br>## 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。<br>## 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致<br>slave_skip_errors=1062<br>## 设置字符集编码<br>collation_server = utf8_general_ci<br>character_set_server = utf8<br><br>[client]<br>default_character_set=utf8<br></code></pre></td></tr></table></figure></li>
+<li><p>修改完配置后重启master实例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker restart mysql-master<br></code></pre></td></tr></table></figure></li>
+<li><p>进入mysql-master容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker exec -it mysql-master /bin/bash<br><br>mysql -uroot -proot<br></code></pre></td></tr></table></figure></li>
+<li><p>master容器实例内创建数据同步用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE USER &#x27;slave&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;123456&#x27;;<br><br>GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO &#x27;slave&#x27;@&#x27;%&#x27;;<br></code></pre></td></tr></table></figure></li>
+<li><p>新建从服务器容器实例3308</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -p 3308:3306 --name mysql-slave \<br>-v /Users/gotcha/Software/data/docker_data/mysql-slave/log:/var/log/mysql \<br>-v /Users/gotcha/Software/data/docker_data/mysql-slave/data:/var/lib/mysql \<br>-v /Users/gotcha/Software/data/docker_data/mysql-slave/conf:/etc/mysql/conf.d \<br>-e MYSQL_ROOT_PASSWORD=root  \<br>-d mysql:5.7<br></code></pre></td></tr></table></figure></li>
+<li><p>进入/Users/gotcha/Software/data/docker_data/mysql-slave/conf目录下新建my.cnf</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs shell">[mysqld]<br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 设置server_id，同一局域网中需要唯一</span></span><br>server_id=102<br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 指定不需要同步的数据库名称</span></span><br>binlog-ignore-db=mysql  <br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 开启二进制日志功能，以备Slave作为其它数据库实例的Master时使用</span></span><br>log-bin=mall-mysql-slave1-bin  <br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 设置二进制日志使用内存大小（事务）</span></span><br>binlog_cache_size=1M  <br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 设置使用的二进制日志格式（mixed,statement,row）</span></span><br>binlog_format=mixed  <br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 二进制日志过期清理时间。默认值为0，表示不自动清理。</span></span><br>expire_logs_days=7  <br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span></span><br>slave_skip_errors=1062  <br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># relay_log配置中继日志</span></span><br>relay_log=mall-mysql-relay-bin  <br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># log_slave_updates表示slave将复制事件写进自己的二进制日志</span></span><br>log_slave_updates=1  <br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># slave设置为只读（具有super权限的用户除外）</span></span><br>read_only=1<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"><span class="hljs-comment"># 设置字符集编码</span></span><br>collation_server = utf8_general_ci<br>character_set_server = utf8<br><br>[client]<br>default_character_set=utf8<br></code></pre></td></tr></table></figure></li>
+<li><p>修改完配置后重启slave实例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker restart mysql-slave<br></code></pre></td></tr></table></figure></li>
+<li><p>在主数据库中查看主从同步状态</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mysql">   show master status;<br><br>![image-20220816162924291](Docker入门学习/image-20220816162924291.png)<br><br>10. 进入mysql-slave容器<br><br>    ```shell<br>     docker exec -it mysql-slave /bin/bash<br></code></pre></td></tr></table></figure></li>
+<li><p>在从数据库中配置主从复制</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">change master to master_host=&#x27;192.168.65.2(宿主机ip)&#x27;, master_user=&#x27;slave&#x27;, master_password=&#x27;123456&#x27;, master_port=3307, master_log_file=&#x27;mall-mysql-bin.000001&#x27;, master_log_pos=617, master_connect_retry=30;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs fortran">主从复制命令参数说明:<br>master_host：主数据库的IP地址；<br>master_port：主数据库的运行端口；<br>master_user：在主数据库创建的用于同步数据的用户账号；<br>master_password：在主数据库创建的用于同步数据的用户密码；<br>master_log_file：指定从数据库要复制数据的日志文件，通过查看主数据的状态，获取<span class="hljs-keyword">File</span>参数；<br>master_log_pos：指定从数据库从哪个位置开始复制数据，通过查看主数据的状态，获取<span class="hljs-keyword">Position</span>参数；<br>master_connect_retry：连接失败重试的时间间隔，单位为秒。<br></code></pre></td></tr></table></figure></li>
+<li><p>在从数据库中查看主从同步状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">show slave status \G;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220816172106811.png" srcset="/img/loading.gif" lazyload alt="image-20220816172106811"></p>
+</li>
+<li><p>在从数据库中开启主从同步</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">start slave;<br></code></pre></td></tr></table></figure></li>
+<li><p>查看从数据库状态发现已经同步</p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220816173718229.png" srcset="/img/loading.gif" lazyload alt="image-20220816173718229"></p>
+</li>
+<li><p>主从复制测试</p>
+<p>主机新建库-使用库-新建表-插入数据后，从机可以进行读取。</p>
+</li>
+</ol>
 
             </div>
             <hr>
