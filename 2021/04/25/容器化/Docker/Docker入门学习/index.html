@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      234
+      236
        分钟
     </span>
   
@@ -387,8 +387,11 @@
 
 
 
-
-
+<blockquote>
+<p>Docker获取宿主机ip：</p>
+<p>进入容器后执行<code>ping host.docker.internal</code></p>
+<p>Docker的CentOS镜像由于做了精简，去掉了 ping 命令，可以使用<code> yum install iputils</code>安装ping命令</p>
+</blockquote>
 <hr>
 <h1 id="三、Docker镜像"><a href="#三、Docker镜像" class="headerlink" title="三、Docker镜像"></a>三、Docker镜像</h1><h2 id="3-1-概述"><a href="#3-1-概述" class="headerlink" title="3.1 概述"></a>3.1 概述</h2><p>镜像（Image）是一种轻量级、可执行的独立软件包，它包含运行某个软件所需的所有内容。把应用程序和配置依赖打包好形成一个可交付的运行环境(包括代码、运行时需要的库、环境变量和配置文件等)，这个打包好的运行环境就是image镜像文件。</p>
 <p>只有通过这个镜像文件才能生成Docker容器实例(类似Java中new出来一个对象)。</p>
@@ -407,7 +410,7 @@
 <li><p>rootfs (root file system) ，在bootfs之上。包含的就是典型 Linux 系统中的 /dev, /proc, /bin, /etc 等标准目录和文件。rootfs就是各种不同的操作系统发行版，比如Ubuntu，Centos等等。</p>
 </li>
 </ul>
-<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/Users/郭彬/AppData/Local/Temp/mindmaster/b4182b059/bin/C96ACA73-17A3-4498-9629-2D4931EA0D67.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220819174552831.png" srcset="/img/loading.gif" lazyload alt="image-20220819174552831"></p>
 <blockquote>
 <p>Q：平时安装进虚拟机的CentOS都是好几GB，为什么Docker这里才几百MB</p>
 <p>A：对于一个精简的OS，rootfs可以很小，只需要包括最基本的命令、工具和程序库就可以了，因为底层直接用Host的kernel，自己只需要提供 rootfs 就行了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有差别。因此不同的发行版可以公用bootfs。</p>
@@ -725,7 +728,7 @@
 <li>slave 将master 的binary log events 拷贝到它的中继日志（relay log）</li>
 <li>slave 重做中继日志中的事件，将改变应用到自己的数据库中</li>
 </ul>
-<h2 id="6-2-搭建步骤"><a href="#6-2-搭建步骤" class="headerlink" title="6.2 搭建步骤"></a>6.2 搭建步骤</h2><ol>
+<h3 id="搭建步骤"><a href="#搭建步骤" class="headerlink" title="搭建步骤"></a>搭建步骤</h3><ol>
 <li><p>新建主服务器容器实例3307</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -p 3307:3306 --name mysql-master \<br>-v /Users/gotcha/Software/data/docker_data/mysql-master/log:/var/log/mysql \<br>-v /Users/gotcha/Software/data/docker_data/mysql-master/data:/var/lib/mysql \<br>-v /Users/gotcha/Software/data/docker_data/mysql-master/conf:/etc/mysql/conf.d \<br>-e MYSQL_ROOT_PASSWORD=root  \<br>-d mysql:5.7<br></code></pre></td></tr></table></figure>
 
@@ -767,7 +770,8 @@
 <p>主机新建库-使用库-新建表-插入数据后，从机可以进行读取。</p>
 </li>
 </ol>
-
+<hr>
+<h2 id="6-2"><a href="#6-2" class="headerlink" title="6.2"></a>6.2</h2>
             </div>
             <hr>
             <div>
