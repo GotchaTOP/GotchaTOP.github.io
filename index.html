@@ -1,0 +1,943 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="懂一点点">
+  <meta name="author" content="Gotcha">
+  <meta name="keywords" content="">
+  <title>Gotcha的笔记总结</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":"cd190160b5401a029cee361d013e32a1","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"U8yaiFQ2fUef4ujWTig83mSL-gzGzoHsz","app_key":"akCMytdeJqrMuKP84F4oblqz","server_url":"https://u8yaifq2.lc-cn-n1-shared.com"}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Gotcha的笔记总结</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background/01.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="读书破万卷，Coding如有神">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/11/20/Python/Python%E8%AF%AD%E6%B3%95/Python%E5%9F%BA%E7%A1%80/">Python基础</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/11/20/Python/Python%E8%AF%AD%E6%B3%95/Python%E5%9F%BA%E7%A1%80/">
+          
+          
+            
+          
+          
+本文章以Python3为例。
+
+一、 基础概述1.1 简介Python 是一个高层次的结合了解释性、编译性、互动性和面向对象的脚本语言。
+Python 的设计具有很强的可读性，相比其他语言经常使用英文关键字，其他语言的一些标点符号，它具有比其他语言更有特色语法结构。
+
+Python 是一种解释型语言： 这意味着开发过程中没有了编译这个环节。
+Python 是交互式语言： 这意味着，可以在一个 P
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-20 00:00" pubdate>
+              2022-11-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Python/">Python</a>
+            
+              <a href="/categories/Python/Python%E5%9F%BA%E7%A1%80/">Python基础</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Python%E5%9F%BA%E7%A1%80/">Python基础</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/10/25/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/10/25/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">
+          
+          
+            
+          
+          一、计算机系统漫游1.1 Linux历史
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-10-25 00:00" pubdate>
+              2022-10-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/10/20/Java/%E6%A1%86%E6%9E%B6/Jackson/Json%E4%B8%B2%E5%92%8C%E5%AE%9E%E4%BD%93%E7%B1%BB%E5%AD%97%E6%AE%B5%E4%B8%8D%E4%B8%80%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/">Json串和实体类字段不一致的问题</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/10/20/Java/%E6%A1%86%E6%9E%B6/Jackson/Json%E4%B8%B2%E5%92%8C%E5%AE%9E%E4%BD%93%E7%B1%BB%E5%AD%97%E6%AE%B5%E4%B8%8D%E4%B8%80%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/">
+          
+          
+            
+          
+          对json串和实体类字段不一致的情况进行一个测试：
+首先，建立一个实体类：这里简单定义了name,sex,age三个属性，以及get set tostring方法。
+123456789101112131415161718192021222324252627public class Student &#123;     private String name;     private String 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-10-20 00:00" pubdate>
+              2022-10-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%BA%8F%E5%88%97%E5%8C%96/">序列化</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BA%8F%E5%88%97%E5%8C%96/">序列化</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/10/14/Java/%E6%A1%86%E6%9E%B6/Jackson/@JsonProperty%20%E5%92%8C@JSONField%E7%9A%84%E5%8C%BA%E5%88%AB/">JsonProperty和JSONField的区别</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/10/14/Java/%E6%A1%86%E6%9E%B6/Jackson/@JsonProperty%20%E5%92%8C@JSONField%E7%9A%84%E5%8C%BA%E5%88%AB/">
+          
+          
+            
+          
+          一、目的都是为了解决bean与json字段不一致问题，或者字段定义不符合前端所需要的标准
+二、区别2.1 框架不同@jsonProperty是 Jackson的包，而@jsonfield是fastjson的包
+
+fastjson一般用在中间层，controller层用Jackson注解
+
+2.2 用法不同2.2.1 bean转换成Json字符串
+@JsonProperty：ObjectMapper
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-10-14 00:00" pubdate>
+              2022-10-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%BA%8F%E5%88%97%E5%8C%96/">序列化</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%BA%8F%E5%88%97%E5%8C%96/">序列化</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/10/02/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/">回调函数</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/10/02/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/">
+          
+          
+            
+          
+          一、概念1.1 概念回调函数就是一个被作为参数传递的函数。回调的核心就是回调方将本身（即this）传递给调用方，这样调用方就可以在调用完毕之后告诉回调方它想要知道的信息。
+文章参考了https://blog.csdn.net/zjpp2580369/article/details/83027547。
+1.2 调用方式软件模块之间总是存在一定的接口，从调用方式上，可以把他们分为三类:同步调用、回调和
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-10-02 00:00" pubdate>
+              2022-10-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/">编程知识</a>
+            
+              <a href="/categories/%E7%BC%96%E7%A8%8B%E7%9F%A5%E8%AF%86/%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/">回调函数</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0/">回调函数</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/09/20/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RabbitMQ/RabbitMQ%E5%85%A5%E9%97%A8/">RabbitMQ入门</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/09/20/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RabbitMQ/RabbitMQ%E5%85%A5%E9%97%A8/">
+          
+          
+            
+          
+          一、RabbitMQ概述1.1 概述RabbitMQ 是一个消息中间件，负责接受并转发消息。主要由生产者、交换机、队列、消费者四部分组成。
+
+生产者， 产生数据发送消息的程序是生产者。
+
+交换机，交换机是 RabbitMQ 非常重要的一个部件，一方面它接收来自生产者的消息，另一方面它将消息推送到队列中。交换机必须确切知道如何处理它接收到的消息，是将这些消息推送到特定队列还是推送到多个队列，亦或者是
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-20 00:00" pubdate>
+              2022-09-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
+            
+              <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RabbitMQ/">RabbitMQ</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/RabbitMQ/">RabbitMQ</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/09/08/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%ADRestTemplate%E4%BD%BF%E7%94%A8/">SpringBoot中RestTemplate使用</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/09/08/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%ADRestTemplate%E4%BD%BF%E7%94%A8/">
+          
+          
+            
+          
+          一、RestTemplate概述1.1 概述在项目中，当需要远程调用一个 HTTP 接口时，经常会用到 RestTemplate 这个类。这个类是 Spring 框架提供的一个工具类。Spring 官网对它的介绍如下：
+
+RestTemplate: The original Spring REST client with a synchronous, template method API.
+
+从
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-08 00:00" pubdate>
+              2022-09-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java/">Java</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/">框架</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/">Spring</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringBoot/">SpringBoot</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/">服务端接口调用</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/08/10/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">SpringDataJPA开发遇到的问题</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/08/10/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/">
+          
+          
+            
+          
+          一、JPA 在多模块中无法找到对应的 Bean具体的项目结构如下图所示：
+
+
+项目为微服务项目，其中，common-utils包为通用工具和配置，包含公共实体类；service_payment_provider包为业务层，用于定义实际的操作。
+此时希望在service_payment_provider通过 JPA 来完成数据的实际操作，但是在当前的项目环境下，service_payment_pro
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-08-10 00:00" pubdate>
+              2022-08-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java/">Java</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/">框架</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/">Spring</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringData/">SpringData</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringData/SpringDataJPA/">SpringDataJPA</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SpringDataJPA/">SpringDataJPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/08/08/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/kafka/Kafka%E5%85%A5%E9%97%A8/">Kafka入门</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/08/08/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/kafka/Kafka%E5%85%A5%E9%97%A8/">
+          
+          
+            
+          
+          一、Kafka概述1.1 kafka定义
+
+1.1.1 传统定义Kafka是一个分布式的基于发布&#x2F;订阅模式的消息队列（MessageQueue），主要应用于大数据实时处理领域。 
+
+发布&#x2F;订阅：消息的发布者不会将消息直接发送给特定的订阅者，而是将发布的消息 分为不同的类别，订阅者只接收感兴趣的消息。
+
+1.1.2 最新定义Kafka是一个开源的分布式事件流平台（ Event S
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-08-08 00:00" pubdate>
+              2022-08-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
+            
+              <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Kafka/">Kafka</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kafka/">Kafka</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/">SpringDataJPA入门</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/">
+          
+          
+            
+          
+          一、JPA1.1 JPA概述JPA的全称是Java Persistence API， 即Java 持久化API，是SUN公司推出的一套基于ORM的规范，内部是由一系列的接口和抽象类构成。
+JPA通过JDK 5.0注解描述对象－关系表的映射关系，并将运行期的实体对象持久化到数据库中。
+
+
+1.2 JPA与JDBC
+相同点
+都与数据库操作有关
+JPA与JDBC都是一组由SUN官方推出的规范接口
+
+
+不
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-08-01 00:00" pubdate>
+              2022-08-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java/">Java</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/">框架</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/">Spring</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringData/">SpringData</a>
+            
+              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringData/SpringDataJPA/">SpringDataJPA</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SpringDataJPA/">SpringDataJPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?cd190160b5401a029cee361d013e32a1";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,3586 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="懂一点点">
+  <meta name="author" content="Gotcha">
+  <meta name="keywords" content="">
+  <title>Linux入门学习 - Gotcha的笔记总结</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":"cd190160b5401a029cee361d013e32a1","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"U8yaiFQ2fUef4ujWTig83mSL-gzGzoHsz","app_key":"akCMytdeJqrMuKP84F4oblqz","server_url":"https://u8yaifq2.lc-cn-n1-shared.com"}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Gotcha的笔记总结</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background/01.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Linux入门学习">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-04-23 00:00" pubdate>
+        2022年4月23日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      21k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      615
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux入门学习</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年4月23日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h1><h2 id="1-1-Linux历史"><a href="#1-1-Linux历史" class="headerlink" title="1.1 Linux历史"></a>1.1 Linux历史</h2><p>Linux内核最初只是由芬兰人林纳斯·托瓦兹(Linus Torvalds)在赫尔辛基大学上 学时出于个人爱好而编写的。<br>Linux是一套免费使用和自由传播的类Unix操作系统，是一个基于POSIX和UNIX 的多用户、多任务、支持多线程和多CPU的操作系统。Liux能运行主要的UNIX工 具软件、应用程序和网络协议。它支持32位和64位硬件。Linux继承了Unix以网络 为核心的设计思想，是一个性能稳定的多用户网络操作系统。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220423222802325.png" srcset="/img/loading.gif" class="" title="image-20220423222802325">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220423222922413.png" srcset="/img/loading.gif" class="" title="image-20220423222922413">
+
+
+
+<h2 id="1-2-Linux发行版"><a href="#1-2-Linux发行版" class="headerlink" title="1.2 Linux发行版"></a>1.2 Linux发行版</h2><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220423225024347.png" srcset="/img/loading.gif" class="" title="image-20220423225024347">
+
+<h2 id="1-3-GNU-x2F-Linux"><a href="#1-3-GNU-x2F-Linux" class="headerlink" title="1.3 GNU&#x2F;Linux"></a>1.3 GNU&#x2F;Linux</h2><p><strong>GNU</strong>是一个自由的操作系统，其内容软件完全以GPL方式发布。这个操作系统是GNU计划的主要目标，名称来自GNU’s Not Unix!的递归缩写，因为GNU的设计类似Unix，但它不包含具著作权的Unix代码。</p>
+<ul>
+<li>GNU计划，是由理查德·斯托曼在1983年9月27日公开发起的自由软件集体协作计划。它的目标是创建一套完全自由的操作系统GNU。</li>
+</ul>
+<p>作为操作系统，GNU的发展仍未完成，其中最大的问题是具有完备功能的内核尚未被开发成功。GNU的内核，称为Hurd，是自由软件基金会发展的重点，但是其发展尚未成熟。在实际使用上，多半使用Linux内核、FreeBSD等替代方案，作为系统核心，其中主要的操作系统是Linux的发行版。Linux操作系统包涵了Linux内核与其他自由软件项目中的GNU组件和软件，可以被称为GNU&#x2F;Linux。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220423223105055.png" srcset="/img/loading.gif" class="" title="image-20220423223105055">
+
+<h2 id="1-4-GPL"><a href="#1-4-GPL" class="headerlink" title="1.4 GPL"></a>1.4 GPL</h2><p><strong>GNU通用公共许可证简称为GPL</strong>，是由自由软件基金会发行的用于计算机软件的协议证书，使用该证书的软件被称为自由软件。大多数的GNU程序和超过半数的自由软件使用它。Linux操作系统以及与它有关的大量软件是在GPL的推动下开发和发布的。如果打算为了发布的目的修改，更新或改进任何受通用公共许可证约束的软件，所修改的软件同样必须受到GNU通用许可证条款的约束。</p>
+<h2 id="1-5-Linux文件与目录结构"><a href="#1-5-Linux文件与目录结构" class="headerlink" title="1.5 Linux文件与目录结构"></a>1.5 Linux文件与目录结构</h2><p>Linux 系统中一切皆文件，整个系统都是当做文件来管理，挂载点相当于磁盘文件系统的入口目录。</p>
+<ul>
+<li>挂载点实际上就是linux中的磁盘文件系统的入口目录。</li>
+</ul>
+<p>Linux目录结构如下图所示：</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220714170827344.png" srcset="/img/loading.gif" class="" title="image-20220714170827344">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220714225810630.png" srcset="/img/loading.gif" class="" title="image-20220714225810630">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220714230822384.png" srcset="/img/loading.gif" class="" title="image-20220714230822384">
+
+<ul>
+<li><p><strong>&#x2F;</strong> ：根目录，Linux系统中最重要的目录，文件系统的入口，所有子目录都是在根下创建的，同时根目录还跟系统开机，关机和系统修复动作有关，只有root用户才有此目录读写权限，而且&#x2F;root是root用户主目录。</p>
+</li>
+<li><p><strong>&#x2F;bin</strong>：其中bin是Binary的缩写，该目录存放常用的可执行二进制命令文件。</p>
+</li>
+<li><p><strong>&#x2F;sbin</strong>：其中s是System的缩写，和bin目录相似，存放标准系统管理命令文件，一般只有超级用户才能使用。</p>
+</li>
+<li><p><strong>&#x2F;lib</strong>：存放32位系统所需要的基本动态链接库，类似于Windows里的DLL文件，是库文件和内核模块存放目录。</p>
+</li>
+<li><p><strong>&#x2F;lib64</strong>：存放64位系统所需要的基本动态链接库，类似于Windows里的DLL文件，是库文件和内核模块存放目录。</p>
+</li>
+<li><p><strong>&#x2F;usr</strong>：存放用户使用系统命令和应用程序等信息，像命令，帮助文件等。其中&#x2F;bin链接到了&#x2F;usr&#x2F;bin，&#x2F;sbin链接到了&#x2F;usr&#x2F;sbin，&#x2F;lib链接到了&#x2F;usr&#x2F;lib，&#x2F;lib64链接到了&#x2F;usr&#x2F;lib64。</p>
+<ul>
+<li>&#x2F;usr&#x2F;local：本地软件或用户安装的软件目录。</li>
+<li>&#x2F;usr&#x2F;share：存放共享文件的目录，其中&#x2F;usr&#x2F;share&#x2F;man存放在线帮助文档，&#x2F;usr&#x2F;share&#x2F;doc存放软件杂项文档说明。</li>
+<li>&#x2F;usr&#x2F;src：存放一般源码。</li>
+</ul>
+</li>
+<li><p><strong>&#x2F;boot</strong>：包含了操作系统的内核和在启动系统过程中所要用到的文件，用作引导启动分区，grub系统引导管理器也在此目录下。即使主要的根分区出现了问题，计算机依然能够启动。个人使用的程序尽量不要安装在这里。</p>
+</li>
+<li><p><strong>&#x2F;dev</strong>：其中dev是Device的缩写，存放所有设备文件，如fd0为软盘设备，cdrom为光盘设备。</p>
+</li>
+<li><p><strong>&#x2F;etc</strong>：其中etc是Etcetra的缩写，用于存放所有的系统管理所需要的配置文件和子目录，也包含了用于启动&#x2F;停止单个程序的启动和关闭shell脚本。</p>
+</li>
+<li><p><strong>&#x2F;home</strong>：用于存放普通用户的主目录，这个分区的大小取决于有多少用户。在Linux中每个用户都有一个自己的目录，并且通常以用户账号命名（普通用户），root用户可以利用此目录很好地控制普通用户使用计算机。</p>
+</li>
+<li><p><strong>&#x2F;root</strong>：用于存放root用户的主目录。</p>
+</li>
+<li><p><strong>&#x2F;opt</strong>：其中opt是Optional的缩写（Optional application software packages），用于存放第三方软件的目录，默认为空。</p>
+</li>
+<li><p><strong>&#x2F;media</strong>（CentOS6）：Linux会自动的识别一些设备，如U盘、光驱等，Linux会把识别的设备挂载到这个目录下。此外，CentOS7中该目录迁移至&#x2F;run&#x2F;media。</p>
+</li>
+<li><p><strong>&#x2F;mnt</strong>：其中mnt是Mount的缩写，用于让用户临时挂载其他文件系统，可以将外部的存储设备挂载在&#x2F;mnt后进行操作。</p>
+</li>
+<li><p><strong>&#x2F;proc</strong>：其中proc是Process的缩写，这个目录是一个虚拟目录，是系统内存的映射，它只存在内存当中，而不占用外存空间。它以文件系统的方式为访问系统内核数据的操作提供接口。可以通过该目录获取系统信息。</p>
+</li>
+<li><p><strong>&#x2F;run</strong>：用于保存系统运行时需要的内容，系统下次启动时重新生成。</p>
+</li>
+<li><p><strong>&#x2F;srv</strong>：其中srv是Service的缩写，用于保存一些系统启动之后需要提取的数据。</p>
+</li>
+<li><p><strong>&#x2F;sys</strong>：其中sys是System的缩写，这是Linux2.6内核的一个明显变化，该目录下安装了2.6内核中新出现的文件系统sysfs。sysfs文件系统是一个类似于proc文件系统的特殊文件系统，用于将系统中的设备组织成层次结构，并向用户模式程序提供详细的内核数据结构信息。其实，就是在用户态可以通过对sys文件系统的访问，来看内核态的一些驱动或者设备等。</p>
+</li>
+<li><p><strong>&#x2F;lost+found</strong>：这个目录一般情况下是空的，当系统非法关机后，这里就存放了一些文件。</p>
+</li>
+<li><p><strong>&#x2F;tmp</strong>：其中tem是Temporary的缩写，这么目录用来存放临时文件，即使程序运行时生成大量的临时文件，或者用户对系统进行了错误的操作，文件系统的其它部分仍然是安全的。</p>
+</li>
+<li><p><strong>&#x2F;var</strong>：其中var是Variable的缩写（Variable data file），用于存放不断变化的数据文件，如程序日志。</p>
+<ul>
+<li>&#x2F;var&#x2F;lib：保存引用程序状态信息数据。</li>
+<li>&#x2F;var&#x2F;local：用于为&#x2F;usr&#x2F;local下的应用程序存储可变数据。</li>
+<li>&#x2F;var&#x2F;lock：锁文件。</li>
+<li>&#x2F;var&#x2F;log：日志目录及文件。</li>
+<li>&#x2F;var&#x2F;opt：专用于为&#x2F;opt下的应用程序存储的可变数据。</li>
+<li>&#x2F;var&#x2F;spool：用于程序数据池。</li>
+<li>&#x2F;var&#x2F;tmp：用于保存系统重启两次之间产生的临时数据。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="二、VI-x2F-VIM-编辑器"><a href="#二、VI-x2F-VIM-编辑器" class="headerlink" title="二、VI&#x2F;VIM 编辑器"></a>二、VI&#x2F;VIM 编辑器</h1><h2 id="2-1-概述"><a href="#2-1-概述" class="headerlink" title="2.1 概述"></a>2.1 概述</h2><ul>
+<li><p>VI 是 Unix 操作系统和类 Unix 操作系统中最通用的文本编辑器。</p>
+</li>
+<li><p>VIM 编辑器是从 VI 发展出来的一个性能更强大的文本编辑器。可以主动的以字体颜 色辨别语法的正确性，方便程序设计。</p>
+</li>
+</ul>
+<blockquote>
+<p>VIM 与 VI 编辑器完全兼容。</p>
+</blockquote>
+<h2 id="2-2-一般模式"><a href="#2-2-一般模式" class="headerlink" title="2.2 一般模式"></a>2.2 一般模式</h2><p>以 vi 打开一个档案就直接进入一般模式（这是默认的模式）。在这个模式中，可以使用『上下左右』按键来移动光标，可以使用『删除字符』或『删除整行』来处理档案内容，也可以使用『复制、粘贴』来处理文件数据。</p>
+<h3 id="常用语法"><a href="#常用语法" class="headerlink" title="常用语法"></a>常用语法</h3><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220715113052195.png" srcset="/img/loading.gif" class="" title="image-20220715113052195">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220717225824683.png" srcset="/img/loading.gif" class="" title="image-20220717225824683">
+
+<h3 id="键盘布局"><a href="#键盘布局" class="headerlink" title="键盘布局"></a>键盘布局</h3><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220715113305860.png" srcset="/img/loading.gif" class="" title="image-20220715113305860">
+
+<h2 id="2-3-编辑模式"><a href="#2-3-编辑模式" class="headerlink" title="2.3 编辑模式"></a>2.3 编辑模式</h2><ul>
+<li>在一般模式中可以进行删除、复制、粘贴等的动作，但是却无法编辑文件的内容。</li>
+<li>只有按下『i, I, o, O, a, A』等任何一个字母之后才会进入编辑模式。</li>
+</ul>
+<blockquote>
+<p>通常在Linux中，按下『i, I, o, O, a, A』这些按键时，在画面的左下方会出现『INSERT或 REPLACE』的字样，此时才可以进行编辑。而如果要回到一般模式时， 则必须要按下 『Esc』按键即可退出编辑模式。</p>
+</blockquote>
+<h3 id="进入编辑模式"><a href="#进入编辑模式" class="headerlink" title="进入编辑模式"></a>进入编辑模式</h3><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220717224138238.png" srcset="/img/loading.gif" class="" title="image-20220717224138238">
+
+<h3 id="退出编辑模式"><a href="#退出编辑模式" class="headerlink" title="退出编辑模式"></a>退出编辑模式</h3><p>按『Esc』键退出编辑模式，进入一般模式。</p>
+<h2 id="2-4-命令模式"><a href="#2-4-命令模式" class="headerlink" title="2.4 命令模式"></a>2.4 命令模式</h2><p>在一般模式当中，输入『 : &#x2F; ?』中的任何一个按钮，就可以将光标移动到最底下一行。</p>
+<p>在命令模式当中，可以进行检索、读取、存盘、替换、 离开 vi、显示行号等动作。</p>
+<p>基本语法如下：</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220717231302594.png" srcset="/img/loading.gif" class="" title="image-20220717231302594">
+
+<h2 id="2-5-模式切换"><a href="#2-5-模式切换" class="headerlink" title="2.5 模式切换"></a>2.5 模式切换</h2><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220717224554098.png" srcset="/img/loading.gif" class="" title="image-20220717224554098">
+
+<hr>
+<h1 id="三、基本设置"><a href="#三、基本设置" class="headerlink" title="三、基本设置"></a>三、基本设置</h1><h2 id="3-1-虚拟机网络配置"><a href="#3-1-虚拟机网络配置" class="headerlink" title="3.1 虚拟机网络配置"></a>3.1 虚拟机网络配置</h2><p>以VMware为例，配置过程如下：</p>
+<ul>
+<li>安装完成虚拟机与CentOS后，对<strong>VmWare生成的网关地址</strong>进行配置，使用NAT模式</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.2.png" srcset="/img/loading.gif" class="">
+
+
+
+<h3 id="网络模式"><a href="#网络模式" class="headerlink" title="网络模式"></a>网络模式</h3><h4 id="桥接"><a href="#桥接" class="headerlink" title="桥接"></a>桥接</h4><ul>
+<li>把虚拟出来的网卡直接连接外部的路由器，主机起到了网桥的作用。看起来就好像是网络中多出了一台真正的计算机一样</li>
+<li>从路由器来看， 虚拟机等同于局域网内其它的物理机，且虚拟机对外部网络可见。</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.3.png" srcset="/img/loading.gif" class="">
+
+
+
+<h4 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h4><p>NAT（Network Address Translation，网络地址转换），借助于NAT，私有地址的”内部”网络通过路由器发送数据包时，私有地址被转换成合法的IP地址，一个局域网只需使用少量IP地址（甚至是1个）即可实现私有地址网络内所有计算机与Internet的通信需求。</p>
+<p>NAT将自动修改IP报文的源IP地址和目的IP地址，Ip地址校验则在NAT处理过程中自动完成。有些应用程序将源IP地址嵌入到IP报文的数据部分中，所以还需要同时对报文的数据部分进行修改，以匹配IP头中已经修改过的源IP地址。否则，在报文数据部分嵌入IP地址的应用程序就不能正常工作。</p>
+<ul>
+<li><p>在宿主机中创建一个子网， 把虚拟机放入子网中， 子网中有一个NAT服务</p>
+</li>
+<li><p>虚拟机通过共享主机IP访问外部网络，但是<strong>外部网络无法直接访问虚拟机</strong>。</p>
+<blockquote>
+<p>对应VMnet8虚拟网卡</p>
+</blockquote>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.4.png" srcset="/img/loading.gif" class="">
+
+
+
+<h4 id="仅主机"><a href="#仅主机" class="headerlink" title="仅主机"></a>仅主机</h4><ul>
+<li>创建子网， 把虚拟机放入这个子网。</li>
+<li>虚拟机与中间共享子网，与外界网络无法通信。</li>
+</ul>
+<blockquote>
+<p>对应VMnet1虚拟网卡</p>
+</blockquote>
+<h3 id="物理机网络适配器配置"><a href="#物理机网络适配器配置" class="headerlink" title="物理机网络适配器配置"></a>物理机网络适配器配置</h3><p>对物理机中虚拟机网络适配器进行设置，IP设为静态IP，<strong>与VmWare生成的网关地址放在同一个子网内</strong></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.10.png" srcset="/img/loading.gif" class="">
+
+
+
+<h3 id="设置MAC地址"><a href="#设置MAC地址" class="headerlink" title="设置MAC地址"></a>设置MAC地址</h3><ul>
+<li>找到台虚拟机的MAC地址，并在虚拟机<code>/etc/udev/rules.d/70-persistent-net.rules</code>文件下配置<ul>
+<li><code>vim /etc/udev/rules.d/70-persistent-net.rules</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.5.png" srcset="/img/loading.gif" class="">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.6.png" srcset="/img/loading.gif" class="">
+
+
+
+<h3 id="设置IP地址"><a href="#设置IP地址" class="headerlink" title="设置IP地址"></a>设置IP地址</h3><p>在虚拟机的<code>/etc/sysconfig/network-scripts/ifcfg-eth0</code>文件下配置IP地址</p>
+<blockquote>
+<p>也可能是<strong>ifcfg-ens33</strong>，原因如下：</p>
+<p>目前的主流网卡为使用以太网络协定所开发出来的以太网卡 (Ethernet)，因此Linux称呼这种网络接口为 ethN (N 为数字)。 </p>
+<p>举例来说，主机上面有一张以太网卡，因此主机的网络接口就是 eth0 (第一张为 0 号开始)。</p>
+<p>新的 CentOS 7 开始对于网卡的编号有另一套规则，网卡的界面代号与网卡的来源有关，网卡名称是这样分类的：</p>
+<ul>
+<li>eno1 ：代表由主板 BIOS 内置的网卡</li>
+<li>ens1 ：代表由主板 BIOS 内置的 PCI-E 界面的网卡</li>
+<li>enp2s0 ：代表 PCI-E 界面的独立网卡，可能有多个插孔，因此会有 s0, s1… 的编号～</li>
+<li>eth0 ：如果上述的名称都不适用，就回到原本的默认网卡编号</li>
+</ul>
+<p>所以会有ens33这种网卡表现形式。</p>
+</blockquote>
+<ul>
+<li><code>vim /etc/sysconfig/network-scripts/ifcfg-eth0</code></li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.7.png" srcset="/img/loading.gif" class="">
+
+<h3 id="设置主机名"><a href="#设置主机名" class="headerlink" title="设置主机名"></a>设置主机名</h3><p>在虚拟机的<code>/ect/sysconfig/network</code>文件下配置主机名</p>
+<ul>
+<li><code>vim /ect/sysconfig/network</code></li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.8.png" srcset="/img/loading.gif" class="">
+
+<blockquote>
+<p>也可以编辑&#x2F;etc&#x2F;hostname文件设置</p>
+</blockquote>
+<p>重启后生效</p>
+<h3 id="设置IP与域名映射"><a href="#设置IP与域名映射" class="headerlink" title="设置IP与域名映射"></a>设置IP与域名映射</h3><p>分别在每一台虚拟机的<code>/ect/hosts</code>文件下配置IP与域名映射关系</p>
+<ul>
+<li><code>vim /etc/hosts</code></li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.9.png" srcset="/img/loading.gif" class="">
+
+<h2 id="3-2-其他设置"><a href="#3-2-其他设置" class="headerlink" title="3.2 其他设置"></a>3.2 其他设置</h2><h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><p>机器执行以下命令（root用户来执行）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">service iptables stop   #关闭防火墙<br>chkconfig iptables off  #禁止开机启动<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.11.png" srcset="/img/loading.gif" class="">
+
+<blockquote>
+<p>关闭防火墙时，如果提示下图</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20211104092404746.png" srcset="/img/loading.gif" class="" title="image-20211104092404746">
+
+<p>是因为centos7后是使用的基于iptable的systemctl stop firewalld</p>
+<p>解决方法：</p>
+<p><code>yum install iptables-services</code></p>
+<p>查看防火墙状态</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">firewall-cmd <span class="hljs-comment">--state</span><br></code></pre></td></tr></table></figure>
+
+<p>停止firewall</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">systemctl stop firewalld.service<br></code></pre></td></tr></table></figure>
+
+<p>禁止firewall开机启动</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">systemctl <span class="hljs-built_in">disable</span> firewalld.service<br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h3><ul>
+<li>什么是SELinux<ul>
+<li>SELinux是Linux的一种安全子系统</li>
+<li>Linux中的权限管理是针对于文件的， 而不是针对进程的， 也就是说， 如果root启动了某个进程， 则这个进程可以操作任何一个文件</li>
+<li>SELinux在Linux的文件权限之外， 增加了对进程的限制， 进程只能在进程允许的范围内操作资源</li>
+</ul>
+</li>
+<li>为什么要关闭SELinux<ul>
+<li>如果开启了SELinux， 需要做非常复杂的配置， 才能正常使用系统， 在学习阶段， 在非生产环境， 一般不使用SELinux</li>
+</ul>
+</li>
+<li>SELinux的工作模式<ul>
+<li><code>enforcing</code> 强制模式</li>
+<li><code>permissive</code> 宽容模式</li>
+<li><code>disable</code> 关闭</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">修改selinux的配置文件</span><br>vi /etc/selinux/config<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/1.12.png" srcset="/img/loading.gif" class="">
+
+
+
+<h2 id="3-3-service服务管理（CentOS-6-版本）"><a href="#3-3-service服务管理（CentOS-6-版本）" class="headerlink" title="3.3 service服务管理（CentOS 6 版本）"></a>3.3 service服务管理（CentOS 6 版本）</h2><h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><p><code>service 服务名 start | stop | restart | status</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718222613831.png" srcset="/img/loading.gif" class="" title="image-20220718222613831">
+
+<h3 id="经验技巧"><a href="#经验技巧" class="headerlink" title="经验技巧"></a>经验技巧</h3><p>查看服务的方法：&#x2F;etc&#x2F;init.d&#x2F;服务名</p>
+<p>只有在里面的服务，才能进行命令操作。</p>
+<blockquote>
+<p>d的是daemon的缩写，表示守护进程。</p>
+</blockquote>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718222519481.png" srcset="/img/loading.gif" class="" title="image-20220718222519481">
+
+<h3 id="案例实操"><a href="#案例实操" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li>查看网络服务的状态</li>
+</ul>
+<p><code>service network status</code></p>
+<ul>
+<li>停止网络服务</li>
+</ul>
+<p><code>service network stop</code></p>
+<ul>
+<li>启动网络服务</li>
+</ul>
+<p><code>service network start</code></p>
+<ul>
+<li>重启网络服务</li>
+</ul>
+<p><code>service network restart</code></p>
+<h2 id="3-4-chkconfig-配置后台服务的自启（CentOS-6-版本）"><a href="#3-4-chkconfig-配置后台服务的自启（CentOS-6-版本）" class="headerlink" title="3.4 chkconfig 配置后台服务的自启（CentOS 6 版本）"></a>3.4 chkconfig 配置后台服务的自启（CentOS 6 版本）</h2><h3 id="基本语法-1"><a href="#基本语法-1" class="headerlink" title="基本语法"></a>基本语法</h3><ul>
+<li><code>chkconfig</code> （功能描述：查看所有服务器自启配置）</li>
+<li><code>chkconfig 服务名 off</code> （功能描述：关掉指定服务的自动启动）</li>
+<li><code>chkconfig 服务名 on</code> （功能描述：开启指定服务的自动启动）</li>
+<li><code>chkconfig 服务名 --list</code> （功能描述：查看服务开机启动状态）</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718225852965.png" srcset="/img/loading.gif" class="" title="image-20220718225852965">
+
+<h3 id="案例实操-1"><a href="#案例实操-1" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li><p>开启&#x2F;关闭 network服务的自动启动</p>
+<ul>
+<li><code>chkconfig network on</code></li>
+<li><code>chkconfig network off</code></li>
+</ul>
+</li>
+<li><p>开启&#x2F;关闭 network 服务指定级别的自动启动</p>
+<ul>
+<li><code>chkconfig --level 指定级别 network on</code> </li>
+<li><code>chkconfig --level 指定级别 network off</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-5-systemctl（CentOS-7-版本）"><a href="#3-5-systemctl（CentOS-7-版本）" class="headerlink" title="3.5 systemctl（CentOS 7 版本）"></a>3.5 systemctl（CentOS 7 版本）</h2><h3 id="基本语法-2"><a href="#基本语法-2" class="headerlink" title="基本语法"></a>基本语法</h3><p><code>systemctl  start | stop | restart | status 服务名</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718223750377.png" srcset="/img/loading.gif" class="" title="image-20220718223750377">
+
+<h3 id="经验技巧-1"><a href="#经验技巧-1" class="headerlink" title="经验技巧"></a>经验技巧</h3><p>查看服务的方法：&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system</p>
+<p>只有在里面的服务，才能进行命令操作。</p>
+<blockquote>
+<p>systemctl中ctl的是control的缩写。</p>
+</blockquote>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718223619656.png" srcset="/img/loading.gif" class="" title="image-20220718223619656">
+
+<h3 id="案例实操-2"><a href="#案例实操-2" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li>查看防火墙服务的状态</li>
+</ul>
+<p><code>systemctl status firewalld</code></p>
+<ul>
+<li>停止防火墙服务</li>
+</ul>
+<p><code>systemctl stop firewalld</code></p>
+<ul>
+<li>启动防火墙服务</li>
+</ul>
+<p><code>systemctl start firewalld</code></p>
+<ul>
+<li>重启防火墙服务</li>
+</ul>
+<p><code>systemctl restart firewalld</code></p>
+<h2 id="3-6-systemctl-配置后台服务的自启"><a href="#3-6-systemctl-配置后台服务的自启" class="headerlink" title="3.6 systemctl 配置后台服务的自启"></a>3.6 systemctl 配置后台服务的自启</h2><h3 id="基本语法-3"><a href="#基本语法-3" class="headerlink" title="基本语法"></a>基本语法</h3><ul>
+<li><p><code>systemctl list-unit-files</code> （功能描述：查看服务开机启动状态）</p>
+</li>
+<li><p><code>systemctl disable service_name</code> （功能描述：关掉指定服务的自动启动）</p>
+</li>
+<li><p><code>systemctl enable service_name</code> （功能描述：开启指定服务的自动启动）</p>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718230318060.png" srcset="/img/loading.gif" class="" title="image-20220718230318060">
+
+<h3 id="案例实操-3"><a href="#案例实操-3" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li>开启&#x2F;关闭 iptables(防火墙)服务的自动启动<ul>
+<li><code>systemctl enable firewalld.service</code></li>
+<li><code>systemctl disable firewalld.service</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-7-系统运行级别"><a href="#3-7-系统运行级别" class="headerlink" title="3.7 系统运行级别"></a>3.7 系统运行级别</h2><h3 id="CentOS-6运行级别"><a href="#CentOS-6运行级别" class="headerlink" title="CentOS 6运行级别"></a>CentOS 6运行级别</h3><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718224733049.png" srcset="/img/loading.gif" class="" title="image-20220718224733049">
+
+<h3 id="CentOS-7运行级别"><a href="#CentOS-7运行级别" class="headerlink" title="CentOS 7运行级别"></a>CentOS 7运行级别</h3><ul>
+<li><p>CentOS7 的运行级别简化为：</p>
+<ul>
+<li>multi-user.target 等价于原运行级别 3（多用户有网，无图形界面）</li>
+<li>graphical.target 等价于原运行级别 5（多用户有网，有图形界面）</li>
+</ul>
+</li>
+<li><p>查看当前运行级别：</p>
+</li>
+</ul>
+<p><code>systemctl get-default</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220718225040851.png" srcset="/img/loading.gif" class="" title="image-20220718225040851">
+
+<ul>
+<li>修改当前运行级别：</li>
+</ul>
+<p><code>systemctl set-default TARGET.target</code>（这里 target取 multi-user 或者 graphical）</p>
+<ul>
+<li>切换图形化和终端命令：<ul>
+<li><code>init 3</code> </li>
+<li><code>init 5</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="四、常用命令"><a href="#四、常用命令" class="headerlink" title="四、常用命令"></a>四、常用命令</h1><p>Shell可以看作是一个命令解释器，它提供了交互式的文本控制台界面。可以通过终端控制台来输入命令，由shell进行解释并最终交给内核执行。 </p>
+<h2 id="4-1-内置命令与外置命令"><a href="#4-1-内置命令与外置命令" class="headerlink" title="4.1 内置命令与外置命令"></a>4.1 内置命令与外置命令</h2><p>Linux的命令可以分为内置命令和外置命令：</p>
+<ul>
+<li><p>内置命令在系统启动时就调入内存，是常驻内存的，所以执行效率高。</p>
+</li>
+<li><p>外置命令是系统的软件功能，用户需要时才从硬盘中读入内存。</p>
+</li>
+</ul>
+<h3 id="4-1-1-外置命令"><a href="#4-1-1-外置命令" class="headerlink" title="4.1.1 外置命令"></a>4.1.1 外置命令</h3><p>外置命令也称为文件系统命令，是bash shell之外的程序，它并不是shell 的一部分。</p>
+<p>外置命令一般位于&#x2F;bin、&#x2F;usr&#x2F;bin、&#x2F;sbin或&#x2F;usr&#x2F;sbin中。</p>
+<p>eg: 通过下面几种方式可以查找到外置命令 tar。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719094644608.png" srcset="/img/loading.gif" class="" title="image-20220719094644608">
+
+<p>当执行外置命令时，Linux系统会创建出一个子进程（这种操作被称为衍生）。</p>
+<p>以ps -f为例：</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/20181202132026176.png" srcset="/img/loading.gif" class="" title="img">
+
+<ul>
+<li><p>当执行ps命令时，父进程的bash shell（PID 是9084）会创建出一个子进程9122（ps命令的PID是9122）。</p>
+</li>
+<li><p>当进程必须执行衍生时，Linux系统需要消耗资源来设置新子进程的环境。</p>
+</li>
+</ul>
+<blockquote>
+<p>执行外部命令有额外的代价。</p>
+</blockquote>
+<h3 id="4-1-2-内置命令"><a href="#4-1-2-内置命令" class="headerlink" title="4.1.2 内置命令"></a>4.1.2 内置命令</h3><p>内置命令和shell是一体的（写在shell源码里了），它们作为shell工具的组成部分存在，不需要通过衍生出子进程来执行，也不需要打开程序文件。</p>
+<p>所以内置命令的执行速度要更快，效率也更高。</p>
+<blockquote>
+<p> 有很多命令有多种实现。</p>
+<p>例如pwd既是外部命令又是内置命令。原因是pwd有两种不同实现。</p>
+</blockquote>
+<p>查看命令的不同实现，使用<code>type -a 命令</code></p>
+<p>如果想要使用其外部命令实现，直接指明对应的文件就可以了。</p>
+<p>例如，要使用外部命令pwd，可以输入<code>/usr/bin/pwd</code>即可。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719093815283.png" srcset="/img/loading.gif" class="" title="image-20220719093815283">
+
+<h2 id="4-2-关机重启命令"><a href="#4-2-关机重启命令" class="headerlink" title="4.2 关机重启命令"></a>4.2 关机重启命令</h2><h3 id="基本语法-4"><a href="#基本语法-4" class="headerlink" title="基本语法"></a>基本语法</h3><ul>
+<li>sync （功能描述：将数据由内存同步到硬盘中）</li>
+<li>halt （功能描述：停机，关闭系统，但不断电） </li>
+<li>poweroff （功能描述：关机，断电）</li>
+<li>reboot （功能描述：就是重启，等同于 shutdown -r now）</li>
+<li>shutdown [选项] 时间</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-H</td>
+<td>相当于–halt，停机</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>-r&#x3D;reboot 重启</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>now</td>
+<td>立刻关机</td>
+</tr>
+<tr>
+<td>时间</td>
+<td>等待多久后关机（时间单位是分钟）。</td>
+</tr>
+</tbody></table>
+<h3 id="经验技巧-2"><a href="#经验技巧-2" class="headerlink" title="经验技巧"></a>经验技巧</h3><p>Linux系统为了提高磁盘的读写效率，对磁盘采取了”预读迟写”操作方式。</p>
+<p>当用户保存文件时，Linux核心并不一定立即将保存数据写入物理磁盘中，而是将数据保存在缓冲区中，等缓冲区满时再写入磁盘，这种方式可以极大的提高磁盘写入数据的效率。但是，也带来了安全隐患，如果数据还未写入磁盘时，系统掉电或者其他严重问题出现，将导致数据丢失。可以使用<code>sync</code>指令立即将缓冲区的数据写入磁盘。</p>
+<h3 id="案例实操-4"><a href="#案例实操-4" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li><p>将数据由内存同步到硬盘中</p>
+<p><code>sync</code></p>
+</li>
+<li><p>重启</p>
+<p><code>reboot</code></p>
+</li>
+<li><p>停机（不断电）</p>
+<p><code>halt</code></p>
+</li>
+<li><p>计算机将在 1 分钟后关机，并且会显示在登录用户的当前屏幕中</p>
+<p><code>shutdown -h 1 ‘This server will shutdown after 1 mins’</code></p>
+</li>
+<li><p>立即关机（等同于 poweroff）</p>
+</li>
+</ul>
+<p>  <code>shutdown -h now</code></p>
+<ul>
+<li><p>立即重启（等同于 reboot）</p>
+<p><code>shutdown -r now</code></p>
+</li>
+<li><p>取消关机</p>
+</li>
+</ul>
+<p>  <code>shutdown -c</code></p>
+<h2 id="4-3-帮助命令"><a href="#4-3-帮助命令" class="headerlink" title="4.3 帮助命令"></a>4.3 帮助命令</h2><h3 id="4-3-1-man-获得帮助信息"><a href="#4-3-1-man-获得帮助信息" class="headerlink" title="4.3.1 man 获得帮助信息"></a>4.3.1 man 获得帮助信息</h3><h4 id="基本语法-5"><a href="#基本语法-5" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>man [命令或配置文件]</code> （功能描述：获得帮助信息）</li>
+</ul>
+<blockquote>
+<p>man是manual的缩写，表示手册。</p>
+</blockquote>
+<h4 id="显示说明"><a href="#显示说明" class="headerlink" title="显示说明"></a>显示说明</h4><table>
+<thead>
+<tr>
+<th>信息</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NAME</td>
+<td>命令的名称和单行描述</td>
+</tr>
+<tr>
+<td>SYNOPSIS</td>
+<td>怎样使用命令</td>
+</tr>
+<tr>
+<td>DESCRIPTION</td>
+<td>命令功能的深入讨论</td>
+</tr>
+<tr>
+<td>EXAMPLES</td>
+<td>怎样使用命令的例子</td>
+</tr>
+<tr>
+<td>SEE ALSO</td>
+<td>相关主题（通常是手册页）</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-5"><a href="#案例实操-5" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><p>查看 ls 命令的帮助信息</p>
+<p><code>man ls</code></p>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719092725504.png" srcset="/img/loading.gif" class="" title="image-20220719092725504">
+
+<h3 id="4-3-2-help-获得-shell-内置命令帮助信息"><a href="#4-3-2-help-获得-shell-内置命令帮助信息" class="headerlink" title="4.3.2 help 获得 shell 内置命令帮助信息"></a>4.3.2 help 获得 shell 内置命令帮助信息</h3><h4 id="基本语法-6"><a href="#基本语法-6" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>help 命令</code>（功能描述：获得 shell 内置命令的帮助信息）</p>
+<blockquote>
+<p>对于外置命令通常使用命令自带的帮助功能，一般查看外置命令帮助命令如下：</p>
+<p><code>命令 --help</code></p>
+</blockquote>
+<h4 id="案例实操-6"><a href="#案例实操-6" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><p>查看 cd 命令的帮助信息</p>
+<p><code>help cd</code></p>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719134550020.png" srcset="/img/loading.gif" class="" title="image-20220719134550020">
+
+
+
+<h3 id="4-3-3-常用快捷键"><a href="#4-3-3-常用快捷键" class="headerlink" title="4.3.3 常用快捷键"></a>4.3.3 常用快捷键</h3><table>
+<thead>
+<tr>
+<th align="center">常用快捷键</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ctrl + c</td>
+<td align="center">停止进程</td>
+</tr>
+<tr>
+<td align="center">ctrl+l</td>
+<td align="center">清屏，等同于 clear；彻底清屏是：reset</td>
+</tr>
+<tr>
+<td align="center">tab 键</td>
+<td align="center">提示(更重要的是可以防止敲错)</td>
+</tr>
+<tr>
+<td align="center">上下键</td>
+<td align="center">查找执行过的命令</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-4-文件目录类命令"><a href="#4-4-文件目录类命令" class="headerlink" title="4.4 文件目录类命令"></a>4.4 文件目录类命令</h2><h3 id="4-4-1-pwd-显示当前工作目录的绝对路径"><a href="#4-4-1-pwd-显示当前工作目录的绝对路径" class="headerlink" title="4.4.1 pwd 显示当前工作目录的绝对路径"></a>4.4.1 pwd 显示当前工作目录的绝对路径</h3><blockquote>
+<p>pwd是print working directory （打印工作目录）的缩写</p>
+</blockquote>
+<h4 id="基本语法-7"><a href="#基本语法-7" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>pwd</code>（功能描述： 显示当前工作目录的绝对路径 ）</p>
+<h4 id="案例实操-7"><a href="#案例实操-7" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><p>显示当前工作目录的绝对路径</p>
+<p><code>pwd</code></p>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719140738893.png" srcset="/img/loading.gif" class="" title="image-20220719140738893">
+
+<blockquote>
+<p><code>pwd -P</code>  显示当前工作目录的实际物理路径的绝对路径，而非快捷方式路径。</p>
+</blockquote>
+<h3 id="4-4-2-ls列出目录的内容"><a href="#4-4-2-ls列出目录的内容" class="headerlink" title="4.4.2 ls列出目录的内容"></a>4.4.2 ls列出目录的内容</h3><blockquote>
+<p>ls是list的缩写，目的是列出目录内容</p>
+</blockquote>
+<h4 id="基本语法-8"><a href="#基本语法-8" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>ls [选项] [目录或是文件]</code></p>
+<h4 id="选项说明"><a href="#选项说明" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-a</td>
+<td>全部的文件，连同隐藏档( 开头为 . 的文件) 一起列出来(常用)</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>长数据串列出，包含文件的属性与权限等等数据；(常用)等价于“ll”</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>按更容易阅读的KB、MB、GB等单位显示文件、目录大小。</td>
+</tr>
+</tbody></table>
+<h4 id="显示说明-1"><a href="#显示说明-1" class="headerlink" title="显示说明"></a>显示说明</h4><p>每行列出的信息依次是：</p>
+<p>文件类型与权限、链接数、文件所属用户、文件所属组、文件大小（用byte来表示）、建立或最近修改的时间、名字</p>
+<h4 id="案例实操-8"><a href="#案例实操-8" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><p>查看当前目录的所有内容信息</p>
+<p><code>ls -l</code>（缩写为<code>ll</code>）</p>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719141106687.png" srcset="/img/loading.gif" class="" title="image-20220719141106687">
+
+
+
+<h3 id="4-4-3-cd切换目录"><a href="#4-4-3-cd切换目录" class="headerlink" title="4.4.3 cd切换目录"></a>4.4.3 cd切换目录</h3><blockquote>
+<p>cd是Change Directory的缩写，用于切换路径。</p>
+</blockquote>
+<h4 id="基本语法-9"><a href="#基本语法-9" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>cd [参数]</code></p>
+<h4 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h4><table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">cd 绝对路径</td>
+<td align="center">切换路径</td>
+</tr>
+<tr>
+<td align="center">cd 相对路径</td>
+<td align="center">切换路径</td>
+</tr>
+<tr>
+<td align="center">cd ~或者 cd</td>
+<td align="center">回到自己的home目录</td>
+</tr>
+<tr>
+<td align="center">cd -</td>
+<td align="center">回到上一次所在目录</td>
+</tr>
+<tr>
+<td align="center">cd ..</td>
+<td align="center">回到当前目录的上一级目录</td>
+</tr>
+<tr>
+<td align="center">cd -P</td>
+<td align="center">跳转到实际物理路径，而非快捷方式路径</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-9"><a href="#案例实操-9" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><p>使用绝对路径切换到 root 目录</p>
+<p><code>cd /root/</code></p>
+</li>
+<li><p>使用相对路径切换到“公共的”目录</p>
+<p><code>cd 公共的/</code></p>
+</li>
+<li><p>表示回到自己的家目录，亦即是 &#x2F;root 这个目录</p>
+<p><code>cd ~</code></p>
+</li>
+<li><p>回到上一次所在目录</p>
+<p><code>cd -</code></p>
+</li>
+<li><p>回到当前目录的上一级目录</p>
+<p><code>cd ..</code></p>
+</li>
+</ul>
+<h3 id="4-4-4-mkdir-创建一个新的目录"><a href="#4-4-4-mkdir-创建一个新的目录" class="headerlink" title="4.4.4 mkdir 创建一个新的目录"></a>4.4.4 mkdir 创建一个新的目录</h3><blockquote>
+<p>mkdir是Make directory的缩写，目的是建立目录。</p>
+</blockquote>
+<h4 id="基本语法-10"><a href="#基本语法-10" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>mkdir [选项] 要创建的目录</code></p>
+<h4 id="选项说明-1"><a href="#选项说明-1" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-p</td>
+<td align="center">创建多层目录</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-10"><a href="#案例实操-10" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><p>创建一个目录</p>
+<p><code>mkdir xiyou</code></p>
+<p><code>mkdir xiyou/mingjie</code></p>
+</li>
+<li><p>创建一个多级目录</p>
+<p><code>mkdir -p xiyou/dssz/meihouwang</code></p>
+</li>
+</ul>
+<blockquote>
+<p>p是parent的缩写。</p>
+</blockquote>
+<h3 id="4-4-5-rmdir-删除一个空的目录"><a href="#4-4-5-rmdir-删除一个空的目录" class="headerlink" title="4.4.5 rmdir 删除一个空的目录"></a>4.4.5 rmdir 删除一个空的目录</h3><blockquote>
+<p>rmdir是Remove directory的缩写，目的是移除目录。</p>
+</blockquote>
+<h4 id="基本语法-11"><a href="#基本语法-11" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>rmdir [选项] 要删除的空目录</code></p>
+<h4 id="选项说明-2"><a href="#选项说明-2" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-p</td>
+<td align="center">删除多层空目录（删完子目录，父目录为空则也删除）</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-11"><a href="#案例实操-11" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><p>删除一个空的文件夹</p>
+<p> <code>rmdir xiyou/dssz/meihouwang</code></p>
+</li>
+</ul>
+<h3 id="4-4-6-touch创建空文件"><a href="#4-4-6-touch创建空文件" class="headerlink" title="4.4.6 touch创建空文件"></a>4.4.6 touch创建空文件</h3><h4 id="基本语法-12"><a href="#基本语法-12" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>touch 文件名称</code></p>
+<h4 id="2）案例实操"><a href="#2）案例实操" class="headerlink" title="2）案例实操"></a>2）案例实操</h4><p><code>touch xiyou/dssz/sunwukong.txt</code></p>
+<h3 id="4-4-7-cp复制文件或目录"><a href="#4-4-7-cp复制文件或目录" class="headerlink" title="4.4.7 cp复制文件或目录"></a>4.4.7 cp复制文件或目录</h3><h4 id="基本语法-13"><a href="#基本语法-13" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>cp [选项] source dest</code></p>
+<p>（功能描述：复制source文件到dest）</p>
+<h4 id="选项说明-3"><a href="#选项说明-3" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-r</td>
+<td align="center">递归复制整个文件夹</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>r是recurrence的缩写，表示递归。</p>
+</blockquote>
+<h4 id="参数说明-1"><a href="#参数说明-1" class="headerlink" title="参数说明"></a>参数说明</h4><table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">source</td>
+<td align="center">源文件</td>
+</tr>
+<tr>
+<td align="center">dest</td>
+<td align="center">目标文件</td>
+</tr>
+</tbody></table>
+<h4 id="经验技巧-3"><a href="#经验技巧-3" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li>强制覆盖不提示的方法：<code>\cp [选项] source dest</code></li>
+</ul>
+<blockquote>
+<p><code>\</code>表示使用原生命令，直接使用<code>cp</code>实际使用的是<code>cp -i</code>命令，会在覆盖前进行提示。</p>
+</blockquote>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719151652152.png" srcset="/img/loading.gif" class="" title="image-20220719151652152">
+
+<h4 id="案例实操-12"><a href="#案例实操-12" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>复制文件</li>
+</ul>
+<p><code>cp xiyou/dssz/suwukong.txt xiyou/mingjie/</code></p>
+<ul>
+<li>递归复制整个文件夹</li>
+</ul>
+<p><code>cp -r xiyou/dssz/ ./</code></p>
+<h3 id="4-4-8-rm删除文件或目录"><a href="#4-4-8-rm删除文件或目录" class="headerlink" title="4.4.8 rm删除文件或目录"></a>4.4.8 rm删除文件或目录</h3><h4 id="基本语法-14"><a href="#基本语法-14" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>rm [选项] deleteFile</code>（功能描述：递归删除目录中所有内容）</p>
+<h4 id="选项说明-4"><a href="#选项说明-4" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-r</td>
+<td align="center">递归删除目录中所有内容</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">强制执行删除操作，而不提示用于进行确认。</td>
+</tr>
+<tr>
+<td align="center">-v</td>
+<td align="center">显示指令的详细执行过程</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-13"><a href="#案例实操-13" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>删除目录中的内容</li>
+</ul>
+<p><code>rm xiyou/mingjie/sunwukong.txt</code></p>
+<ul>
+<li>递归删除目录中所有内容</li>
+</ul>
+<p><code>rm -rf dssz/</code></p>
+<h3 id="4-4-9-mv移动文件与目录或重命名"><a href="#4-4-9-mv移动文件与目录或重命名" class="headerlink" title="4.4.9 mv移动文件与目录或重命名"></a>4.4.9 mv移动文件与目录或重命名</h3><h4 id="基本语法-15"><a href="#基本语法-15" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>mv oldNameFile newNameFile </code>（功能描述：重命名）</li>
+<li><code>mv /temp/movefile /targetFolder</code>  （功能描述：移动文件）</li>
+</ul>
+<h4 id="案例实操-14"><a href="#案例实操-14" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>重命名</li>
+</ul>
+<p><code>mv xiyou/dssz/suwukong.txt xiyou/dssz/houge.txt</code></p>
+<ul>
+<li>移动文件</li>
+</ul>
+<p><code>mv xiyou/dssz/houge.txt ./</code></p>
+<h3 id="4-4-10-cat查看文件内容"><a href="#4-4-10-cat查看文件内容" class="headerlink" title="4.4.10 cat查看文件内容"></a>4.4.10 cat查看文件内容</h3><p>查看文件内容，从第一行开始显示。</p>
+<h4 id="基本语法-16"><a href="#基本语法-16" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>cat [选项] 要查看的文件</code> </p>
+<h4 id="选项说明-5"><a href="#选项说明-5" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-n</td>
+<td align="center">显示所有行的行号，包括空行。</td>
+</tr>
+</tbody></table>
+<h4 id="经验技巧-4"><a href="#经验技巧-4" class="headerlink" title="经验技巧"></a>经验技巧</h4><p>一般查看比较小的文件，一屏幕能显示全的。</p>
+<h4 id="案例实操-15"><a href="#案例实操-15" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看文件内容并显示行号</li>
+</ul>
+<p><code>cat -n houge.txt</code></p>
+<h3 id="4-4-11-more文件内容分屏查看器"><a href="#4-4-11-more文件内容分屏查看器" class="headerlink" title="4.4.11 more文件内容分屏查看器"></a>4.4.11 more文件内容分屏查看器</h3><p>more指令是一个基于 VI 编辑器的文本过滤器， 它以全屏幕的方式按页显示文本文件的内容。</p>
+<p>more 指令中内置了若干快捷键，详见操作说明。</p>
+<h4 id="基本语法-17"><a href="#基本语法-17" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>more 要查看的文件</code></p>
+<h4 id="操作说明"><a href="#操作说明" class="headerlink" title="操作说明"></a>操作说明</h4><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>功能说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空白键 (space)</td>
+<td>代表向下翻一页；</td>
+</tr>
+<tr>
+<td>Enter</td>
+<td>代表向下翻『一行』；</td>
+</tr>
+<tr>
+<td>q</td>
+<td>代表立刻离开 more ，不再显示该文件内容。</td>
+</tr>
+<tr>
+<td>Ctrl+F</td>
+<td>向下滚动一屏</td>
+</tr>
+<tr>
+<td>Ctrl+B</td>
+<td>返回上一屏</td>
+</tr>
+<tr>
+<td>&#x3D;</td>
+<td>输出当前行的行号</td>
+</tr>
+<tr>
+<td>:f</td>
+<td>输出文件名和当前行的行号</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-16"><a href="#案例实操-16" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>采用more查看文件</li>
+</ul>
+<p><code>more smartd.conf</code></p>
+<h3 id="4-4-12-less分屏显示文件内容"><a href="#4-4-12-less分屏显示文件内容" class="headerlink" title="4.4.12 less分屏显示文件内容"></a>4.4.12 less分屏显示文件内容</h3><p>less 指令用来分屏查看文件内容，它的功能与 more 指令类似，但是比 more 指令更加强大， 支持各种显示终端。l</p>
+<p>ess 指令在显示文件内容时， 并不是一次将整个文件加载之后 才显示，而是根据显示需要加载内容，对于显示大型文件具有较高的效率。</p>
+<h4 id="基本语法-18"><a href="#基本语法-18" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>less 要查看的文件</code></p>
+<h4 id="操作说明-1"><a href="#操作说明-1" class="headerlink" title="操作说明"></a>操作说明</h4><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>功能说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空白键</td>
+<td>向下翻动一页；</td>
+</tr>
+<tr>
+<td>[pagedown]</td>
+<td>向下翻动一页</td>
+</tr>
+<tr>
+<td>[pageup]</td>
+<td>向上翻动一页；</td>
+</tr>
+<tr>
+<td>&#x2F;字串</td>
+<td>向下搜寻『字串』的功能；n：向下查找；N：向上查找；</td>
+</tr>
+<tr>
+<td>? 字串</td>
+<td>向上搜寻『字串』的功能；n：向上查找；N：向下查找；</td>
+</tr>
+<tr>
+<td>q</td>
+<td>离开 less 这个程序；</td>
+</tr>
+</tbody></table>
+<h4 id="经验技巧-5"><a href="#经验技巧-5" class="headerlink" title="经验技巧"></a>经验技巧</h4><p>用SecureCRT时[pagedown]和[pageup]可能会出现无法识别的问题。</p>
+<h4 id="案例实操-17"><a href="#案例实操-17" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>采用less查看文件</li>
+</ul>
+<p><code>less smartd.conf</code></p>
+<h3 id="4-4-13-echo"><a href="#4-4-13-echo" class="headerlink" title="4.4.13 echo"></a>4.4.13 echo</h3><p>echo 输出内容到控制台</p>
+<h4 id="基本语法-19"><a href="#基本语法-19" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>echo [选项] [输出内容]</code></p>
+<ul>
+<li><p>选项：</p>
+<p> -e： 支持反斜线控制的字符转换</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>控制字符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>\\</td>
+<td>输出\本身</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>换行符</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>制表符，也就是 Tab 键</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-18"><a href="#案例实操-18" class="headerlink" title="案例实操"></a>案例实操</h4><p><code>echo &quot;hello\tworld&quot;</code></p>
+<p><code>echo -e “&quot;hello\tworld&quot; </code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719165328576.png" srcset="/img/loading.gif" class="" title="image-20220719165328576">
+
+
+
+<h3 id="4-4-14-head显示文件头部内容"><a href="#4-4-14-head显示文件头部内容" class="headerlink" title="4.4.14 head显示文件头部内容"></a>4.4.14 head显示文件头部内容</h3><p>head用于显示文件的开头部分内容，默认情况下 head 指令显示文件的前 10 行内容。</p>
+<h4 id="基本语法-20"><a href="#基本语法-20" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><p><code>head 文件</code> （功能描述：查看文件头10行内容）</p>
+</li>
+<li><p><code>head -n 5 文件</code> （功能描述：查看文件头5行内容，5可以是任意行数）</p>
+</li>
+</ul>
+<h4 id="选项说明-6"><a href="#选项说明-6" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-n&lt;行数&gt;</td>
+<td align="center">从头显示指定行数的文件内容。</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-19"><a href="#案例实操-19" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看文件的头2行</li>
+</ul>
+<p><code>head -n 2 smartd.conf</code></p>
+<h3 id="4-4-15-tail输出文件尾部内容"><a href="#4-4-15-tail输出文件尾部内容" class="headerlink" title="4.4.15 tail输出文件尾部内容"></a>4.4.15 tail输出文件尾部内容</h3><p>tail用于输出文件中尾部的内容，默认情况下 tail 指令显示文件的后 10 行内容。</p>
+<h4 id="基本语法-21"><a href="#基本语法-21" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><p><code>tail 文件</code> （功能描述：查看文件尾部10行内容）</p>
+</li>
+<li><p><code>tail -n 5 文件</code> （功能描述：查看文件尾部5行内容，5可以是任意行数）</p>
+</li>
+<li><p><code>tail -f 文件</code> （功能描述：实时追踪该文档的所有更新）</p>
+</li>
+</ul>
+<h4 id="选项说明-7"><a href="#选项说明-7" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-n&lt;行数&gt;</td>
+<td align="center">输出文件尾部n行内容。</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">显示文件最新追加的内容，监视文件变化。</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-20"><a href="#案例实操-20" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看文件最后一行内容</li>
+</ul>
+<p><code>tail -n 1 smartd.conf</code></p>
+<ul>
+<li>实时追踪该档的所有更新</li>
+</ul>
+<p><code>tail -f houge.txt</code></p>
+<h3 id="4-4-16-gt-输出重定向-和-gt-gt-追加"><a href="#4-4-16-gt-输出重定向-和-gt-gt-追加" class="headerlink" title="4.4.16 &gt; 输出重定向 和 &gt;&gt; 追加"></a>4.4.16 &gt; 输出重定向 和 &gt;&gt; 追加</h3><h4 id="基本语法-22"><a href="#基本语法-22" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><p><code>ls -l &gt; 文件</code> （功能描述：列表的内容写入文件 a.txt 中（覆盖写））</p>
+</li>
+<li><p><code>ls -al &gt;&gt; 文件</code>（功能描述：列表的内容追加到文件 aa.txt 的末尾）</p>
+</li>
+<li><p><code>cat 文件 1 &gt; 文件 2</code>（功能描述：将文件 1 的内容覆盖到文件 2）</p>
+</li>
+<li><p><code>echo &quot;内容&quot; &gt;&gt; 文件</code></p>
+</li>
+</ul>
+<h4 id="案例实操-21"><a href="#案例实操-21" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>将 ls 查看信息写入到文件中</li>
+</ul>
+<p><code>ls -l&gt;houge.txt</code></p>
+<ul>
+<li>将 ls 查看信息追加到文件中</li>
+</ul>
+<p><code>ls -l&gt;&gt;houge.txt</code></p>
+<ul>
+<li>采用 echo 将 hello 单词追加到文件中</li>
+</ul>
+<p><code>echo hello&gt;&gt;houge.txt</code></p>
+<ul>
+<li>启动Java项目并输出日志</li>
+</ul>
+<p><code>nohup java -jar api_gateway-0.0.1-SNAPSHOT-exec.jar &gt; Guli_api_gatewa.log 2&gt;&amp;1 &amp;</code></p>
+<blockquote>
+<p>nohup用途：不挂断地运行命令</p>
+<p>&amp;用途：在后台运行</p>
+<p>2&gt;&amp;1用途：将标准错误输出重定向到标准输出，符号&gt;&amp;是一个整体，不可分开</p>
+</blockquote>
+<h3 id="4-4-17-ln-软链接"><a href="#4-4-17-ln-软链接" class="headerlink" title="4.4.17 ln 软链接"></a>4.4.17 ln 软链接</h3><p>软链接也称为符号链接，类似于 windows 里的快捷方式，有自己的数据块，主要存放了链接其他文件的路径。</p>
+<h4 id="基本语法-23"><a href="#基本语法-23" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>ln -s [原文件或目录] [软链接名]</code>（功能描述：给原文件创建一个软链接）</p>
+<blockquote>
+<p>ln是link的缩写，表示链接，s是soft的缩写。</p>
+</blockquote>
+<h4 id="经验技巧-6"><a href="#经验技巧-6" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li>删除软链接： <code>rm -rf 软链接名</code>，而不是 rm -rf 软链接名&#x2F;</li>
+</ul>
+<p><strong>如果使用 rm -rf 软链接名&#x2F; 删除，会把软链接对应的真实目录下内容删掉</strong></p>
+<ul>
+<li>查询：通过 ll 就可以查看，列表属性第 1 位是 l，尾部会有位置指向。</li>
+</ul>
+<h4 id="案例实操-22"><a href="#案例实操-22" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>创建软连接</li>
+</ul>
+<p><code>ln -s /root myRooot</code></p>
+<ul>
+<li>删除软连接(注意不要写最后的&#x2F;)</li>
+</ul>
+<p><code>rm -rf myRooot</code></p>
+<ul>
+<li>进入软连接实际物理路径</li>
+</ul>
+<p><code>cd -P myRooot/</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719174654417.png" srcset="/img/loading.gif" class="" title="image-20220719174654417">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220719175051391.png" srcset="/img/loading.gif" class="" title="image-20220719175051391">
+
+
+
+<h4 id="硬链接与软链接的区别"><a href="#硬链接与软链接的区别" class="headerlink" title="硬链接与软链接的区别"></a>硬链接与软链接的区别</h4><ul>
+<li>硬链接：<ul>
+<li>硬链接相当于别名。不会创建inode号的，链接文件与源文件存在相同的inode，只是在源文件的inode link count域里再增加1，因此硬链接不可以跨文件系统，软链接可以。</li>
+<li>删除源文件，链接文件依然可以正常访问（文件实体并未删除）。</li>
+<li>不能跨分区，不能对目录使用。</li>
+<li>不可以对不存在的文件和目录创建。</li>
+</ul>
+</li>
+<li>软链接：<ul>
+<li>软链接相当于快捷方式。会创建新的inode，所以链接文件与源文件的inode不同。</li>
+<li>软链接的 inode 所指向的内容实际上是保存了一个绝对路径，当用户访问这个文件时，系统会自动将其替换成其所指的文件路径。</li>
+<li>软连接和源文件文件类型不同，软链接文件权限为777，文件属性有l标识，访问权限真正取决于源文件权限<br>删除源文件，软链接文件访问不了。</li>
+<li>可以对不存在的文件和目录创建。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Inode相当于文件指针，记录了文件元数据，指向了物理硬盘的一个区块。事实上文件系统会维护一个引用计数，只要有文件指向这个区块，它就不会从硬盘上消失。</p>
+</blockquote>
+<h3 id="4-4-18-history查看已经执行过历史命令"><a href="#4-4-18-history查看已经执行过历史命令" class="headerlink" title="4.4.18 history查看已经执行过历史命令"></a>4.4.18 history查看已经执行过历史命令</h3><h4 id="基本语法-24"><a href="#基本语法-24" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li>history</li>
+</ul>
+<p>（功能描述：查看已经执行过历史命令）</p>
+<h4 id="案例实操-23"><a href="#案例实操-23" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看已经执行过的历史命令</li>
+</ul>
+<p><code>history</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721110316597.png" srcset="/img/loading.gif" class="" title="image-20220721110316597">
+
+
+
+<hr>
+<h2 id="4-5-时间日期类命令"><a href="#4-5-时间日期类命令" class="headerlink" title="4.5 时间日期类命令"></a>4.5 时间日期类命令</h2><h3 id="4-5-1-date-显示当前时间"><a href="#4-5-1-date-显示当前时间" class="headerlink" title="4.5.1 date 显示当前时间"></a>4.5.1 date 显示当前时间</h3><h4 id="基本语法-25"><a href="#基本语法-25" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>date</code>（功能描述：显示当前时间）</li>
+<li><code>date +%Y</code>（功能描述：显示当前年份）</li>
+<li><code>date +%m</code>（功能描述：显示当前月份）</li>
+<li><code>date +%d</code>  （功能描述：显示当前是哪一天）</li>
+<li><code>date &quot;+%Y-%m-%d %H:%M:%S&quot;</code>（功能描述：显示年月日时分秒）</li>
+<li><code>date +%s</code>（功能描述：显示年时间戳）</li>
+</ul>
+<h4 id="案例实操-24"><a href="#案例实操-24" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>显示当前时间信息</li>
+</ul>
+<p><code>date</code></p>
+<ul>
+<li>显示当前时间年月日</li>
+</ul>
+<p><code>date +%Y%m%d</code></p>
+<ul>
+<li>显示当前时间年月日时分秒</li>
+</ul>
+<p><code>date &quot;+%Y-%m-%d %H:%M:%S&quot;</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721111732561.png" srcset="/img/loading.gif" class="" title="image-20220721111732561">
+
+
+
+<h3 id="4-5-2-date-显示非当前时间"><a href="#4-5-2-date-显示非当前时间" class="headerlink" title="4.5.2 date 显示非当前时间"></a>4.5.2 date 显示非当前时间</h3><h4 id="基本语法-26"><a href="#基本语法-26" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li>date -d ‘1 days ago’ （功能描述：显示前一天时间）</li>
+<li>date -d ‘-1 days ago’（功能描述：显示明天时间）</li>
+</ul>
+<h4 id="案例实操-25"><a href="#案例实操-25" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>显示前一天</li>
+</ul>
+<p><code>date -d &#39;1 days ago&#39;</code></p>
+<ul>
+<li>显示明天时间</li>
+</ul>
+<p><code>date -d &#39;-1 days ago&#39;</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721141857962.png" srcset="/img/loading.gif" class="" title="image-20220721141857962">
+
+<h3 id="4-5-3-date-设置系统时间"><a href="#4-5-3-date-设置系统时间" class="headerlink" title="4.5.3 date 设置系统时间"></a>4.5.3 date 设置系统时间</h3><h4 id="基本语法-27"><a href="#基本语法-27" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>date -s 字符串时间</code></p>
+<h4 id="案例实操-26"><a href="#案例实操-26" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>设置系统当前时间</li>
+</ul>
+<p><code>date -s &quot;2017-06-19 20:52:18&quot;</code></p>
+<h3 id="4-5-4-cal-查看日历"><a href="#4-5-4-cal-查看日历" class="headerlink" title="4.5.4 cal 查看日历"></a>4.5.4 cal 查看日历</h3><h4 id="基本语法-28"><a href="#基本语法-28" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>cal [选项]</code> （功能描述：不加选项，显示本月日历）</p>
+<h4 id="选项说明-8"><a href="#选项说明-8" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">具体某一年</td>
+<td align="center">显示这一年的日历</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-27"><a href="#案例实操-27" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看当前月的日历</li>
+</ul>
+<p><code>cal</code></p>
+<ul>
+<li>查看 2022 年的日历</li>
+</ul>
+<p><code>cal 2022</code></p>
+<hr>
+<h2 id="4-6-用户管理命令"><a href="#4-6-用户管理命令" class="headerlink" title="4.6 用户管理命令"></a>4.6 用户管理命令</h2><h3 id="4-6-1-useradd-添加新用户"><a href="#4-6-1-useradd-添加新用户" class="headerlink" title="4.6.1 useradd 添加新用户"></a>4.6.1 useradd 添加新用户</h3><h4 id="基本语法-29"><a href="#基本语法-29" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>useradd 用户名</code> （功能描述：添加新用户）</li>
+<li><code>useradd -g 组名 用户名</code> （功能描述：添加新用户到某个组）</li>
+</ul>
+<h4 id="案例实操-28"><a href="#案例实操-28" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>添加一个用户</li>
+</ul>
+<p><code>useradd tangseng</code></p>
+<h3 id="4-6-2-passwd-设置用户密码"><a href="#4-6-2-passwd-设置用户密码" class="headerlink" title="4.6.2 passwd 设置用户密码"></a>4.6.2 passwd 设置用户密码</h3><h4 id="基本语法-30"><a href="#基本语法-30" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>passwd 用户名</code> （功能描述：设置用户密码）</p>
+<h4 id="案例实操-29"><a href="#案例实操-29" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>设置用户的密码</li>
+</ul>
+<p><code>passwd tangseng</code></p>
+<h3 id="4-6-3-id-查看用户是否存在"><a href="#4-6-3-id-查看用户是否存在" class="headerlink" title="4.6.3 id 查看用户是否存在"></a>4.6.3 id 查看用户是否存在</h3><h4 id="基本语法-31"><a href="#基本语法-31" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>id 用户名</code></p>
+<h4 id="案例实操-30"><a href="#案例实操-30" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看用户是否存在</li>
+</ul>
+<p><code>id tangseng</code></p>
+<h3 id="4-6-4-cat-x2F-etc-x2F-passwd-查看创建了哪些用户"><a href="#4-6-4-cat-x2F-etc-x2F-passwd-查看创建了哪些用户" class="headerlink" title="4.6.4 cat &#x2F;etc&#x2F;passwd 查看创建了哪些用户"></a>4.6.4 cat &#x2F;etc&#x2F;passwd 查看创建了哪些用户</h3><h4 id="案例实操-31"><a href="#案例实操-31" class="headerlink" title="案例实操"></a>案例实操</h4><p><code>cat /etc/passwd</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721150110008.png" srcset="/img/loading.gif" class="" title="image-20220721150110008">
+
+
+
+<h3 id="4-6-5-su-切换用户"><a href="#4-6-5-su-切换用户" class="headerlink" title="4.6.5 su 切换用户"></a>4.6.5 su 切换用户</h3><h4 id="基本语法-32"><a href="#基本语法-32" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>su 用户名称</code> （功能描述：切换用户，只能获得用户的执行权限，不能获得环境变量）</li>
+<li><code>su - 用户名称</code> （功能描述：切换到用户并获得该用户的环境变量及执行权限）</li>
+</ul>
+<blockquote>
+<p>su是swith user的缩写，表示切换用户。</p>
+</blockquote>
+<h4 id="案例实操-32"><a href="#案例实操-32" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>切换用户</li>
+</ul>
+<p><code>su tangseng</code></p>
+<h3 id="4-6-6-userdel-删除用户"><a href="#4-6-6-userdel-删除用户" class="headerlink" title="4.6.6 userdel 删除用户"></a>4.6.6 userdel 删除用户</h3><h4 id="基本语法-33"><a href="#基本语法-33" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>userdel 用户名</code>（功能描述：删除用户但保存用户主目录）</li>
+<li><code>userdel -r 用户名</code> （功能描述：用户和用户主目录，都删除）</li>
+</ul>
+<h4 id="选项说明-9"><a href="#选项说明-9" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-r</td>
+<td align="center">删除用户的同时，删除与用户相关的所有文件。</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-33"><a href="#案例实操-33" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>删除用户但保存用户主目录</li>
+</ul>
+<p><code>userdel tangseng</code></p>
+<ul>
+<li>删除用户和用户主目录，都删除</li>
+</ul>
+<p>&#96;userdel -r zhubajie</p>
+<h3 id="4-6-7-who-查看登录用户信息"><a href="#4-6-7-who-查看登录用户信息" class="headerlink" title="4.6.7 who 查看登录用户信息"></a>4.6.7 who 查看登录用户信息</h3><h4 id="基本语法-34"><a href="#基本语法-34" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>whoami</code>（功能描述：显示自身用户名称）</li>
+<li><code>who am i</code>（功能描述：显示登录用户的用户名以及登陆时间）</li>
+</ul>
+<p>案例实操</p>
+<ul>
+<li>显示自身用户名称</li>
+</ul>
+<p><code>whoami</code></p>
+<ul>
+<li>显示登录用户的用户名</li>
+</ul>
+<p><code>who am i</code></p>
+<h3 id="4-6-8-sudo-设置普通用户具有-root-权限"><a href="#4-6-8-sudo-设置普通用户具有-root-权限" class="headerlink" title="4.6.8 sudo 设置普通用户具有 root 权限"></a>4.6.8 sudo 设置普通用户具有 root 权限</h3><ol>
+<li>添加 atguigu 用户，并对其设置密码。</li>
+</ol>
+<p><code>useradd gotcha</code></p>
+<p><code>passwd gotcha</code></p>
+<ol start="2">
+<li>修改配置文件</li>
+</ol>
+<p><code>vi /etc/sudoers</code></p>
+<p>修改 &#x2F;etc&#x2F;sudoers 文件，在 root 下面添加一行，如下图所示：</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721153318112.png" srcset="/img/loading.gif" class="" title="image-20220721153318112">
+
+<p>或者配置成采用 sudo 命令时，不需要输入密码</p>
+<p>gotcha ALL&#x3D;(ALL) NOPASSWD:ALL</p>
+<p>修改完毕，可以用gotcha帐号登录，然后用命令 sudo ，即可获得 root 权限进行操作。</p>
+<h3 id="4-6-9-usermod-修改用户"><a href="#4-6-9-usermod-修改用户" class="headerlink" title="4.6.9 usermod 修改用户"></a>4.6.9 usermod 修改用户</h3><h4 id="基本语法-35"><a href="#基本语法-35" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>usermod -g 用户组 用户名</code></p>
+<h4 id="选项说明-10"><a href="#选项说明-10" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-g</td>
+<td align="center">修改用户的初始登录组，给定的组必须存在。默认组 id 是 1。</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-34"><a href="#案例实操-34" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>将用户加入到用户组</li>
+</ul>
+<p><code>usermod -g root gotcha</code></p>
+<h2 id="4-7-用户组管理命令"><a href="#4-7-用户组管理命令" class="headerlink" title="4.7 用户组管理命令"></a>4.7 用户组管理命令</h2><p>每个用户都有一个用户组，系统可以对一个用户组中的所有用户进行集中管理。不同 Linux 系统对用户组的规定有所不同， 如Linux下的用户属于与它同名的用户组，这个用户组在创建用户时同时创建。 用户组的管理涉及用户组的添加、删除和修改。</p>
+<ul>
+<li>组的增加、删除和修改实际上就是对 &#x2F;etc&#x2F;group文件的更新。</li>
+</ul>
+<h3 id="4-7-1-groupadd-新增组"><a href="#4-7-1-groupadd-新增组" class="headerlink" title="4.7.1 groupadd 新增组"></a>4.7.1 groupadd 新增组</h3><h4 id="基本语法-36"><a href="#基本语法-36" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>groupadd 组名</code></p>
+<h4 id="案例实操-35"><a href="#案例实操-35" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>添加一个xitianqujing组</li>
+</ul>
+<p><code>groupadd xitianqujing</code></p>
+<h3 id="4-7-2-groupdel-删除组"><a href="#4-7-2-groupdel-删除组" class="headerlink" title="4.7.2 groupdel 删除组"></a>4.7.2 groupdel 删除组</h3><h4 id="基本语法-37"><a href="#基本语法-37" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>groupdel 组名</code></p>
+<h4 id="案例实操-36"><a href="#案例实操-36" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>删除xitianqujing组</li>
+</ul>
+<p><code>groupdel xitianqujing</code></p>
+<h3 id="4-7-3-groupmod-修改组"><a href="#4-7-3-groupmod-修改组" class="headerlink" title="4.7.3 groupmod 修改组"></a>4.7.3 groupmod 修改组</h3><h4 id="基本语法-38"><a href="#基本语法-38" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>groupmod -n 新组名 老组名</code></p>
+<h4 id="选项说明-11"><a href="#选项说明-11" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-n&lt;新组名&gt;</td>
+<td align="center">指定工作组的新组名</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-37"><a href="#案例实操-37" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>修改xitianqujing组名称为qujing</li>
+</ul>
+<p><code>groupmod -n qujing xitianqujing</code></p>
+<h3 id="4-7-4-cat-x2F-etc-x2F-group-查看创建了哪些组"><a href="#4-7-4-cat-x2F-etc-x2F-group-查看创建了哪些组" class="headerlink" title="4.7.4 cat &#x2F;etc&#x2F;group 查看创建了哪些组"></a>4.7.4 cat &#x2F;etc&#x2F;group 查看创建了哪些组</h3><h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><p><code>cat /etc/group</code></p>
+<hr>
+<h2 id="4-8-文件权限类命令"><a href="#4-8-文件权限类命令" class="headerlink" title="4.8 文件权限类命令"></a>4.8 文件权限类命令</h2><h3 id="4-8-1-文件属性"><a href="#4-8-1-文件属性" class="headerlink" title="4.8.1 文件属性"></a>4.8.1 文件属性</h3><p>Linux系统是一种典型的多用户系统，不同的用户处于不同的地位，拥有不同的权限。 为了保护系统的安全性，Linux系统对不同的用户访问同一文件（包括目录文件）的权限做了不同的规定。在Linux中可以使用ll或者ls -l命令来显示一个文件的属性以及文件所属的用户和组。</p>
+<ul>
+<li>从左到右的 10 个字符表示，如下图所示：</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721162727767.png" srcset="/img/loading.gif" class="" title="image-20220721162727767">
+
+<p>如果没有权限，就会出现减号[ - ]。从左至右用0-9这些数字来表示：</p>
+<ol>
+<li>0 首位表示类型</li>
+</ol>
+<p>在Linux中第一个字符代表这个文件是目录、文件或链接文件等等</p>
+<p><strong>- 代表文件</strong></p>
+<p><strong>d代表目录</strong></p>
+<p> <strong>l链接文档(link file)</strong></p>
+<ol start="2">
+<li>第1-3位确定属主（该文件的所有者）拥有该文件的权限。—User</li>
+<li>第4-6位确定属组（所有者的同组用户）拥有该文件的权限，—Group</li>
+<li>第7-9位确定其他用户拥有该文件的权限 —Other</li>
+</ol>
+<ul>
+<li>rwx 作用文件和目录的区别<ul>
+<li>作用到文件：<ul>
+<li>[ r ]代表可读(read)：可以读取，查看。</li>
+<li>[ w ]代表可写(write)：可以修改，但是不代表可以删除该文件，删除一个文件的前提条件是对该文件所在的目录有写权限，才能删除该文件。</li>
+<li>[ x ]代表可执行(execute)：可以被系统执行</li>
+</ul>
+</li>
+<li>作用到目录：<ul>
+<li>[ r ]代表可读(read)：可以读取，ls查看目录内容</li>
+<li>[ w ]代表可写(write)：可以修改，目录内创建+删除+重命名目录</li>
+<li>[ x ]代表可执行(execute)：可以进入该目录</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>如果查看到是文件：链接数指的是硬链接个数。</strong></p>
+<p><strong>如果查看的是文件夹：链接数指的是子文件夹个数。</strong></p>
+<h3 id="4-8-2-chmod-改变权限"><a href="#4-8-2-chmod-改变权限" class="headerlink" title="4.8.2 chmod 改变权限"></a>4.8.2 chmod 改变权限</h3><h4 id="基本语法-39"><a href="#基本语法-39" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li>第一种方式变更权限 <code>chmod [&#123;ugoa&#125;&#123;+-=&#125;&#123;rwx&#125;] 文件或目录</code></li>
+<li>第二种方式变更权限 <code>chmod [mode=421 ] [文件或目录]</code></li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721173427388.png" srcset="/img/loading.gif" class="" title="image-20220721173427388">
+
+<h4 id="经验技巧-7"><a href="#经验技巧-7" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li><p><strong>u:所有者 g:所有组 o:其他人 a:所有人(u、g、o 的总和)</strong></p>
+</li>
+<li><p>r&#x3D;4 w&#x3D;2 x&#x3D;1</p>
+</li>
+<li><p>rwx&#x3D;4+2+1&#x3D;7</p>
+</li>
+</ul>
+<h4 id="案例实操-38"><a href="#案例实操-38" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>修改文件使其所属主用户具有执行权限</li>
+</ul>
+<p><code>chmod u+x houge.txt</code></p>
+<ul>
+<li>修改文件使其所属组用户具有执行权限</li>
+</ul>
+<p><code>chmod g+x houge.txt</code></p>
+<ul>
+<li>修改文件所属主用户执行权限,并使其他用户具有执行权限</li>
+</ul>
+<p><code>chmod u-x,o+x houge.txt</code></p>
+<ul>
+<li>采用数字的方式，设置文件所有者、所属组、其他用户都具有可读可写可执行权</li>
+</ul>
+<p>限。</p>
+<p><code>chmod 777 houge.txt</code></p>
+<ul>
+<li>修改整个文件夹里面的所有文件的所有者、所属组、其他用户都具有可读可写可执行权限。</li>
+</ul>
+<p><code>chmod -R 777 xiyou/</code></p>
+<h3 id="4-8-3-chown-改变所有者"><a href="#4-8-3-chown-改变所有者" class="headerlink" title="4.8.3 chown 改变所有者"></a>4.8.3 chown 改变所有者</h3><h4 id="基本语法-40"><a href="#基本语法-40" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>chown [选项] [最终用户] [文件或目录]</code>（功能描述：改变文件或者目录的所有者）</p>
+<h4 id="选项说明-12"><a href="#选项说明-12" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-R</td>
+<td align="center">递归操作</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-39"><a href="#案例实操-39" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>修改文件所有者</li>
+</ul>
+<p><code>chown gotcha houge.txt</code></p>
+<ul>
+<li>递归改变文件所有者和所有组</li>
+</ul>
+<p><code>chown -R atguigu:atguigu xiyou/ </code></p>
+<h3 id="4-8-4-chgrp-改变所属组"><a href="#4-8-4-chgrp-改变所属组" class="headerlink" title="4.8.4 chgrp 改变所属组"></a>4.8.4 chgrp 改变所属组</h3><h4 id="基本语法-41"><a href="#基本语法-41" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>chgrp [最终用户组] [文件或目录]</code>（功能描述：改变文件或者目录的所属组）</p>
+<h4 id="案例实操-40"><a href="#案例实操-40" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>修改文件的所属组</li>
+</ul>
+<p><code>chgrp root houge.txt</code></p>
+<hr>
+<h2 id="4-9-搜索查找类命令"><a href="#4-9-搜索查找类命令" class="headerlink" title="4.9 搜索查找类命令"></a>4.9 搜索查找类命令</h2><h3 id="4-9-1-find-查找文件或者目录"><a href="#4-9-1-find-查找文件或者目录" class="headerlink" title="4.9.1 find 查找文件或者目录"></a>4.9.1 find 查找文件或者目录</h3><ul>
+<li>find 指令将从指定目录向下递归地遍历其各个子目录，将满足条件的文件显示在终端。</li>
+</ul>
+<h4 id="基本语法-42"><a href="#基本语法-42" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>find [搜索范围] [选项]</code></p>
+<h4 id="选项说明-13"><a href="#选项说明-13" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">-name&lt;查询方式&gt;</td>
+<td align="left">按照指定的文件名查找模式查找文件</td>
+</tr>
+<tr>
+<td align="left">-user&lt;用户名&gt;</td>
+<td align="left">查找属于指定用户名所有文件</td>
+</tr>
+<tr>
+<td align="left">-size&lt;文件大小&gt;</td>
+<td align="left">按照指定的文件大小查找文件,单位为: b —— 块（512 字节） c —— 字节 w —— 字（2 字节） k —— 千字节 M —— 兆字节 G —— 吉字节</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-41"><a href="#案例实操-41" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>按文件名：根据名称查找&#x2F;目录下的filename.txt文件。</li>
+</ul>
+<p><code>find xiyou/ -name &quot;*.txt&quot;</code></p>
+<ul>
+<li>按拥有者：查找&#x2F;opt目录下，用户名称为-user的文件</li>
+</ul>
+<p><code>find xiyou/ -user gotcha</code></p>
+<ul>
+<li>按文件大小：在&#x2F;home目录下查找大于200m的文件（+n 大于 -n小于 n等于）</li>
+</ul>
+<p><code>find /home -size +204800</code></p>
+<h3 id="4-9-2-locate-快速定位文件路径"><a href="#4-9-2-locate-快速定位文件路径" class="headerlink" title="4.9.2 locate 快速定位文件路径"></a>4.9.2 locate 快速定位文件路径</h3><p>locate指令利用事先建立的系统中所有文件名称及路径的 locate 数据库实现快速定位给定的文件。</p>
+<p>Locate 指令无需遍历整个文件系统，查询速度较快。为了保证查询结果的准确 度，管理员必须定期更新 locate 时刻。</p>
+<h4 id="基本语法-43"><a href="#基本语法-43" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>locate 搜索文件</code></p>
+<h4 id="经验技巧-8"><a href="#经验技巧-8" class="headerlink" title="经验技巧"></a>经验技巧</h4><p>由于 locate 指令基于数据库进行查询，所以第一次运行前，必须使用 updatedb 指令创 建 locate 数据库。</p>
+<blockquote>
+<p>在CentOS7以上的系统中使用”locate”文件查找命令，发现该命令不可用。</p>
+<p>因为CentOS7默认没有安装该命令，在联网状态运行<code>yum install mlocate</code>命令即可安装”locate”命令。</p>
+</blockquote>
+<h4 id="案例实操-42"><a href="#案例实操-42" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查询文件夹</li>
+</ul>
+<p><code>updatedb</code></p>
+<p><code>locate tmp</code></p>
+<h3 id="4-9-3-grep-过滤查找及“-”管道符"><a href="#4-9-3-grep-过滤查找及“-”管道符" class="headerlink" title="4.9.3 grep 过滤查找及“|”管道符"></a>4.9.3 grep 过滤查找及“|”管道符</h3><ul>
+<li>管道符“|”，表示将前一个命令的处理结果输出传递给后面的命令处理</li>
+</ul>
+<h4 id="基本语法-44"><a href="#基本语法-44" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>grep 选项 查找内容 源文件</code></p>
+<h4 id="选项说明-14"><a href="#选项说明-14" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-n</td>
+<td align="center">显示匹配行及行号</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-43"><a href="#案例实操-43" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查找某文件在第几行</li>
+</ul>
+<p><code>ls | grep -n test</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220722161038545.png" srcset="/img/loading.gif" class="" title="image-20220722161038545">
+
+<h2 id="4-10-压缩和解压类命令"><a href="#4-10-压缩和解压类命令" class="headerlink" title="4.10 压缩和解压类命令"></a>4.10 压缩和解压类命令</h2><h3 id="4-10-1-gzip-x2F-gunzip-压缩"><a href="#4-10-1-gzip-x2F-gunzip-压缩" class="headerlink" title="4.10.1 gzip&#x2F;gunzip 压缩"></a>4.10.1 gzip&#x2F;gunzip 压缩</h3><h4 id="基本语法-45"><a href="#基本语法-45" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><p><code>gzip 文件</code> （功能描述：压缩文件，只能将文件压缩为*.gz 文件）</p>
+</li>
+<li><p><code>gunzip 文件.gz</code> （功能描述：解压缩文件命令）</p>
+</li>
+</ul>
+<h4 id="经验技巧-9"><a href="#经验技巧-9" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li>只能压缩文件不能压缩目录</li>
+<li>不保留原来的文件</li>
+<li>同时压缩多个文件会产生多个压缩包</li>
+</ul>
+<h4 id="案例实操-44"><a href="#案例实操-44" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>gzip压缩</li>
+</ul>
+<p><code>gzip houge.txt</code></p>
+<ul>
+<li>gunzip解压缩文件</li>
+</ul>
+<p><code>gunzip houge.txt.gz</code></p>
+<h3 id="4-10-2-zip-x2F-unzip-压缩"><a href="#4-10-2-zip-x2F-unzip-压缩" class="headerlink" title="4.10.2 zip&#x2F;unzip 压缩"></a>4.10.2 zip&#x2F;unzip 压缩</h3><h4 id="基本语法-46"><a href="#基本语法-46" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><p><code>zip [选项] XXX.zip 将要压缩的内容 </code>（功能描述：压缩文件和目录的命令）</p>
+</li>
+<li><p><code>unzip [选项] XXX.zip</code>（功能描述：解压缩文件）</p>
+</li>
+</ul>
+<h4 id="选项说明-15"><a href="#选项说明-15" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">zip选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-r</td>
+<td align="center">压缩目录</td>
+</tr>
+</tbody></table>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><table>
+<thead>
+<tr>
+<th align="center">unzip选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-d&lt;目录&gt;</td>
+<td align="center">指定解压后文件的存放目录</td>
+</tr>
+</tbody></table>
+<h4 id="经验技巧-10"><a href="#经验技巧-10" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li>zip 压缩命令在windows&#x2F;linux都通用，可以压缩目录且保留源文件。</li>
+</ul>
+<h4 id="案例实操-45"><a href="#案例实操-45" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>压缩 houge.txt 和bailongma.txt，压缩后的名称为mypackage.zip</li>
+</ul>
+<p><code>zip mypackage.zip houge.txt bailongma.txt</code></p>
+<ul>
+<li>解压 mypackage.zip</li>
+</ul>
+<p><code>unzip mypackage.zip</code></p>
+<ul>
+<li>解压mypackage.zip到指定目录-d</li>
+</ul>
+<p><code>unzip mypackage.zip -d /opt</code></p>
+<h3 id="4-10-3-tar-打包"><a href="#4-10-3-tar-打包" class="headerlink" title="4.10.3 tar 打包"></a>4.10.3 tar 打包</h3><h4 id="基本语法-47"><a href="#基本语法-47" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>tar [选项] XXX.tar.gz 将要打包进去的内容</code>（功能描述：打包目录， 压缩后的文件格式.tar.gz）</p>
+<h4 id="选项说明-16"><a href="#选项说明-16" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-c</td>
+<td>产生.tar 打包文件</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>指定压缩后的文件名</td>
+</tr>
+<tr>
+<td>-z</td>
+<td>打包同时压缩</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>解包.tar 文件</td>
+</tr>
+<tr>
+<td>-C</td>
+<td>解压到指定目录</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-46"><a href="#案例实操-46" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>压缩多个文件</li>
+</ul>
+<p><code>tar -zcvf houma.tar.gz houge.txt bailongma.txt</code></p>
+<ul>
+<li>压缩目录</li>
+</ul>
+<p><code>tar -zcvf xiyou.tar.gz xiyou/ </code></p>
+<ul>
+<li>解压到当前目录</li>
+</ul>
+<p><code>tar -zxvf houma.tar.gz</code></p>
+<ul>
+<li>解压到指定目录</li>
+</ul>
+<p><code>tar -zxvf xiyou.tar.gz -C /opt</code></p>
+<h2 id="4-11-磁盘查看和分区类命令"><a href="#4-11-磁盘查看和分区类命令" class="headerlink" title="4.11 磁盘查看和分区类命令"></a>4.11 磁盘查看和分区类命令</h2><h3 id="4-11-1-du-查看文件和目录占用的磁盘空间"><a href="#4-11-1-du-查看文件和目录占用的磁盘空间" class="headerlink" title="4.11.1 du 查看文件和目录占用的磁盘空间"></a>4.11.1 du 查看文件和目录占用的磁盘空间</h3><blockquote>
+<p>du是disk usage的缩写，表示磁盘占用情况</p>
+</blockquote>
+<h4 id="基本语法-48"><a href="#基本语法-48" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>du 目录/文件</code> （功能描述：显示目录下每个子目录的磁盘使用情况）</p>
+<h4 id="选项说明-17"><a href="#选项说明-17" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-h</td>
+<td>以人们较易阅读的 GBytes, MBytes, KBytes 等格式自行显示；</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>不仅查看子目录大小，还要包括文件</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>显示所有的文件和子目录大小后，显示总和</td>
+</tr>
+<tr>
+<td>-s</td>
+<td>只显示总和</td>
+</tr>
+<tr>
+<td>–max-depth&#x3D;n</td>
+<td>指定统计子目录的深度为第 n 层</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-47"><a href="#案例实操-47" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看当前用户主目录占用的磁盘空间大小</li>
+</ul>
+<p><code>du -sh</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220722170011857.png" srcset="/img/loading.gif" class="" title="image-20220722170011857">
+
+<h3 id="4-11-2-df-查看磁盘空间使用情况"><a href="#4-11-2-df-查看磁盘空间使用情况" class="headerlink" title="4.11.2 df 查看磁盘空间使用情况"></a>4.11.2 df 查看磁盘空间使用情况</h3><blockquote>
+<p>df是disk free的缩写，表示空余磁盘情况</p>
+</blockquote>
+<h4 id="基本语法-49"><a href="#基本语法-49" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>df 选项</code> （功能描述：列出文件系统的整体磁盘使用量，检查文件系统的磁盘空间占 用情况）</p>
+<h4 id="情况说明"><a href="#情况说明" class="headerlink" title="情况说明"></a>情况说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-h</td>
+<td align="center">以较易阅读的 GBytes, MBytes, KBytes 等格式显示</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-48"><a href="#案例实操-48" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看磁盘使用情况</li>
+</ul>
+<p><code>df -h</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220722170032784.png" srcset="/img/loading.gif" class="" title="image-20220722170032784">
+
+<h3 id="4-11-3-lsblk-查看设备挂载情况"><a href="#4-11-3-lsblk-查看设备挂载情况" class="headerlink" title="4.11.3 lsblk 查看设备挂载情况"></a>4.11.3 lsblk 查看设备挂载情况</h3><h4 id="基本语法-50"><a href="#基本语法-50" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>lsblk</code>（功能描述：查看设备挂载情况）</li>
+</ul>
+<h4 id="选项说明-18"><a href="#选项说明-18" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-f</td>
+<td align="center">查看详细的设备挂载情况，显示文件系统信息</td>
+</tr>
+</tbody></table>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220722165349826.png" srcset="/img/loading.gif" class="" title="image-20220722165349826">
+
+<h3 id="4-11-4-mount-x2F-umount-挂载-x2F-卸载"><a href="#4-11-4-mount-x2F-umount-挂载-x2F-卸载" class="headerlink" title="4.11.4 mount&#x2F;umount 挂载&#x2F;卸载"></a>4.11.4 mount&#x2F;umount 挂载&#x2F;卸载</h3><p>对于Linux用户来讲，不论有几个分区，分别分给哪一个目录使用，它总归就是一个目录、一个独立且唯一的文件结构。</p>
+<p>Linux中每个分区都是用来组成整个文件系统的一部分，它用一种叫做”挂载”的处理方法，它整个文件系统中包含了一整套的文件和目录，并将一个分区和一个目录联系起来，要载入的那个分区将使它的存储空间在这个目录下获得。</p>
+<h4 id="挂载前准备"><a href="#挂载前准备" class="headerlink" title="挂载前准备"></a>挂载前准备</h4><p>必须要有光盘或者已经连接的硬盘</p>
+<h4 id="基本语法-51"><a href="#基本语法-51" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>mount [-t vfstype] [-o options] device dir</code> （功能描述：挂载设备）</p>
+<p><code>umount 设备文件名或挂载点</code>（功能描述：卸载设备）</p>
+<h4 id="参数说明-2"><a href="#参数说明-2" class="headerlink" title="参数说明"></a>参数说明</h4><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-t vfstype</td>
+<td>指定文件系统的类型，通常不必指定。 mount 会自动选择正确的类型。常用类型有： <br />光盘或光盘镜像：iso9660 <br />DOS fat16文件系统：msdos<br />Windows 9x fat32 文件系统：vfat <br />Windows NT ntfs文件系统：ntfs<br />Mount Windows 文件网络共享：smbfs UNIX<br />(LINUX) 文件网络共享：nfs</td>
+</tr>
+<tr>
+<td>-o options</td>
+<td>主要用来描述设备或档案的挂载方式。常用的参数有：<br />loop：用来把一个文件当成硬盘分区挂接上系统<br />ro：采用只读方式挂接设备<br />rw：采用读写方式挂接设备<br />iocharset：指定访问文件系统所用字符集</td>
+</tr>
+<tr>
+<td>device</td>
+<td>要挂载(mount)的设备</td>
+</tr>
+<tr>
+<td>dir</td>
+<td>设备在系统上的挂载点(mount point)</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-49"><a href="#案例实操-49" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>挂载光盘镜像文件</li>
+</ul>
+<p><code>mkdir /mnt/cdrom/</code> 建立挂载点</p>
+<p><code>mount -t iso9660 /dev/cdrom /mnt/cdrom/</code> 设备&#x2F;dev&#x2F;cdrom 挂载到挂载点 ： &#x2F;mnt&#x2F;cdrom 中</p>
+<ul>
+<li>卸载光盘镜像文件</li>
+</ul>
+<p><code>umount /mnt/cdrom</code></p>
+<ul>
+<li>设置开机自动挂载</li>
+</ul>
+<p><code>vi /etc/fstab</code></p>
+<p>添加红框中内容，保存退出。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220722173904808.png" srcset="/img/loading.gif" class="" title="image-20220722173904808">
+
+<blockquote>
+<p>图中两个0，第一个表示是否开启kdump备份功能（0表示未开启，1表示开启）</p>
+<p>第二个表示fsck文件系统检查优先级（0表示不检查，1表示最高，之后递减）  </p>
+</blockquote>
+<h3 id="4-11-5-fdisk-分区"><a href="#4-11-5-fdisk-分区" class="headerlink" title="4.11.5 fdisk 分区"></a>4.11.5 fdisk 分区</h3><h4 id="基本语法-52"><a href="#基本语法-52" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>fdisk -l</code>（功能描述：查看磁盘分区详情）</p>
+<p><code>fdisk 硬盘设备名</code>（功能描述：对新增硬盘进行分区操作）</p>
+<h4 id="选项说明-19"><a href="#选项说明-19" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-l</td>
+<td align="center">显示所有硬盘的分区列表</td>
+</tr>
+</tbody></table>
+<h4 id="经验技巧-11"><a href="#经验技巧-11" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li>该命令必须在 root 用户下才能使用</li>
+</ul>
+<h4 id="功能说明"><a href="#功能说明" class="headerlink" title="功能说明"></a>功能说明</h4><ul>
+<li><p>Linux 分区</p>
+<ul>
+<li><p>Device：分区序列</p>
+</li>
+<li><p>Boot：引导</p>
+</li>
+<li><p>Start：从X磁柱开始</p>
+</li>
+<li><p>End：到Y磁柱结束</p>
+</li>
+<li><p>Blocks：容量</p>
+</li>
+<li><p>Id：分区类型ID</p>
+</li>
+<li><p>System：分区类型</p>
+</li>
+</ul>
+</li>
+<li><p>分区操作按键说明</p>
+<ul>
+<li>m：显示命令列表</li>
+<li>p：显示当前磁盘分区</li>
+<li>n：新增分区</li>
+<li>w：写入分区信息并退出</li>
+<li>q：不保存分区信息直接退出</li>
+</ul>
+</li>
+</ul>
+<h4 id="案例实操-50"><a href="#案例实操-50" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看系统分区情况</li>
+</ul>
+<p><code>fdisk -l</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220722174919617.png" srcset="/img/loading.gif" class="" title="image-20220722174919617">
+
+
+
+<h2 id="4-12-进程管理类命令"><a href="#4-12-进程管理类命令" class="headerlink" title="4.12 进程管理类命令"></a>4.12 进程管理类命令</h2><p><strong>进程是正在执行的一个程序或命令，每一个进程都是一个运行的实体，都有自己的地址空间，并占用一定的系统资源。</strong></p>
+<h3 id="4-12-1-ps-查看当前系统进程状态"><a href="#4-12-1-ps-查看当前系统进程状态" class="headerlink" title="4.12.1 ps 查看当前系统进程状态"></a>4.12.1 ps 查看当前系统进程状态</h3><blockquote>
+<p>ps是process status的缩写，表示进程状态。</p>
+</blockquote>
+<h4 id="基本语法-53"><a href="#基本语法-53" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>ps aux | grep xxx</code> （功能描述：查看系统中所有进程）</p>
+<p><code> ps -ef | grep xxx</code> （功能描述：可以查看子父进程之间的关系）</p>
+<h4 id="选项说明-20"><a href="#选项说明-20" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>列出带有终端的所有用户的进程</td>
+</tr>
+<tr>
+<td>x</td>
+<td>列出当前用户的所有进程，包括没有终端的进程</td>
+</tr>
+<tr>
+<td>u</td>
+<td>面向用户友好的显示风格</td>
+</tr>
+<tr>
+<td>-e</td>
+<td>列出所有进程</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>列出某个用户关联的所有进程</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>显示完整格式的进程列表</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>参数后面 - 的含义</p>
+<p>第一种：参数用一横的说明后面的参数是字符形式。</p>
+<p>第二种：参数用两横的说明后面的参数是单词形式。</p>
+<p>第三种：参数前有横的是 System V风格。</p>
+<p>第四种：参数前没有横的是 BSD风格。</p>
+<p>有关System V和BSD的其他区别：</p>
+<p>系统启动过程中 kernel 最后一步调用的是 init 程序，init 程序的执行有两种风格，即 System V 和 BSD。<br>System V 风格中 init 调用 &#x2F;etc&#x2F;inittab，BSD 风格调用 &#x2F;etc&#x2F;rc，它们的目的相同，都是根据 runlevel 执行一系列的程序。</p>
+</blockquote>
+<h4 id="功能说明-1"><a href="#功能说明-1" class="headerlink" title="功能说明"></a>功能说明</h4><ul>
+<li><p><code>ps aux</code> 显示信息说明</p>
+<ul>
+<li><p>USER：该进程是由哪个用户产生的</p>
+</li>
+<li><p>PID：进程的 ID 号</p>
+</li>
+<li><p>%CPU：该进程占用 CPU 资源的百分比，占用越高，进程越耗费资源</p>
+</li>
+<li><p>%MEM：该进程占用物理内存的百分比，占用越高，进程越耗费资源</p>
+</li>
+<li><p>VSZ：该进程占用虚拟内存的大小，单位 KB</p>
+</li>
+<li><p>RSS：该进程占用实际物理内存的大小，单位 KB</p>
+</li>
+<li><p>TTY：该进程是在哪个终端中运行的。 对于 CentOS 来说， tty1 是图形化终端， tty2-tty6 是本地的字符界面终端。pts&#x2F;0-255 代表虚拟终端</p>
+</li>
+<li><p>STAT：进程状态。</p>
+</li>
+</ul>
+<p>  常见的状态有：R：运行状态、S：睡眠状态、T：暂停状态、 Z：僵尸状态、s：包含子进程、l：多线程、+：前台显示 </p>
+<ul>
+<li><p>START：该进程的启动时间</p>
+</li>
+<li><p>TIME：该进程占用 CPU 的运算时间，注意不是系统时间</p>
+</li>
+<li><p>COMMAND：产生此进程的命令名</p>
+</li>
+</ul>
+</li>
+<li><p><code>ps -ef</code> 显示信息说明</p>
+<ul>
+<li>UID：用户 ID </li>
+<li>PID：进程 ID </li>
+<li>PPID：父进程 ID </li>
+<li>C：CPU 用于计算执行优先级的因子。数值越大，表明进程是 CPU 密集型运算， 执行优先级会降低；数值越小，表明进程是 I&#x2F;O 密集型运算，执行优先级会提高 </li>
+<li>STIME：进程启动的时间 </li>
+<li>TTY：完整的终端名称 </li>
+<li>TIME：CPU 时间 </li>
+<li>CMD：启动进程所用的命令和参数</li>
+</ul>
+</li>
+</ul>
+<h4 id="经验技巧-12"><a href="#经验技巧-12" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li><p>如果想查看进程的 CPU 占用率和内存占用率，可以使用 <code>ps aux</code></p>
+</li>
+<li><p>如果想查看进程的父进程 ID 可以使用 <code>ps -ef</code></p>
+</li>
+</ul>
+<h4 id="案例实操-51"><a href="#案例实操-51" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><code>ps aux</code></li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220724230942759.png" srcset="/img/loading.gif" class="" title="image-20220724230942759">
+
+<ul>
+<li><code>ps -ef</code></li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220724231033145.png" srcset="/img/loading.gif" class="" title="image-20220724231033145">
+
+
+
+<h3 id="4-12-2-kill-终止进程"><a href="#4-12-2-kill-终止进程" class="headerlink" title="4.12.2 kill 终止进程"></a>4.12.2 kill 终止进程</h3><h4 id="基本语法-54"><a href="#基本语法-54" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>kill [选项] 进程号</code> （功能描述：通过进程号杀死进程）</li>
+<li><code>killall 进程名称</code> （功能描述：通过进程名称杀死进程， 也支持通配符， 这在系统因负载过大而变得很慢时很有用）</li>
+</ul>
+<h4 id="选项说明-21"><a href="#选项说明-21" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th align="center">选项</th>
+<th align="center">功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-9</td>
+<td align="center">表示强制进程立即停止</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-52"><a href="#案例实操-52" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>杀死浏览器进程</li>
+</ul>
+<p><code>kill -9 5102</code></p>
+<ul>
+<li>通过进程名称杀死进程</li>
+</ul>
+<p><code>killall firefox</code></p>
+<h3 id="4-12-3-pstree-查看进程树"><a href="#4-12-3-pstree-查看进程树" class="headerlink" title="4.12.3 pstree 查看进程树"></a>4.12.3 pstree 查看进程树</h3><h4 id="基本语法-55"><a href="#基本语法-55" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>pstree [选项]</code></p>
+<h4 id="选项说明-22"><a href="#选项说明-22" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-p</td>
+<td>显示进程的 PID</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>显示进程的所属用户</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-53"><a href="#案例实操-53" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>显示进程 pid</li>
+</ul>
+<p><code>pstree -p</code></p>
+<ul>
+<li>显示进程所属用户</li>
+</ul>
+<p><code>pstree -u</code></p>
+<h3 id="4-12-4-top-实时监控系统进程状态"><a href="#4-12-4-top-实时监控系统进程状态" class="headerlink" title="4.12.4 top 实时监控系统进程状态"></a>4.12.4 top 实时监控系统进程状态</h3><h4 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h4><p><code>top [选项]</code></p>
+<h4 id="选项说明-23"><a href="#选项说明-23" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-d 秒数</td>
+<td>指定 top 命令每隔几秒更新。 默认是 3 秒，在 top 命令的交互模式当 中可以执行的命令：</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>使 top 不显示任何闲置或者僵死进程。</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>通过指定监控进程 ID 来仅仅监控某个进程的状态。</td>
+</tr>
+</tbody></table>
+<h4 id="操作说明-2"><a href="#操作说明-2" class="headerlink" title="操作说明"></a>操作说明</h4><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P</td>
+<td>以 CPU 使用率排序，默认就是此项</td>
+</tr>
+<tr>
+<td>M</td>
+<td>以内存的使用率排序</td>
+</tr>
+<tr>
+<td>N</td>
+<td>以 PID 排序</td>
+</tr>
+<tr>
+<td>q</td>
+<td>退出 top</td>
+</tr>
+</tbody></table>
+<h4 id="查询结果字段解释"><a href="#查询结果字段解释" class="headerlink" title="查询结果字段解释"></a>查询结果字段解释</h4><img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220725153435608.png" srcset="/img/loading.gif" class="" title="image-20220725153435608">
+
+<ul>
+<li>第一行信息为任务队列信息</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>15:34:50</td>
+<td>系统当前时间</td>
+</tr>
+<tr>
+<td>up 454 days, 23:39</td>
+<td>系统的运行时间，本机已经运行 454天 23 小时 39 分钟</td>
+</tr>
+<tr>
+<td>2 users</td>
+<td>当前登录了两个用户</td>
+</tr>
+<tr>
+<td>load average: 0.79, 0.22, 0.11</td>
+<td>系统在之前 1 分钟， 5 分钟， 15 分钟的平均负 载。 一般认为小于 1 时， 负载较小。 如果大于 1， 系统已经超出负荷。</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>第二行为进程信息</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tasks: 95 total</td>
+<td>系统中的进程总数</td>
+</tr>
+<tr>
+<td>1 running</td>
+<td>正在运行的进程数</td>
+</tr>
+<tr>
+<td>105 sleeping</td>
+<td>睡眠的进程</td>
+</tr>
+<tr>
+<td>0 stopped</td>
+<td>正在停止的进程</td>
+</tr>
+<tr>
+<td>0 zombie</td>
+<td>僵尸进程。如果不是 0， 需要手工检查僵尸进程</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>第三行为 CPU 信息</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cpu(s): 5.1%us</td>
+<td>用户模式占用的 CPU 百分比</td>
+</tr>
+<tr>
+<td>4.0%sy</td>
+<td>系统模式占用的 CPU 百分比</td>
+</tr>
+<tr>
+<td>0.0%ni</td>
+<td>改变过优先级的用户进程占用的 CPU 百分比</td>
+</tr>
+<tr>
+<td>90.6%id</td>
+<td>空闲 CPU 的 CPU 百分比</td>
+</tr>
+<tr>
+<td>0.3%wa</td>
+<td>等待输入&#x2F;输出的进程的占用 CPU 百分比</td>
+</tr>
+<tr>
+<td>0.0%hi</td>
+<td>硬中断请求服务占用的 CPU 百分比</td>
+</tr>
+<tr>
+<td>0.0%si</td>
+<td>软中断请求服务占用的 CPU 百分比</td>
+</tr>
+<tr>
+<td>0.0%st</td>
+<td>st（Steal time）虚拟时间百分比。当有虚拟机时，虚拟 CPU 等待实际 CPU 的时间百分比。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>第四行为物理内存信息</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mem:1881976k total</td>
+<td>物理内存的总量，单位 KB</td>
+</tr>
+<tr>
+<td>1154564k used</td>
+<td>已经使用的物理内存数量</td>
+</tr>
+<tr>
+<td>73884k free</td>
+<td>空闲的物理内存数量</td>
+</tr>
+<tr>
+<td>653528k buff&#x2F;cache</td>
+<td>作为缓冲的内存数量</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>第五行为交换分区（swap）信息</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Swap: 8388604k total</td>
+<td>交换分区（虚拟内存）的总大小</td>
+</tr>
+<tr>
+<td>878848k used</td>
+<td>已经使用的交换分区的大小</td>
+</tr>
+<tr>
+<td>7509756k free</td>
+<td>空闲交换分区的大小</td>
+</tr>
+<tr>
+<td>539052k avail Mem</td>
+<td>可用作为缓存的交换分区的大小</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h4 id="案例实操-54"><a href="#案例实操-54" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><code>top -d 1</code></li>
+<li><code>top -i</code></li>
+<li><code>top -p 2575</code></li>
+</ul>
+<h3 id="4-12-5-netstat-显示网络状态和端口占用信息"><a href="#4-12-5-netstat-显示网络状态和端口占用信息" class="headerlink" title="4.12.5 netstat 显示网络状态和端口占用信息"></a>4.12.5 netstat 显示网络状态和端口占用信息</h3><h4 id="基本语法-56"><a href="#基本语法-56" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>netstat -anp | grep 进程号</code>（功能描述：查看该进程网络信息）</p>
+<p><code>netstat –nlp | grep 端口号</code>（功能描述：查看网络端口号占用情况）</p>
+<h4 id="选项说明-24"><a href="#选项说明-24" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-a</td>
+<td>显示所有正在监听（listen）和未监听的套接字（socket）</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>拒绝显示别名，能显示数字的全部转化成数字</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>仅列出在监听的服务状态</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>表示显示哪个进程在调用</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-55"><a href="#案例实操-55" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>通过进程号查看sshd进程的网络信息</li>
+</ul>
+<p><code>netstat -anp | grep sshd</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726095108871.png" srcset="/img/loading.gif" class="" title="image-20220726095108871">
+
+<ul>
+<li>查看某端口号是否被占用</li>
+</ul>
+<p><code>netstat -nltp | grep 22</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726095231117.png" srcset="/img/loading.gif" class="" title="image-20220726095231117">
+
+
+
+<hr>
+<h2 id="4-13-crontab-系统定时任务"><a href="#4-13-crontab-系统定时任务" class="headerlink" title="4.13 crontab 系统定时任务"></a>4.13 crontab 系统定时任务</h2><h3 id="4-13-1-crontab-服务管理"><a href="#4-13-1-crontab-服务管理" class="headerlink" title="4.13.1 crontab 服务管理"></a>4.13.1 crontab 服务管理</h3><ul>
+<li>重新启动 crond 服务</li>
+</ul>
+<p><code>systemctl restart crond</code></p>
+<h3 id="4-13-2-crontab-定时任务设置"><a href="#4-13-2-crontab-定时任务设置" class="headerlink" title="4.13.2 crontab 定时任务设置"></a>4.13.2 crontab 定时任务设置</h3><h4 id="基本语法-57"><a href="#基本语法-57" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>crontab [选项]</code></p>
+<h4 id="选项说明-25"><a href="#选项说明-25" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-e</td>
+<td>编辑 crontab 定时任务</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>查询 crontab 任务</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>删除当前用户所有的 crontab 任务</td>
+</tr>
+</tbody></table>
+<h4 id="参数说明-3"><a href="#参数说明-3" class="headerlink" title="参数说明"></a>参数说明</h4><p><code>crontab -e</code></p>
+<ul>
+<li>进入 crontab 编辑界面，编辑定时任务。</li>
+</ul>
+<p><code>* * * * * 执行的任务</code></p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>含义</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一个“*”</td>
+<td>一小时当中的第几分钟</td>
+<td>0-59</td>
+</tr>
+<tr>
+<td>第二个“*”</td>
+<td>一天当中的第几小时</td>
+<td>0-23</td>
+</tr>
+<tr>
+<td>第三个“*”</td>
+<td>一个月当中的第几天</td>
+<td>1-31</td>
+</tr>
+<tr>
+<td>第四个“*”</td>
+<td>一年当中的第几月</td>
+<td>1-12</td>
+</tr>
+<tr>
+<td>第五个“*”</td>
+<td>一周当中的星期几</td>
+<td>0-7 （ 0 和 7 都 代 表 星 期 日）</td>
+</tr>
+</tbody></table>
+<ul>
+<li>特殊符号</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>特殊符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>代表任何时间。 比如第一个“*”就代表一小时中每分钟都执行一次的意思。</td>
+</tr>
+<tr>
+<td>，</td>
+<td>代表不连续的时间。 比如“0 8,12,16 * * * 命令”， 就代表在每天的 8 点 0 分，12 点 0 分，16 点 0 分都执行一次命令</td>
+</tr>
+<tr>
+<td>-</td>
+<td>代表连续的时间范围。比如“0 5 * * 1-6 命令”，代表在周一到周六的凌晨 5 点 0 分执行命令</td>
+</tr>
+<tr>
+<td>*&#x2F;n</td>
+<td>代表每隔多久执行一次。比如“*&#x2F;10 * * * * 命令”，代表每隔 10 分钟就执行一遍命令</td>
+</tr>
+</tbody></table>
+<ul>
+<li>特定时间执行命令</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>45 22 * * * 命令</td>
+<td>每天 22 点 45 分执行命令</td>
+</tr>
+<tr>
+<td>0 17 * * 1 命令</td>
+<td>每周 1 的 17 点 0 分执行命令</td>
+</tr>
+<tr>
+<td>0 5 1,15 * * 命令</td>
+<td>每月 1 号和 15 号的凌晨 5 点 0 分执行命令</td>
+</tr>
+<tr>
+<td>40 4 * * 1-5 命令</td>
+<td>每周一到周五的凌晨 4 点 40 分执行命令</td>
+</tr>
+<tr>
+<td>*&#x2F;10 4 * * * 命令</td>
+<td>每天的凌晨 4 点，每隔 10 分钟执行一次命令</td>
+</tr>
+<tr>
+<td>0 0 1,15 * 1 命令</td>
+<td>每月 1 号和 15 号， 每周 1 的 0 点 0 分都会执行命令。 注意：星期几和几号最好不要同时出现，因为他们定义的都是天。非常容易让管理员混乱。</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-56"><a href="#案例实操-56" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>每隔 1 分钟，向&#x2F;root&#x2F;bailongma.txt 文件中添加一个 11 的数字</li>
+</ul>
+<p><code>*/1 * * * * /bin/echo ”11” &gt;&gt; /root/bailongma.txt</code></p>
+<hr>
+<h1 id="五、软件包管理"><a href="#五、软件包管理" class="headerlink" title="五、软件包管理"></a>五、软件包管理</h1><h2 id="5-1-RPM"><a href="#5-1-RPM" class="headerlink" title="5.1 RPM"></a>5.1 RPM</h2><h3 id="5-1-1-RPM-概述"><a href="#5-1-1-RPM-概述" class="headerlink" title="5.1.1 RPM 概述"></a>5.1.1 RPM 概述</h3><p>RPM（RedHat Package Manager），RedHat软件包管理工具，它虽然是RedHat的标志，但理念是通用的。 RPM包的名称格式 Apache-1.3.23-11.i386.rpm</p>
+<ul>
+<li><p>“apache” 软件名称</p>
+</li>
+<li><p>“1.3.23-11”软件的版本号，主版本和此版本</p>
+</li>
+<li><p>“i386”是软件所运行的硬件平台，Intel 32位处理器的统称</p>
+</li>
+<li><p>“rpm”文件扩展名，代表RPM包</p>
+</li>
+</ul>
+<h3 id="5-1-2-RPM-查询命令"><a href="#5-1-2-RPM-查询命令" class="headerlink" title="5.1.2 RPM 查询命令"></a>5.1.2 RPM 查询命令</h3><h4 id="基本语法-58"><a href="#基本语法-58" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>rpm -qa</code>（功能描述：查询所安装的所有 rpm 软件包）</p>
+<p><code>rpm -qi 软件包名</code>（功能描述：查询所安装软件的详细信息）</p>
+<h4 id="经验技巧-13"><a href="#经验技巧-13" class="headerlink" title="经验技巧"></a>经验技巧</h4><p>由于软件包比较多，一般都会采取过滤。</p>
+<p><code>rpm -qa | grep 软件包名</code> </p>
+<h4 id="案例实操-57"><a href="#案例实操-57" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查询java软件安装情况</li>
+</ul>
+<p><code>rpm -qa |grep java</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726101903562.png" srcset="/img/loading.gif" class="" title="image-20220726101903562">
+
+<ul>
+<li>查询git软件安装情况</li>
+</ul>
+<p><code>rpm -qi git</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726102145321.png" srcset="/img/loading.gif" class="" title="image-20220726102145321">
+
+<h3 id="5-1-3-RPM-卸载命令"><a href="#5-1-3-RPM-卸载命令" class="headerlink" title="5.1.3 RPM 卸载命令"></a>5.1.3 RPM 卸载命令</h3><h4 id="基本语法-59"><a href="#基本语法-59" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><p><code>rpm -e 软件包名</code></p>
+</li>
+<li><p><code>rpm -e --nodeps 软件包明</code></p>
+</li>
+</ul>
+<h4 id="选项说明-26"><a href="#选项说明-26" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-e</td>
+<td>卸载软件包</td>
+</tr>
+<tr>
+<td>–nodeps</td>
+<td>卸载软件时， 不检查依赖。 这样的话，那些使用该软件包的软件在此之后可能就不能正常工作了。</td>
+</tr>
+</tbody></table>
+<h3 id="案例实操-58"><a href="#案例实操-58" class="headerlink" title="案例实操"></a>案例实操</h3><ul>
+<li>卸载firefox软件</li>
+</ul>
+<p><code>rpm -e firefox</code></p>
+<h3 id="5-1-4-RPM-安装命令"><a href="#5-1-4-RPM-安装命令" class="headerlink" title="5.1.4 RPM 安装命令"></a>5.1.4 RPM 安装命令</h3><h4 id="基本语法-60"><a href="#基本语法-60" class="headerlink" title="基本语法"></a>基本语法</h4><p>rpm -ivh 软件包全名</p>
+<h4 id="选项说明-27"><a href="#选项说明-27" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-i</td>
+<td>install，安装</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>–verbose，显示详细信息</td>
+</tr>
+<tr>
+<td>-h</td>
+<td>–hash，进度条</td>
+</tr>
+<tr>
+<td>–nodeps</td>
+<td>安装前不检查依赖</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-59"><a href="#案例实操-59" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>安装firefox软件</li>
+</ul>
+<p><code>rpm -ivh firefox-45.0.1-1.el6.centos.x86_64.rpm</code></p>
+<h2 id="5-2-YUM-仓库配置"><a href="#5-2-YUM-仓库配置" class="headerlink" title="5.2 YUM 仓库配置"></a>5.2 YUM 仓库配置</h2><h3 id="5-2-1-YUM-概述"><a href="#5-2-1-YUM-概述" class="headerlink" title="5.2.1 YUM 概述"></a>5.2.1 YUM 概述</h3><p>YUM（全称为 Yellow dog Updater, Modified）是一个在 Fedora 和 RedHat 以及 CentOS 中的 Shell 前端软件包管理器。 基于 RPM 包管理， 能够从指定的服务器自动下载 RPM 包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726103144420.png" srcset="/img/loading.gif" class="" title="image-20220726103144420">
+
+<h3 id="5-2-2-YUM-的常用命令"><a href="#5-2-2-YUM-的常用命令" class="headerlink" title="5.2.2 YUM 的常用命令"></a>5.2.2 YUM 的常用命令</h3><h4 id="基本语法-61"><a href="#基本语法-61" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>yum [选项] [参数]</code></p>
+<h4 id="选项说明-28"><a href="#选项说明-28" class="headerlink" title="选项说明"></a>选项说明</h4><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-y</td>
+<td>对所有提问都回答“yes”</td>
+</tr>
+</tbody></table>
+<h4 id="参数说明-4"><a href="#参数说明-4" class="headerlink" title="参数说明"></a>参数说明</h4><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>install</td>
+<td>安装 rpm 软件包</td>
+</tr>
+<tr>
+<td>update</td>
+<td>更新 rpm 软件包</td>
+</tr>
+<tr>
+<td>check-update</td>
+<td>检查是否有可用的更新 rpm 软件包</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>删除指定的 rpm 软件包</td>
+</tr>
+<tr>
+<td>list</td>
+<td>显示软件包信息</td>
+</tr>
+<tr>
+<td>clean</td>
+<td>清理 yum 过期的缓存</td>
+</tr>
+<tr>
+<td>deplist</td>
+<td>显示 yum 软件包的所有依赖关系</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-60"><a href="#案例实操-60" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>采用 yum 方式安装 firefox</li>
+</ul>
+<p><code>yum -y install firefox</code></p>
+<h3 id="5-2-3-修改网络-YUM-源"><a href="#5-2-3-修改网络-YUM-源" class="headerlink" title="5.2.3 修改网络 YUM 源"></a>5.2.3 修改网络 YUM 源</h3><p>默认的系统 YUM 源，需要连接国外 apache 网站，网速比较慢，可以修改关联的网络 YUM 源为国内镜像的网站，如网易 163，aliyun 等。</p>
+<ol>
+<li>安装 wget, wget 用来从指定的 URL 下载文件。</li>
+</ol>
+<p><code>yum install wget</code></p>
+<ol start="2">
+<li>在&#x2F;etc&#x2F;yum.repos.d&#x2F;目录下，备份默认的 repos 文件。</li>
+</ol>
+<p><code>cp CentOS-Base.repo CentOS-Base.repo.backup</code></p>
+<ol start="3">
+<li>下载网易 163 或者是 aliyun 的 repos 文件，任选其一。</li>
+</ol>
+<ul>
+<li><p><code>wget http://mirrors.aliyun.com/repo/Centos-7.repo </code>&#x2F;&#x2F;阿里云</p>
+</li>
+<li><p><code>wget http://mirrors.163.com/.help/CentOS7-Base-163.repo </code>&#x2F;&#x2F;网易 163</p>
+</li>
+</ul>
+<ol start="4">
+<li>使用下载好的 repos 文件替换默认的 repos 文件，如用 CentOS7-Base-163.repo 替换 CentOS-Base.repo。</li>
+</ol>
+<p><code>mv CentOS7-Base-163.repo CentOS-Base.repo</code></p>
+<ol start="5">
+<li>清理旧缓存数据，缓存新数据</li>
+</ol>
+<p><code>yum clean all</code></p>
+<p><code>yum makecache</code></p>
+<blockquote>
+<p>yum makecache 就是把服务器的包信息下载到本地电脑缓存起来</p>
+</blockquote>
+<hr>
+<h1 id="六、Shell"><a href="#六、Shell" class="headerlink" title="六、Shell"></a>六、Shell</h1><h2 id="6-1-Shell概述"><a href="#6-1-Shell概述" class="headerlink" title="6.1 Shell概述"></a>6.1 Shell概述</h2><p>Shell是一个<strong>命令行解释器</strong>，负责接收应用程序&#x2F;用户的命令，然后调用操作系统内核执行。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726110755257.png" srcset="/img/loading.gif" class="" title="image-20220726110755257">
+
+<ul>
+<li>Linux 提供的 Shell 解析器有</li>
+</ul>
+<p><code>cat /etc/shells</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726110901371.png" srcset="/img/loading.gif" class="" title="image-20220726110901371">
+
+<ul>
+<li>bash 和 sh 的关系</li>
+</ul>
+<p><code>ll | grep bash</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726111046625.png" srcset="/img/loading.gif" class="" title="image-20220726111046625">
+
+<ul>
+<li>Centos 默认的解析器是 bash</li>
+</ul>
+<p><code>echo $SHELL /bin/bash</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726111117228.png" srcset="/img/loading.gif" class="" title="image-20220726111117228">
+
+<h2 id="6-2-Shell-脚本入门"><a href="#6-2-Shell-脚本入门" class="headerlink" title="6.2 Shell 脚本入门"></a>6.2 Shell 脚本入门</h2><h3 id="6-2-1-脚本格式"><a href="#6-2-1-脚本格式" class="headerlink" title="6.2.1 脚本格式"></a>6.2.1 脚本格式</h3><p>脚本以#!&#x2F;bin&#x2F;bash 开头（指定解析器）</p>
+<h3 id="6-2-2-Shell-脚本样例"><a href="#6-2-2-Shell-脚本样例" class="headerlink" title="6.2.2 Shell 脚本样例"></a>6.2.2 Shell 脚本样例</h3><ul>
+<li>需求：创建一个 Shell 脚本，输出 helloworld </li>
+<li>案例实操：</li>
+</ul>
+<p><code>touch helloworld.sh</code></p>
+<p><code>vim helloworld.sh</code></p>
+<p>在 helloworld.sh 中输入如下内容 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><br>echo &quot;helloworld&quot;<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726111831089.png" srcset="/img/loading.gif" class="" title="image-20220726111831089">
+
+<h3 id="6-2-3-Shell-脚本的常用执行方式"><a href="#6-2-3-Shell-脚本的常用执行方式" class="headerlink" title="6.2.3 Shell 脚本的常用执行方式"></a>6.2.3 Shell 脚本的常用执行方式</h3><ul>
+<li>方法一，采用 bash 或 sh+脚本的相对路径或绝对路径（不用赋予脚本+x 权限）<ul>
+<li><p>sh+脚本的相对路径</p>
+</li>
+<li><p><code>sh helloworld.sh</code></p>
+</li>
+<li><p>sh+脚本的绝对路径</p>
+<ul>
+<li><code>sh /root/mySh/helloworld.sh</code></li>
+</ul>
+</li>
+<li><p>bash+脚本的相对路径</p>
+</li>
+<li><p><code>bash helloworld.sh</code></p>
+</li>
+<li><p>bash+脚本的绝对路径</p>
+</li>
+<li><p><code>bash /root/mySh/helloworld.sh</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726112355620.png" srcset="/img/loading.gif" class="" title="image-20220726112355620">
+
+
+
+<ul>
+<li>方法二，采用输入脚本的绝对路径或相对路径执行脚本（必须具有可执行权限+x） <ul>
+<li>① 首先要赋予 helloworld.sh 脚本的+x 权限<br><code>chmod +x helloworld.sh</code></li>
+<li>② 执行脚本<ul>
+<li>相对路径<br><code>./helloworld.sh</code></li>
+<li>绝对路径<br><code>/home/atguigu/shells/helloworld.sh Helloworld</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726113433154.png" srcset="/img/loading.gif" class="" title="image-20220726113433154">
+
+<blockquote>
+<p>第一种执行方法，本质是 bash 解析器执行脚本，所以脚本本身不需要执行 权限。</p>
+<p>第二种执行方法，本质是脚本需要自己执行，所以需要执行权限。 </p>
+</blockquote>
+<ul>
+<li>方法三，在脚本的路径前加上“.”或者 source<ul>
+<li><code>. helloworld.sh</code></li>
+<li><code>source helloworld.sh</code></li>
+</ul>
+</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726134223872.png" srcset="/img/loading.gif" class="" title="image-20220726134223872">
+
+<blockquote>
+<p>前两种方式都是在当前 shell 中<strong>打开一个子 shell</strong>来执行脚本内容，当脚本内容结束，子 shell 关闭，回到父 shell 中。</p>
+<p>第三种，也就是使用在脚本路径前加“.”或者 source 的方式，可以使脚本内容在当前 shell 里执行，而无需打开子 shell。这是为什么每次要修改完&#x2F;etc&#x2F;profile 文件以后，需要source一下的原因。</p>
+<p>开子 shell 与不开子 shell 的区别就在于，环境变量的继承关系，如在子 shell 中设置的当前变量，父 shell 是不可见的。</p>
+</blockquote>
+<h2 id="6-3-变量"><a href="#6-3-变量" class="headerlink" title="6.3 变量"></a>6.3 变量</h2><h3 id="6-3-1系统预定义变量"><a href="#6-3-1系统预定义变量" class="headerlink" title="6.3.1系统预定义变量"></a>6.3.1系统预定义变量</h3><h4 id="常用系统变量"><a href="#常用系统变量" class="headerlink" title="常用系统变量"></a>常用系统变量</h4><p>$HOME、$PWD、$SHELL、$USER 等</p>
+<h4 id="案例实操-61"><a href="#案例实操-61" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>查看系统变量的值</li>
+</ul>
+<p><code>echo $HOME</code></p>
+<ul>
+<li>显示当前 Shell 中所有变量</li>
+</ul>
+<p><code>set</code></p>
+<h3 id="6-3-2-自定义变量"><a href="#6-3-2-自定义变量" class="headerlink" title="6.3.2 自定义变量"></a>6.3.2 自定义变量</h3><h4 id="基本语法-62"><a href="#基本语法-62" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li>定义变量：变量名&#x3D;变量值，注意，&#x3D;号前后不能有空格</li>
+<li>撤销变量：unset 变量名</li>
+<li>声明静态变量：readonly 变量，注意：不能 unset</li>
+</ul>
+<h4 id="变量定义规则"><a href="#变量定义规则" class="headerlink" title="变量定义规则"></a>变量定义规则</h4><ul>
+<li>变量名称可以由字母、数字和下划线组成，但是不能以数字开头，环境变量名建议大写。</li>
+<li>**等号两侧不能有空格 **</li>
+<li>在 bash 中，变量默认类型都是字符串类型，无法直接进行数值运算。 </li>
+<li>变量的值如果有空格，需要使用双引号或单引号括起来。</li>
+</ul>
+<h4 id="变量升级"><a href="#变量升级" class="headerlink" title="变量升级"></a>变量升级</h4><p><strong>自定义的变量在切换用户和重启后就会失效</strong>，变量可以升级为<strong>全局生效</strong>和<strong>永久生效</strong>。</p>
+<ul>
+<li><p>全局生效，就是所有用户都可以使用。</p>
+<ul>
+<li><p>如果想要变量设置成全局变量，需要在定义完变量之后执行export命令升级，使用如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">ABC=123<br>export ABC<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>永久生效，就是变量重启之后依旧存在。</p>
+<ul>
+<li><p>如果想要将变量设置成永久变量，需要修改配置文件，如果想要该永久变量只对当前用户生效，则需要修改在用户家目录下的.bashrc文件，如果想要该永久变量对所有用户都生效，则可以修改&#x2F;etc&#x2F;environment和&#x2F;etc&#x2F;profile文件，在文件下面添加内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">export ABC=123<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在修改文件后，重新启动系统后就会生效，但是如果想要该变量立即生效，则可以执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">source /root/.bashrc<br></code></pre></td></tr></table></figure>
+
+<p>如果修改的是其他的配置文件，则需要把上一条命令中的文件换成修改的配置文件</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="案例实操-62"><a href="#案例实操-62" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>定义变量 A</li>
+</ul>
+<p><code>A=5</code></p>
+<p> <code>echo $A </code></p>
+<ul>
+<li>给变量 A 重新赋值</li>
+</ul>
+<p><code>A=8</code></p>
+<p><code>echo $A 8</code></p>
+<ul>
+<li>撤销变量 A</li>
+</ul>
+<p><code>unset A</code></p>
+<p><code>echo $A</code></p>
+<ul>
+<li>声明静态的变量 B&#x3D;2，不能 unset</li>
+</ul>
+<p><code>readonly B=2</code></p>
+<p><code>echo $B</code></p>
+<p><code>B=1</code></p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726171433704.png" srcset="/img/loading.gif" class="" title="image-20220726171433704">
+
+<ul>
+<li>在 bash 中，变量默认类型都是字符串类型，无法直接进行数值运算</li>
+</ul>
+<p><code>C=1+2</code></p>
+<p><code>echo $C</code></p>
+<ul>
+<li>变量的值如果有空格，需要使用双引号或单引号括起来</li>
+</ul>
+<p><code>D=&quot;I love banzhang&quot;</code></p>
+<p><code>echo $D</code></p>
+<ul>
+<li>可把变量提升为全局环境变量，可供其他 Shell 程序使用</li>
+</ul>
+<p><code>export 变量名</code></p>
+<h2 id="6-4-特殊变量"><a href="#6-4-特殊变量" class="headerlink" title="6.4 特殊变量"></a>6.4 特殊变量</h2><h3 id="6-4-1-n"><a href="#6-4-1-n" class="headerlink" title="6.4.1 $n"></a>6.4.1 $n</h3><h4 id="基本语法-63"><a href="#基本语法-63" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>$n</code>（功能描述：n 为数字，**$0 代表该脚本名称**，$1-$9 代表第一到第九个参数，十以上的参数，十以上的参数需要用大括号包含，如${10}）</p>
+<h4 id="案例实操-63"><a href="#案例实操-63" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch parameter.sh<br>vim parameter.sh<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726174040477.png" srcset="/img/loading.gif" class="" title="image-20220726174040477">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726174233091.png" srcset="/img/loading.gif" class="" title="image-20220726174233091">
+
+<h3 id="6-4-2"><a href="#6-4-2" class="headerlink" title="6.4.2 $#"></a>6.4.2 $#</h3><h4 id="基本语法-64"><a href="#基本语法-64" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>$#</code>（功能描述：获取所有输入参数个数，常用于循环，判断参数的个数是否正确以及加强脚本的健壮性）。</p>
+<h4 id="案例实操-64"><a href="#案例实操-64" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim parameter.sh<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726174600224.png" srcset="/img/loading.gif" class="" title="image-20220726174600224">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726174700094.png" srcset="/img/loading.gif" class="" title="image-20220726174700094">
+
+<h3 id="6-4-3-、"><a href="#6-4-3-、" class="headerlink" title="6.4.3 $*、$@"></a>6.4.3 $*、$@</h3><h4 id="基本语法-65"><a href="#基本语法-65" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>$*</code>（功能描述：这个变量代表命令行中所有的参数，$*把所有的参数看成一个整体）</p>
+<p><code>$@</code> （功能描述：这个变量也代表命令行中所有的参数，不过$@把每个参数区分对待）</p>
+<h4 id="案例实操-65"><a href="#案例实操-65" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim parameter.sh<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726174932804.png" srcset="/img/loading.gif" class="" title="image-20220726174932804">
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726175034774.png" srcset="/img/loading.gif" class="" title="image-20220726175034774">
+
+<h3 id="6-4-4-？"><a href="#6-4-4-？" class="headerlink" title="6.4.4 $？"></a>6.4.4 $？</h3><h4 id="基本语法-66"><a href="#基本语法-66" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><code>$？</code> （功能描述：最后一次执行的命令的返回状态）<ul>
+<li>如果这个变量的值为 0，证明上一个命令正确执行</li>
+<li>如果这个变量的值为非 0（具体是哪个数，由命令自己来决定），则证明上一个命令执行不正确。</li>
+</ul>
+</li>
+</ul>
+<h4 id="案例实操-66"><a href="#案例实操-66" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>判断 helloworld.sh 脚本是否正确执行</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">sh helloworld.sh<br>echo $?<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-5-运算符"><a href="#6-5-运算符" class="headerlink" title="6.5 运算符"></a>6.5 运算符</h2><h4 id="基本语法-67"><a href="#基本语法-67" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>$((运算式))</code> 或 <code>$[运算式]</code> </p>
+<p>或</p>
+<p><code>expr 运算式</code></p>
+<h4 id="案例实操-67"><a href="#案例实操-67" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>计算（2+3）* 4 的值</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">echo $[(2+3)*4]<br>expr \( 2 + 3 \) \* 5<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>expr表达式规则</p>
+<ul>
+<li>用空格隔开每个项</li>
+<li>用反斜杠 \ 放在 shell 特定的字符前面</li>
+<li>对包含空格和其他特殊字符的字符串要用引号括起来</li>
+</ul>
+</blockquote>
+<h2 id="6-6-条件判断"><a href="#6-6-条件判断" class="headerlink" title="6.6 条件判断"></a>6.6 条件判断</h2><h4 id="基本语法-68"><a href="#基本语法-68" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li><p><code>test condition</code></p>
+</li>
+<li><p><code>[ condition ]</code>（注意 condition 前后要有空格） </p>
+<p>注意：条件非空即为 true，[ gotcha ]返回 true，[ ] 返回 false</p>
+</li>
+</ul>
+<h4 id="常用判断条件"><a href="#常用判断条件" class="headerlink" title="常用判断条件"></a>常用判断条件</h4><ul>
+<li>两个整数之间比较<ul>
+<li>-eq 等于（equal）</li>
+<li>-ne 不等于（not equal）</li>
+<li>-lt 小于（less than）</li>
+<li>-le 小于等于（less equal）</li>
+<li>-gt 大于（greater than）</li>
+<li>-ge 大于等于（greater equal）</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>如果是字符串之间的比较 ，用等号“&#x3D;”判断相等；用“!&#x3D;”判断不等。 </p>
+</blockquote>
+<ul>
+<li><p>两个条件间判断</p>
+<ul>
+<li>-a表示与</li>
+<li>-o表示或</li>
+</ul>
+</li>
+<li><p>按照文件权限进行判断</p>
+<ul>
+<li>-r 有读的权限（read）</li>
+<li>-w 有写的权限（write）</li>
+<li>-x 有执行的权限（execute）</li>
+</ul>
+</li>
+<li><p>按照文件类型进行判断</p>
+<ul>
+<li>-e 文件存在（existence）</li>
+<li>-f 文件存在并且是一个常规的文件（file）</li>
+<li>-d 文件存在并且是一个目录（directory）</li>
+</ul>
+</li>
+</ul>
+<h4 id="案例实操-68"><a href="#案例实操-68" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li><p>23 是否小于于等于 22</p>
+</li>
+<li><p>helloworld.sh 是否具有写权限</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">[ 23 -ge 22 ]<br>echo $?<br>[ -w helloworld.sh ]<br>echo $?<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726225826914.png" srcset="/img/loading.gif" class="" title="image-20220726225826914">
+
+<ul>
+<li><p>多条件判断（&amp;&amp; 表示与，前一条命令执行成功时，才执行后一条命令，|| 表示或，上一条命令执行失败后，才执行下一条命令）</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220726230145087.png" srcset="/img/loading.gif" class="" title="image-20220726230145087"></li>
+</ul>
+<h2 id="6-7-流程控制"><a href="#6-7-流程控制" class="headerlink" title="6.7 流程控制"></a>6.7 流程控制</h2><h3 id="6-7-1-if-判断"><a href="#6-7-1-if-判断" class="headerlink" title="6.7.1 if 判断"></a>6.7.1 if 判断</h3><h4 id="基本语法-69"><a href="#基本语法-69" class="headerlink" title="基本语法"></a>基本语法</h4><ul>
+<li>单分支</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">if [ 条件判断式 ];then<br>	程序<br>fi<br><br>或者<br><br>if [ 条件判断式 ]<br>then<br>	程序<br>fi<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>多分支</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">if [ 条件判断式 ]<br>then<br>	程序<br>elif [ 条件判断式 ]<br>then<br>	程序<br>else<br>	程序<br>fi<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<ul>
+<li>[ 条件判断式 ]，中括号和条件判断式之间必须有空格</li>
+<li>if 后要有空格</li>
+</ul>
+</blockquote>
+<h4 id="案例实操-69"><a href="#案例实操-69" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>输入一个数字，如果是 1，则输出 it is 1，如果是 2，则输出 it is 2，如果是其它，什么也不输出。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch if.sh<br>vim if.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><br>if [ $1 -eq 1 ]<br>then<br>	echo &quot;it is 1&quot;<br>elif [ $1 -eq 2 ]<br>then<br>	echo &quot;it is 2&quot;<br>fi<br>------------------------------------------------<br>chmod 777 if.sh <br>./if.sh 1<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727110319676.png" srcset="/img/loading.gif" class="" title="image-20220727110319676">
+
+
+
+<h3 id="6-7-2-case-语句"><a href="#6-7-2-case-语句" class="headerlink" title="6.7.2 case 语句"></a>6.7.2 case 语句</h3><h4 id="基本语法-70"><a href="#基本语法-70" class="headerlink" title="基本语法"></a>基本语法</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">case $变量名 in<br>&quot; 值 1&quot; ）<br>	如果变量的值等于值 1，则执行程序 1<br>;;<br>&quot; 值 2&quot; ）<br>	如果变量的值等于值 2，则执行程序 2<br>;;<br>	…省略其他分支…<br>*）<br>	如果变量的值都不是以上的值，则执行此程序<br>;;<br>esac<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>注意事项：</p>
+<p>（1）case 行尾必须为单词“in”，每一个模式匹配必须以右括号“）”结束。</p>
+<p>（2）双分号“;;”表示命令序列结束，相当于 java 中的 break。</p>
+<p>（3）最后的“*）”表示默认模式，相当于 java 中的 default。</p>
+</blockquote>
+<h4 id="案例实操-70"><a href="#案例实操-70" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>输入一个数字，如果是 1，则输出 it is 1，如果是 2，则输出 it is 2，如果是其它，则输出 i do not know。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch case.sh<br>vim case.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br>case $1 in<br>&quot;1&quot; )<br>        echo &quot;it is 1&quot;<br>;;<br>&quot;2&quot; )<br>        echo &quot;it is 2&quot;<br>;;<br>*)<br>        echo &quot;i do not know&quot;<br>;;<br>esac<br>------------------------------------------------<br>chmod 777 case.sh <br>./case.sh 1<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727110156833.png" srcset="/img/loading.gif" class="" title="image-20220727110156833">
+
+
+
+<h3 id="6-7-3-for-循环"><a href="#6-7-3-for-循环" class="headerlink" title="6.7.3 for 循环"></a>6.7.3 for 循环</h3><h4 id="基本语法-1"><a href="#基本语法-1" class="headerlink" title="基本语法 1"></a>基本语法 1</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">for (( 初始值;循环控制条件;变量变化 ))<br>do<br>	程序<br>done<br></code></pre></td></tr></table></figure>
+
+<h4 id="案例实操1"><a href="#案例实操1" class="headerlink" title="案例实操1"></a>案例实操1</h4><ul>
+<li>从 1 加到 100</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch for1.sh<br>vim for1.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><br>sum=0<br>for((i=1;i&lt;=$1;i++))<br>do<br>        sum=$[$sum+$i]<br>done<br>echo $sum<br>-----------------------------------------------<br>chmod 777 for1.sh<br>./for1.sh 100<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="基本语法-2"><a href="#基本语法-2" class="headerlink" title="基本语法 2"></a>基本语法 2</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">for 变量 in 值 1 值 2 值 3… <br>do<br>	程序<br>done<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="案例实操2"><a href="#案例实操2" class="headerlink" title="案例实操2"></a>案例实操2</h4><ul>
+<li>打印所有输入参数</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch for2.sh<br>vim for2.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br>for i in windowx linux macos<br>do<br>	echo &quot;system is $i&quot;<br>done<br>-----------------------------------------------<br>chmod 777 for2.sh<br>./for2.sh<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727113056776.png" srcset="/img/loading.gif" class="" title="image-20220727113056776">
+
+
+
+<ul>
+<li><p>比较<code>$*</code>和<code>$@</code>区别</p>
+<p><code> $*</code>和<code>$@</code>都表示传递给函数或脚本的所有参数，不被双引号””包含时，都以$1 $2 …$n 的形式输出所有参数。</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch for3.sh<br>vim for3.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br>echo &#x27;=============$*=============&#x27;<br>for i in $* <br>do <br>	echo &quot;system is $i&quot;<br>done<br>echo &#x27;=============$@=============&#x27;<br>for j in $@<br>do<br>	echo &quot;system is $j&quot;<br>done<br>------------------------------------------------<br>chmod 777 for3.sh<br>./for3.sh windowx linux macos<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727142623380.png" srcset="/img/loading.gif" class="" title="image-20220727142623380">
+
+<p>当它们被双引号””包含时，<code>$*</code>会将所有的参数作为一个整体，以“$1 $2 …$n”的形式输 出所有参数；<code>$@</code>会将各个参数分开，以“$1” “$2”…“$n”的形式输出所有参数。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch for4.sh<br>vim for4.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span> <br>echo &#x27;=============$*=============&#x27;<br>for i in &quot;$*&quot;<br><span class="hljs-meta prompt_">#</span><span class="language-bash">$*中的所有参数看成是一个整体，所以这个 <span class="hljs-keyword">for</span> 循环只会循环一次</span><br>do<br>        echo &quot;system is $i&quot;<br>done<br><br>echo &#x27;=============$@=============&#x27;<br>for j in &quot;$@&quot;<br><span class="hljs-meta prompt_">#</span><span class="language-bash"><span class="hljs-variable">$@</span>中的每个参数都看成是独立的，所以“<span class="hljs-variable">$@</span>”中有几个参数，就会循环几次</span> <br>do<br>        echo &quot;system is $j&quot; <br>done<br>------------------------------------------------<br>chmod 777 for4.sh<br>./for4.sh windowx linux macos<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727143618867.png" srcset="/img/loading.gif" class="" title="image-20220727143618867">
+
+
+
+
+
+
+
+<h3 id="6-7-4-while-循环"><a href="#6-7-4-while-循环" class="headerlink" title="6.7.4 while 循环"></a>6.7.4 while 循环</h3><h4 id="基本语法-71"><a href="#基本语法-71" class="headerlink" title="基本语法"></a>基本语法</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">while [ 条件判断式 ]<br>do<br>	程序<br>done<br></code></pre></td></tr></table></figure>
+
+<h4 id="案例实操-71"><a href="#案例实操-71" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>从 1 加到 100</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch while.sh<br>vim while.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br>sum=0<br>i=1<br>while [ $i -le 100 ]<br>do<br>	sum=$[$sum+$i]<br>    i=$[$i+1]<br>done<br><br>echo $sum<br>------------------------------------------------<br>chmod 777 while.sh<br>./while.sh<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="6-8-read-读取控制台输入"><a href="#6-8-read-读取控制台输入" class="headerlink" title="6.8 read 读取控制台输入"></a>6.8 read 读取控制台输入</h2><h4 id="基本语法-72"><a href="#基本语法-72" class="headerlink" title="基本语法"></a>基本语法</h4><p><code>read (选项)(参数)</code> ：</p>
+<ul>
+<li><p>选项</p>
+<ul>
+<li>-p：指定读取值时的提示符；</li>
+<li>-t：指定读取值时等待的时间（秒）如果-t 不加表示一直等待</li>
+</ul>
+</li>
+<li><p>参数变量</p>
+<ul>
+<li>指定读取值的变量名</li>
+</ul>
+</li>
+</ul>
+<h4 id="案例实操-72"><a href="#案例实操-72" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>提示 7 秒内，读取控制台输入的名称</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch read.sh<br>vim read.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br><br>read -t 7 -p &quot;Enter your name in 7 seconds :&quot; NN<br>echo $NN<br>------------------------------------------------<br>chmod 777 read.sh<br>./read.sh<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727171800683.png" srcset="/img/loading.gif" class="" title="image-20220727171800683">
+
+
+
+<h2 id="6-9-函数"><a href="#6-9-函数" class="headerlink" title="6.9 函数"></a>6.9 函数</h2><h3 id="6-9-1-系统函数"><a href="#6-9-1-系统函数" class="headerlink" title="6.9.1 系统函数"></a>6.9.1 系统函数</h3><h4 id="basename"><a href="#basename" class="headerlink" title="basename"></a>basename</h4><h5 id="基本语法-73"><a href="#基本语法-73" class="headerlink" title="基本语法"></a>基本语法</h5><ul>
+<li><code>basename [string / pathname] [suffix]</code></li>
+</ul>
+<p>功能描述：basename命令会删掉所有的前缀包括最后一个（‘&#x2F;’）字符，然后将字符串显示出来。</p>
+<p><strong>basename 可以理解为取路径里的文件名称</strong></p>
+<ul>
+<li>选项<ul>
+<li>suffix 为后缀，如果 suffix 被指定了，basename 会将 pathname 或 string 中的 suffix 去掉。</li>
+</ul>
+</li>
+</ul>
+<h5 id="案例实操-73"><a href="#案例实操-73" class="headerlink" title="案例实操"></a>案例实操</h5><ul>
+<li>截取&#x2F;root&#x2F;mySh&#x2F;for1.sh路径的文件名称</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727173225686.png" srcset="/img/loading.gif" class="" title="image-20220727173225686">
+
+<h4 id="dirname"><a href="#dirname" class="headerlink" title="dirname"></a>dirname</h4><h5 id="基本语法-74"><a href="#基本语法-74" class="headerlink" title="基本语法"></a>基本语法</h5><ul>
+<li><code>dirname 文件路径</code></li>
+</ul>
+<p>功能描述：从给定的包含路径的文件名中去除文件名 （非目录的部分），然后返回剩下的路径（目录的部分）</p>
+<p><strong>dirname 可以理解为取文件的路径</strong></p>
+<h5 id="案例实操-74"><a href="#案例实操-74" class="headerlink" title="案例实操"></a>案例实操</h5><p>获取.&#x2F;for1.sh文件的路径。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220727175640041.png" srcset="/img/loading.gif" class="" title="image-20220727175640041">
+
+<h3 id="6-9-2-自定义函数"><a href="#6-9-2-自定义函数" class="headerlink" title="6.9.2 自定义函数"></a>6.9.2 自定义函数</h3><h4 id="基本语法-75"><a href="#基本语法-75" class="headerlink" title="基本语法"></a>基本语法</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">[ function ] funname[()]<br>&#123;<br>	Action;<br>	[return int;]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="经验技巧-14"><a href="#经验技巧-14" class="headerlink" title="经验技巧"></a>经验技巧</h4><ul>
+<li><p>必须在调用函数地方之前，先声明函数，shell 脚本是逐行运行。不会像其它语言一样先编译。</p>
+</li>
+<li><p>函数返回值，只能通过$?系统变量获得，可以显示地增加return 返回，如果不加，将以最后一条命令运行结果，作为返回值。<strong>return 后跟数值 n(范围0-255)</strong></p>
+</li>
+</ul>
+<h4 id="案例实操-75"><a href="#案例实操-75" class="headerlink" title="案例实操"></a>案例实操</h4><ul>
+<li>计算两个输入参数的和。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs shell">touch fun_test.sh<br>vim fun_test.sh<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br>function sum()&#123;<br>	s=0<br>	s=$[$1+$2]<br>	echo &quot;$s&quot; <br>&#125;<br><br>read -p &quot;Please input the number1: &quot; n1; <br>read -p &quot;Please input the number2: &quot; n2;<br>sum $n1 $n2;<br><br>------------------------------------------------<br>chmod 777 fun_test.sh<br>./fun_test.sh<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220728142923900.png" srcset="/img/loading.gif" class="" title="image-20220728142923900">
+
+
+
+
+
+<h2 id="6-10-正则表达式"><a href="#6-10-正则表达式" class="headerlink" title="6.10 正则表达式"></a>6.10 正则表达式</h2><p>正则表达式使用单个字符串来描述、匹配一系列符合某个语法规则的字符串。</p>
+<p>在很多文本编辑器里，正则表达式通常被用来检索、替换那些符合某个模式的文本。</p>
+<p>在 Linux 中，grep， sed，awk 等文本处理工具都支持通过正则表达式进行模式匹配。</p>
+<h3 id="6-10-1-常规匹配"><a href="#6-10-1-常规匹配" class="headerlink" title="6.10.1 常规匹配"></a>6.10.1 常规匹配</h3><p>一串不包含特殊字符的正则表达式匹配它自己，例如：</p>
+<p><code>cat /etc/passwd | grep gotcha</code></p>
+<p>就会匹配所有包含 gotcha 的行。</p>
+<h3 id="6-10-2-常用特殊字符"><a href="#6-10-2-常用特殊字符" class="headerlink" title="6.10.2 常用特殊字符"></a>6.10.2 常用特殊字符</h3><h4 id="特殊字符："><a href="#特殊字符：" class="headerlink" title="特殊字符：^"></a>特殊字符：^</h4><ul>
+<li>^ 匹配一行的开头，例如：</li>
+</ul>
+<p><code>cat /etc/passwd | grep ^a</code>会匹配出所有以 a 开头的行</p>
+<h4 id="特殊字符：-1"><a href="#特殊字符：-1" class="headerlink" title="特殊字符：$"></a>特殊字符：$</h4><ul>
+<li>$ 匹配一行的结束，例如</li>
+</ul>
+<p><code>cat /etc/passwd | grep t$</code></p>
+<p>会匹配出所有以 t 结尾的行</p>
+<blockquote>
+<p>^$ 匹配空</p>
+</blockquote>
+<h4 id="特殊字符：-2"><a href="#特殊字符：-2" class="headerlink" title="特殊字符：."></a>特殊字符：.</h4><ul>
+<li>. 匹配一个任意的字符，例如</li>
+</ul>
+<p><code>cat /etc/passwd | grep r..t</code></p>
+<p>会匹配包含 rabt,rbbt,rxdt,root 等的所有行</p>
+<h4 id="特殊字符：-3"><a href="#特殊字符：-3" class="headerlink" title="特殊字符：*"></a>特殊字符：*</h4><ul>
+<li>不单独使用，它和上一个字符连用，表示匹配上一个字符 0 次或多次，例如</li>
+</ul>
+<p><code>cat /etc/passwd | grep ro*t</code></p>
+<p>会匹配 rt, rot, root, rooot, roooot 等所有行</p>
+<blockquote>
+<p>.* 匹配任意字符出现任意次，比如要找一行r开t结尾的，使用^r.*t$即可</p>
+</blockquote>
+<h4 id="字符区间（中括号）："><a href="#字符区间（中括号）：" class="headerlink" title="字符区间（中括号）：[ ]"></a>字符区间（中括号）：[ ]</h4><p>[ ] 表示匹配某个范围内的一个字符，例如 </p>
+<p>[6,8]——匹配 6 或者 8 </p>
+<p>[0-9]——匹配一个 0-9 的数字 </p>
+<p>[0-9]*——匹配任意长度的数字字符串 </p>
+<p>[a-z]——匹配一个 a-z 之间的字符 </p>
+<p>[a-z]* ——匹配任意长度的字母字符串</p>
+<p>[a-c, e-f]——匹配 a-c 或者 e-f 之间的任意字符</p>
+<p><code>cat /etc/passwd | grep r[a,b,c]*t</code></p>
+<p>会匹配 rt,rat, rbt, rabt, rbact,rabccbaaacbt 等等所有行</p>
+<h4 id="特殊字符：-4"><a href="#特殊字符：-4" class="headerlink" title="特殊字符：\"></a>特殊字符：\</h4><p>\ 表示转义，并不会单独使用。由于所有特殊字符都有其特定匹配模式，当想匹配某一特殊字符本身时（例如，想找出所有包含 ‘$’ 的行），就会碰到困难。此时就要将转义字符和特殊字符连用，来表示特殊字符本身，例如</p>
+<p><code>cat /etc/passwd | grep ‘a\$b’</code></p>
+<p>会匹配所有包含 a$b 的行。注意需要使用单引号将表达式引起来。</p>
+<h2 id="6-11文本处理工具"><a href="#6-11文本处理工具" class="headerlink" title="6.11文本处理工具"></a>6.11文本处理工具</h2><h3 id="6-11-1-cut"><a href="#6-11-1-cut" class="headerlink" title="6.11.1 cut"></a>6.11.1 cut</h3><p>cut 的工作就是“剪”，是在文件中负责剪切数据用的。</p>
+<p>cut 命令从文件的每一行剪切字节、字符和字段并将这些字节、字符和字段输出。</p>
+<h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><p><code>cut [选项参数] filename</code></p>
+<p>说明：默认分隔符是制表符</p>
+<h4 id="选项参数"><a href="#选项参数" class="headerlink" title="选项参数"></a>选项参数</h4><table>
+<thead>
+<tr>
+<th>选项参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-f</td>
+<td>列号，提取第几列</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>分隔符，按照指定分隔符分割列，默认是制表符“\t”</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>按字符进行切割 后加加 n 表示取第几列比如 -c 1</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-76"><a href="#案例实操-76" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">数据准备</span><br><br>touch cut.txt<br>vim cut.txt<br>------------------------------------------------<br>dong shen<br>guan zhen<br>wo wo<br>lai lai<br>le le<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">切割 cut.txt 第一列</span><br><br>cut -d &quot; &quot; -f 1 cut.txt<br>------------------------------------------------<br>dong<br>guan<br>wo<br>lai<br>le<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">切割 cut.txt 第二、三列</span><br><br>cut -d &quot; &quot; -f 2,3 cut.txt<br>------------------------------------------------<br>shen<br>zhen<br> wo<br> lai<br> le<br>------------------------------------------------<br><span class="hljs-meta prompt_">#</span><span class="language-bash">在 cut.txt 文件中切割出 guan</span><br>cat cut.txt |grep guan | cut -d &quot; &quot; -f 1<br>------------------------------------------------<br>guan<br>------------------------------------------------<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">选取系统 PATH 变量值，第 2 个“：”开始后的所有路径：</span><br>echo $PATH | cut -d &quot;:&quot; -f 3-<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">切割 ifconfig 后打印的 IP 地址</span><br>ifconfig eth0 | grep netmask | cut -d &quot; &quot; -f 10<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-11-2-awk"><a href="#6-11-2-awk" class="headerlink" title="6.11.2 awk"></a>6.11.2 awk</h3><p>awk是一个强大的文本分析工具，把文件逐行的读入，以空格为默认分隔符将每行切片，切开的部分再进行分析处理。</p>
+<h4 id="基本用法-1"><a href="#基本用法-1" class="headerlink" title="基本用法"></a>基本用法</h4><p><code>awk [选项参数] ‘/pattern1/&#123;action1&#125; /pattern2/&#123;action2&#125;...’ filename</code></p>
+<ul>
+<li><p>pattern：表示 awk 在数据中查找的内容，就是匹配模式</p>
+</li>
+<li><p>action：在找到匹配内容时所执行的一系列命令</p>
+</li>
+</ul>
+<blockquote>
+<p>只有匹配了 pattern 的行才会执行 action。</p>
+</blockquote>
+<h4 id="选项参数-1"><a href="#选项参数-1" class="headerlink" title="选项参数"></a>选项参数</h4><table>
+<thead>
+<tr>
+<th>选项参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-F</td>
+<td>指定输入文件分隔符</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>赋值一个用户定义变量</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-77"><a href="#案例实操-77" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">数据准备</span><br>sudo cp /etc/passwd ./<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">搜索 passwd 文件以 root 关键字开头的所有行，并输出该行的第 7 列。</span><br>awk -F : &#x27;/^root/&#123;print $7&#125;&#x27; passwd<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">搜索 passwd 文件以 root 关键字开头的所有行，并输出该行的第 1 列和第 7 列， 中间以“，”号分割。</span><br>awk -F : &#x27;/^root/&#123;print $1&quot;,&quot;$7&#125;&#x27; passwd<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">只显示/etc/passwd 的第一列和第七列，以逗号分割，且在所有行前面添加列名 user， shell 在最后一行添加<span class="hljs-string">&quot;dahaige，/bin/zuishuai&quot;</span>。</span><br>awk -F : &#x27;BEGIN&#123;print &quot;user, shell&quot;&#125; &#123;print $1&quot;,&quot;$7&#125; END&#123;print &quot;dahaige,/bin/zuishuai&quot;&#125;&#x27; passwd<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">将 passwd 文件中的用户 <span class="hljs-built_in">id</span> 增加数值 1 并输出</span><br>awk -v i=1 -F : &#x27;&#123;print $3+i&#125;&#x27; passwd<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>BEGIN 在所有数据读取行之前执行；END 在所有数据执行之后执行</p>
+</blockquote>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220729163954422.png" srcset="/img/loading.gif" class="" title="image-20220729163954422">
+
+<h4 id="awk-内置变量"><a href="#awk-内置变量" class="headerlink" title="awk 内置变量"></a>awk 内置变量</h4><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FILENAME</td>
+<td>文件名</td>
+</tr>
+<tr>
+<td>NR</td>
+<td>已读的记录数（行号）</td>
+</tr>
+<tr>
+<td>NF</td>
+<td>浏览记录的域的个数（切割后，列的个数）</td>
+</tr>
+</tbody></table>
+<h4 id="案例实操-78"><a href="#案例实操-78" class="headerlink" title="案例实操"></a>案例实操</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">统计 passwd 文件名，每行的行号，每行的列数</span><br>awk -F : &#x27;&#123;print &quot;filename:&quot; FILENAME NR &quot;,col:&quot;NF&#125;&#x27; passwd<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">查询 ifconfig 命令输出结果中的空行所在的行号</span><br>ifconfig | awk &#x27;/^$/&#123;print NR&#125;&#x27;<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">切割 IP</span><br>ifconfig eth0 | awk &#x27;/netmask/ &#123;print $2&#125;&#x27;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="十、其他知识"><a href="#十、其他知识" class="headerlink" title="十、其他知识"></a>十、其他知识</h1><h2 id="10-1-inode索引节点"><a href="#10-1-inode索引节点" class="headerlink" title="10.1 inode索引节点"></a>10.1 inode索引节点</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>理解inode，要从文件储存说起。文件储存在硬盘上，硬盘的最小存储单位叫做”扇区”（Sector）。每个扇区储存512字节（相当于0.5KB）。</p>
+<p>操作系统读取硬盘的时候，不会一个个扇区地读取，这样效率太低，而是一次性连续读取多个扇区，即<strong>一次性读取一个”块”（block）</strong>。这种由多个扇区组成的”块”，是文件存取的最小单位。”块”的大小，最常见的是4KB，即连续八个 sector组成一个 block。</p>
+<p>文件数据都储存在”块”中，那么很显然，我们还必须找到一个地方储存文件的元信息，比如文件的创建者、文件的创建日期、文件的大小等等。这种储存文件元信息的区域就叫做inode，中文译名为”索引节点”。inode的内容（inode是一个结构体）</p>
+<h3 id="inode内容"><a href="#inode内容" class="headerlink" title="inode内容"></a>inode内容</h3><p>可以通过stat指令查看一个文件的inode信息</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721102320595.png" srcset="/img/loading.gif" class="" title="image-20220721102320595">
+<p>inode中的内容:</p>
+<blockquote>
+<ul>
+<li>文件的字节数，块数</li>
+<li>文件拥有者的User ID</li>
+<li>文件的Group ID</li>
+<li>文件的读、写、执行权限</li>
+<li>文件的时间戳，共有三个：ctime指inode上一次变动的时间，mtime指文件内容上一次 变动的时间，atime指文件上一次打开的时间。</li>
+<li>链接数，即有多少文件名指向这个inode</li>
+<li>文件数据block的位置</li>
+<li>inode编号（对应数组的下标）</li>
+</ul>
+</blockquote>
+<h3 id="block区和inode区"><a href="#block区和inode区" class="headerlink" title="block区和inode区"></a>block区和inode区</h3><p>硬盘格式化的时候，操作系统自动将硬盘分成两个区域。</p>
+<p>一个是数据区（block区），存放文件数据；另一个是inode区（inode table），存放inode所包含的信息。</p>
+<p>inode区是以数组的形式存储的，对应的数组下标就是inode编码，每个元素就是一个结构体（结构体内容如上图）,inode结构体中会有一个指针，指向block区（即存放的文件内容）。</p>
+<p>可以通过指令df查看每个硬盘分区的inode总数和已经使用的数量。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721102721341.png" srcset="/img/loading.gif" class="" title="image-20220721102721341">
+
+
+
+<h3 id="inode编号"><a href="#inode编号" class="headerlink" title="inode编号"></a>inode编号</h3><p>inode编号是很重要的，当系统在找一个文件时，步骤如下：</p>
+<ol>
+<li>通过文件名先找到文件的inode编号。</li>
+<li>通过inode编号找到文件inode信息。</li>
+<li>通过inode信息中的block指针找到文件内容。</li>
+</ol>
+<ul>
+<li>可以通过ls -i查看文件的inode编号</li>
+</ul>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721103032651.png" srcset="/img/loading.gif" class="" title="image-20220721103032651">
+
+<h3 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接"></a>硬链接</h3><p>一般情况下，文件名和inode号码是”一一对应”关系，每个inode号码对应一个文件名。</p>
+<p>但是Unix&#x2F;Linux系统允许，多个文件名指向同一个inode号码。这意味着，可以用不同的文件名访问同样的内容；对文件内容进行修改，会影响到所有文件名；但是，删除一个文件名，不影响另一个文件名的访问。这种情况就被称为”硬链接”（hard link）。可以使用ln指令添加硬链接</p>
+<ul>
+<li>通过硬链接创建出来的文件的inode编号是一样的。</li>
+</ul>
+<p>注意：</p>
+<blockquote>
+<ol>
+<li>硬链接相当于一个副本，不会占用实际空间</li>
+<li>删除一个硬链接，不会影响其他的inode</li>
+<li>不允许给目录创建硬链接。</li>
+<li>硬链接只有在同一个文件系统中才能创建</li>
+</ol>
+</blockquote>
+<h3 id="软连接"><a href="#软连接" class="headerlink" title="软连接"></a>软连接</h3><p>除了硬链接以外，还有一种特殊情况。<br>文件A和文件B的inode号码虽然不一样，但是文件A的内容是文件B的路径。读取文件A时，系统会自动将访问者导向文件B。因此，无论打开哪一个文件，最终读取的都是文件B。这时，文件A就称为文件B的”软链接”（soft link）或者”符号链接（symbolic link）。<br>这意味着，文件A依赖于文件B而存在，如果删除了文件B，打开文件A就会报错：”No such file or directory”。这是软链接与硬链接最大的不同：文件A指向文件B的文件名，而不是文件B的inode号码，文件B的inode”链接数”不会因此发生变化。ln -s命令可以创建软链接。</p>
+<img src="/2022/04/23/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/Linux%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20220721110055159.png" srcset="/img/loading.gif" class="" title="image-20220721110055159">
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/Linux/">Linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/08/01/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%85%A5%E9%97%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SpringDataJPA入门</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/03/20/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%A6%82%E8%BF%B0/">
+                        <span class="hidden-mobile">消息队列概述</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?cd190160b5401a029cee361d013e32a1";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
