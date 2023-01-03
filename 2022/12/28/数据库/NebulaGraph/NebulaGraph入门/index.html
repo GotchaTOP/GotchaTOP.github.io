@@ -1,0 +1,1336 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="懂一点点">
+  <meta name="author" content="Gotcha">
+  <meta name="keywords" content="">
+  <title>NebulaGraph入门 - Gotcha的笔记总结</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"onlypost":false},"web_analytics":{"enable":true,"baidu":"cd190160b5401a029cee361d013e32a1","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"U8yaiFQ2fUef4ujWTig83mSL-gzGzoHsz","app_key":"akCMytdeJqrMuKP84F4oblqz","server_url":"https://u8yaifq2.lc-cn-n1-shared.com"}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Gotcha的笔记总结</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background/01.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="NebulaGraph入门">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-12-28 00:00" pubdate>
+        2022年12月28日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      8.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      251
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">NebulaGraph入门</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年12月29日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="一、NebulaGraph介绍"><a href="#一、NebulaGraph介绍" class="headerlink" title="一、NebulaGraph介绍"></a>一、NebulaGraph介绍</h1><h2 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h2><p>NebulaGraph 是一款开源的、<strong>分布式</strong>的、易扩展的原生<strong>图数据库</strong>，能够承载数千亿个点和数万亿条边的超大规模数据集，并且提供<strong>毫秒级查询</strong>。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20221229223422059.png" srcset="/img/loading.gif" class="" title="image-20221229223422059">
+
+<h2 id="1-2-数据模型"><a href="#1-2-数据模型" class="headerlink" title="1.2 数据模型"></a>1.2 数据模型</h2><p>NebulaGraph 数据模型使用 6 种基本的数据模型：</p>
+<ul>
+<li><p>图空间（Space）</p>
+<ul>
+<li>图空间用于隔离不同团队或者项目的数据。不同图空间的数据是相互隔离的，可以指定不同的存储副本数、权限、分片等。</li>
+</ul>
+</li>
+<li><p>点（Vertex）</p>
+<ul>
+<li>点用来保存实体对象，特点如下：<ul>
+<li>点是用点标识符（<code>VID</code>）标识的。<code>VID</code>在同一图空间中唯一。</li>
+<li>点可以有 0 到多个 Tag。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>NebulaGraph 2.x 及以下版本中的点必须包含至少一个 Tag。</p>
+</blockquote>
+<ul>
+<li>VID相关：<ul>
+<li>VID 数据类型只可以为定长字符串<code>FIXED_STRING</code>或<code>INT64</code>；<strong>一个图空间只能选用其中一种 VID 类型</strong>。</li>
+<li><strong>VID 在一个图空间中必须唯一</strong>，其作用类似于关系型数据库中的主键（索引+唯一约束）。但不同图空间中的 VID 是完全独立无关的。</li>
+<li>点 VID 的生成方式必须由用户自行指定，系统不提供自增 ID 或者 UUID。</li>
+<li>VID 相同的点，会被认为是同一个点。例如：</li>
+<li>VID 相当于一个实体的唯一标号，例如一个人的身份证号。</li>
+<li>同时操作相同 VID 并且相同 Tag 的两条<code>INSERT</code>语句（均无<code>IF NOT EXISTS</code>参数），晚写入的<code>INSERT</code>会覆盖先写入的。</li>
+<li>同时操作包含相同 VID 但是两个不同<code>TAG A</code>和<code>TAG B</code>的两条<code>INSERT</code>语句，对<code>TAG A</code>的操作不会影响<code>TAG B</code>。</li>
+<li>VID 通常会被（LSM-tree 方式，日志结构合并树）索引并缓存在内存中，因此直接访问 VID 的性能最高。通过属性先查找 VID，再进行图操作的性能会变差，例如<code>LOOKUP | GO FROM $-.ids</code>等语句，相比前者多了一次内存或硬盘的随机读（<code>LOOKUP</code>）以及一次序列化（<code>|</code>）。</li>
+<li>VID 的数据类型必须在创建图空间时定义，且一旦定义无法修改。</li>
+<li>VID 必须在插入点时设置，且一旦设置无法修改。</li>
+<li>VID 的生成工作完全交给应用端，有如下建议：<ul>
+<li>（最优）通过有唯一性的主键或者属性来直接作为 VID；属性访问依赖于 VID;</li>
+<li>通过有唯一性的属性组合来生成 VID，属性访问依赖于属性索引。</li>
+<li>通过 snowflake 等算法生成 VID，属性访问依赖于属性索引。</li>
+<li>如果个别记录的主键特别长，但绝大多数记录的主键都很短的情况，不要将<code>FIXED_STRING(&lt;N&gt;)</code>的<code>N</code>设置成超大，这会浪费大量内存和硬盘，也会降低性能。此时可通过 BASE64，MD5，hash 编码加拼接的方式来生成。</li>
+<li>如果用 hash 方式生成 int64 VID：在有 10 亿个点的情况下，发生 hash 冲突的概率大约是 1&#x2F;10。边的数量与碰撞的概率无关。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>边（Edge）</p>
+<ul>
+<li>边是用来连接点的，表示两个点之间的关系或行为，特点如下：<ul>
+<li>两点之间可以有多条边。</li>
+<li>边是有方向的，不存在无向边。</li>
+<li>四元组 <code>&lt;起点 VID、Edge type、边排序值 (rank)、终点 VID&gt;</code> 用于唯一标识一条边。边没有 EID。</li>
+<li>一条边有且仅有一个 Edge type。</li>
+<li>一条边有且仅有一个 Rank，类型为 int64，默认值为 0。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Rank 可以用来区分 Edge type、起始点、目的点都相同的边。该值完全由用户自己指定。<br>读取时必须自行取得全部的 Rank 值后排序过滤和拼接。<br>不支持诸如<code>next(), pre(), head(), tail(), max(), min(), lessThan(), moreThan()</code>等函数功能，也不能通过创建索引加速访问或者条件过滤。</p>
+</blockquote>
+</li>
+<li><p>标签（Tag）</p>
+<ul>
+<li>Tag 由一组事先预定义的属性构成。</li>
+<li>Tag 相当于实体所拥有的类型，例如”滴滴司机”和”职员”。不同的 Tag 又相应定义了两组不同的属性，例如”驾照号、驾龄、接单量、接单小号”和”工号、薪水、债务额度、商务电话”。</li>
+</ul>
+</li>
+<li><p>边类型（Edge type）</p>
+<ul>
+<li>Edge type 由一组事先预定义的属性构成。</li>
+</ul>
+</li>
+<li><p>属性（Property）</p>
+<ul>
+<li>属性是指以键值对（Key-value pair）形式表示的信息。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Tag 和 Edge type 的作用，类似于关系型数据库中“点表”和“边表”的表结构。</p>
+</blockquote>
+<p>图数据库将图中的数据高效存储为点（Vertex）和边（Edge），还可以将属性（Property）附加到点和边上。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103095345192.png" srcset="/img/loading.gif" class="" title="image-20230103095345192">
+
+
+
+
+
+
+
+<h2 id="1-3-图模型"><a href="#1-3-图模型" class="headerlink" title="1.3 图模型"></a>1.3 图模型</h2><p>NebulaGraph 使用<strong>有向属性图模型</strong>，指点和边构成的图，这些边是有方向的，点和边都可以有属性。</p>
+<p>下表为篮球运动员数据集的结构示例，包括两种类型的点（<strong>player</strong>、<strong>team</strong>）和两种类型的边（<strong>serve</strong>、<strong>follow</strong>）。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>属性名（数据类型）</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tag</td>
+<td><strong>player</strong></td>
+<td>name (string) age（int）</td>
+<td>表示球员。</td>
+</tr>
+<tr>
+<td>Tag</td>
+<td><strong>team</strong></td>
+<td>name (string)</td>
+<td>表示球队。</td>
+</tr>
+<tr>
+<td>Edge type</td>
+<td><strong>serve</strong></td>
+<td>start_year (int) end_year (int)</td>
+<td>表示球员的行为。 该行为将球员和球队联系起来，方向是从球员到球队。</td>
+</tr>
+<tr>
+<td>Edge type</td>
+<td><strong>follow</strong></td>
+<td>degree (int)</td>
+<td>表示球员的行为。 该行为将两个球员联系起来，方向是从一个球员到另一个球员。</td>
+</tr>
+</tbody></table>
+<p>为了在图空间中插入数据，需要为图数据库定义一个 <strong>Schema</strong>。NebulaGraph 的 Schema 是由如下几部分组成。</p>
+<table>
+<thead>
+<tr>
+<th>组成部分</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>点（Vertex）</td>
+<td>表示现实世界中的实体。一个点可以有 0 到多个标签。</td>
+</tr>
+<tr>
+<td>标签（Tag）</td>
+<td>点的类型，定义了一组描述点类型的属性。</td>
+</tr>
+<tr>
+<td>边（Edge）</td>
+<td>表示两个点之间<strong>有方向</strong>的关系。</td>
+</tr>
+<tr>
+<td>边类型（Edge type）</td>
+<td>边的类型，定义了一组描述边的类型的属性。</td>
+</tr>
+</tbody></table>
+<h2 id="1-4-路径"><a href="#1-4-路径" class="headerlink" title="1.4 路径"></a>1.4 路径</h2><p>图论中一个非常重要的概念是路径，路径是指一个有限或无限的边序列，这些边连接着一系列点。</p>
+<p>路径的类型分为三种：<code>walk</code>、<code>trail</code>、<code>path</code>。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103100014507.png" srcset="/img/loading.gif" class="" title="image-20230103100014507">
+
+<h3 id="1-4-1-walk"><a href="#1-4-1-walk" class="headerlink" title="1.4.1 walk"></a>1.4.1 walk</h3><p><code>walk</code>类型的路径由有限或无限的边序列构成。<strong>遍历时点和边可以重复</strong>。</p>
+<p>查看示例图，由于 C、D、E 构成了一个环，因此该图包含无限个路径，例如<code>A-&gt;B-&gt;C-&gt;D-&gt;E</code>、<code>A-&gt;B-&gt;C-&gt;D-&gt;E-&gt;C</code>、<code>A-&gt;B-&gt;C-&gt;D-&gt;E-&gt;C-&gt;D</code>。</p>
+<h3 id="1-4-2-trail"><a href="#1-4-2-trail" class="headerlink" title="1.4.2 trail"></a>1.4.2 trail</h3><p><code>trail</code>类型的路径由有限的边序列构成。遍历时<strong>只有点可以重复，边不可以重复</strong>。柯尼斯堡七桥问题的路径类型就是<code>trail</code>。</p>
+<p>查看示例图，由于边不可以重复，所以该图包含有限个路径，最长路径由 5 条边组成：<code>A-&gt;B-&gt;C-&gt;D-&gt;E-&gt;C</code>。</p>
+<p>在 trail 类型中，还有<code>cycle</code>和<code>circuit</code>两种特殊的路径类型，以下图为例对这两种特殊的路径类型进行介绍。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103100631813.png" srcset="/img/loading.gif" class="" title="image-20230103100631813">
+
+<h4 id="cycle"><a href="#cycle" class="headerlink" title="cycle"></a>cycle</h4><p><strong><code>cycle</code> 是封闭的 <code>trail</code> 类型的路径</strong>，遍历时<strong>边不可以重复，起点和终点重复，并且没有其他点重复</strong>。在此示例图中，最长路径由三条边组成：<code>A-&gt;B-&gt;C-&gt;A</code>或<code>C-&gt;D-&gt;E-&gt;C</code>.</p>
+<h4 id="circuit"><a href="#circuit" class="headerlink" title="circuit"></a>circuit</h4><p><strong><code>circuit</code> 也是封闭的 <code>trail</code> 类型的路径</strong>，遍历时<strong>边不可以重复，除起点和终点重复外，可能存在其他点重复</strong>。在此示例图中，最长路径为：<code>A-&gt;B-&gt;C-&gt;D-&gt;E-&gt;C-&gt;A</code>。</p>
+<h3 id="1-4-3-path"><a href="#1-4-3-path" class="headerlink" title="1.4.3 path"></a>1.4.3 path</h3><p><code>path</code>类型的路径由有限的边序列构成。<strong>遍历时点和边都不可以重复</strong>。</p>
+<p>查看示例图，由于点和边都不可以重复，所以该图包含有限个路径，最长路径由 4 条边组成：<code>A-&gt;B-&gt;C-&gt;D-&gt;E</code>。</p>
+<h2 id="1-5-服务架构"><a href="#1-5-服务架构" class="headerlink" title="1.5 服务架构"></a>1.5 服务架构</h2><h3 id="1-5-1-总览"><a href="#1-5-1-总览" class="headerlink" title="1.5.1 总览"></a>1.5.1 总览</h3><p>NebulaGraph 由三种服务构成：Graph 服务、Meta 服务和 Storage 服务，是一种<strong>存储与计算分离</strong>的架构。</p>
+<p>每个服务都有可执行的二进制文件和对应进程，用户可以使用这些二进制文件在一个或多个计算机上部署 NebulaGraph 集群。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103103712747.png" srcset="/img/loading.gif" class="" title="image-20230103103712747">
+
+<p>其中，Meta 服务是由 nebula-metad 进程提供的，<strong>负责数据管理</strong>，例如 Schema 操作、集群管理和用户权限管理等。</p>
+<p>Graph 服务负责处理计算请求，Storage 服务负责存储数据。它们由不同的进程提供，Graph 服务是由 nebula-graphd 进程提供，Storage 服务是由 nebula-storaged 进程提供。</p>
+<p>由于其采用了<strong>计算存储分离架构</strong>，其具备如下优势：</p>
+<ul>
+<li><p>易扩展</p>
+<p>分布式架构保证了 Graph 服务和 Storage 服务的灵活性，方便扩容和缩容。</p>
+</li>
+<li><p>高可用</p>
+<p>如果提供 Graph 服务的服务器有一部分出现故障，其余服务器可以继续为客户端提供服务，而且 Storage 服务存储的数据不会丢失。服务恢复速度较快，甚至能做到用户无感知。</p>
+</li>
+<li><p>节约成本</p>
+<p>计算存储分离架构能够提高资源利用率，而且可根据业务需求灵活控制成本。</p>
+</li>
+</ul>
+<h3 id="1-5-2-Meta-服务"><a href="#1-5-2-Meta-服务" class="headerlink" title="1.5.2 Meta 服务"></a>1.5.2 Meta 服务</h3><ul>
+<li>Meta 服务是由 nebula-metad 进程提供的，用户可以根据场景配置 nebula-metad 进程数量：<ul>
+<li>测试环境中，用户可以在 NebulaGraph 集群中部署 1 个或 3 个 nebula-metad 进程。如果要部署 3 个，用户可以将它们部署在 1 台机器上，或者分别部署在不同的机器上。</li>
+<li>生产环境中，建议在 NebulaGraph 集群中部署 3 个 nebula-metad 进程。请将这些进程部署在不同的机器上以保证高可用。</li>
+</ul>
+</li>
+</ul>
+<p>所有 nebula-metad 进程构成了基于 Raft 协议的集群，其中<strong>一个进程是 leader，其他进程都是 follower</strong>。</p>
+<p>leader 是由多数派选举出来，只有 leader 能够对客户端或其他组件提供服务，其他 follower 作为候补，如果 leader 出现故障，会在所有 follower 中选举出新的 leader。</p>
+<blockquote>
+<p>leader 和 follower 的数据通过 Raft 协议保持一致</p>
+</blockquote>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103105103355.png" srcset="/img/loading.gif" class="" title="image-20230103105103355">
+
+<ul>
+<li>Meta 服务功能<ul>
+<li>管理用户账号（鉴权）：Meta 服务中存储了用户的账号和权限信息，当客户端通过账号发送请求给 Meta 服务，Meta 服务会检查账号信息，以及该账号是否有对应的请求权限。</li>
+<li>管理分片：Meta 服务负责存储和管理分片的位置信息，并且保证分片的负载均衡。</li>
+<li>管理图空间：NebulaGraph 支持多个图空间，不同图空间内的数据是安全隔离的。Meta 服务存储所有图空间的元数据，并跟踪数据的变更，例如增加或删除图空间。</li>
+<li>管理 Schema 信息：NebulaGraph 是强类型图数据库，它的 Schema 包括 Tag、Edge type、Tag 属性和 Edge type 属性。Meta 服务中存储了 Schema 信息，同时还负责 Schema 的添加、修改和删除，并记录它们的版本。</li>
+<li>管理 TTL 信息：Meta 服务存储 TTL（Time To Live）定义信息，可以用于设置数据生命周期。数据过期后，会由 Storage 服务进行处理。</li>
+<li>管理作业：Meta 服务中的作业管理模块负责作业的创建、排队、查询和删除。</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-5-3-Graph服务"><a href="#1-5-3-Graph服务" class="headerlink" title="1.5.3 Graph服务"></a>1.5.3 Graph服务</h3><ul>
+<li>Graph 服务主要负责处理查询请求，包括<strong>解析查询语句、校验语句、生成执行计划以及按照执行计划执行</strong>四个大步骤</li>
+</ul>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103105723240.png" srcset="/img/loading.gif" class="" title="image-20230103105723240">
+
+<ul>
+<li><p>查询请求发送到 Graph 服务后，会由如下模块依次处理：</p>
+<ul>
+<li><p><strong>Parser</strong>：词法语法解析模块。</p>
+<ul>
+<li><p>Parser 模块收到请求后，通过 Flex（词法分析工具）和 Bison（语法分析工具）生成的词法语法解析器，将语句转换为抽象语法树（AST），在语法解析阶段会拦截不符合语法规则的语句。</p>
+</li>
+<li><p>例如<code>GO FROM &quot;Tim&quot; OVER like WHERE properties(edge).likeness &gt; 8.0 YIELD dst(edge)</code>语句转换的 AST 如下：</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103105920529.png" srcset="/img/loading.gif" class="" title="image-20230103105920529"></li>
+</ul>
+</li>
+<li><p><strong>Validator</strong>：语义校验模块。</p>
+<ul>
+<li><p>Validator 模块对生成的 AST 进行语义校验，主要包括：</p>
+<ul>
+<li><p>校验元数据信息</p>
+<p>校验语句中的元数据信息是否正确。</p>
+<p>例如解析 <code>OVER</code>、<code>WHERE</code>和<code>YIELD</code> 语句时，会查找 Schema 校验 Edge type、Tag 的信息是否存在，或者插入数据时校验插入的数据类型和 Schema 中的是否一致。</p>
+</li>
+<li><p>校验上下文引用信息</p>
+<p>校验引用的变量是否存在或者引用的属性是否属于变量。</p>
+<p>例如语句<code>$var = GO FROM &quot;Tim&quot; OVER like YIELD dst(edge) AS ID; GO FROM $var.ID OVER serve YIELD dst(edge)</code>，Validator 模块首先会检查变量 <code>var</code> 是否定义，其次再检查属性 <code>ID</code> 是否属于变量 <code>var</code>。</p>
+</li>
+<li><p>校验类型推断</p>
+<p>推断表达式的结果类型，并根据子句校验类型是否正确。</p>
+<p>例如 <code>WHERE</code> 子句要求结果是 <code>bool</code>、<code>null</code> 或者 <code>empty</code>。</p>
+</li>
+<li><p>校验<code>*</code>代表的信息</p>
+<p>查询语句中包含 <code>*</code> 时，校验子句时需要将 <code>*</code> 涉及的 Schema 都进行校验。</p>
+<p>例如语句<code>GO FROM &quot;Tim&quot; OVER * YIELD dst(edge), properties(edge).likeness, dst(edge)</code>，校验<code>OVER</code>子句时需要校验所有的 Edge type，如果 Edge type 包含 <code>like</code>和<code>serve</code>，该语句会展开为<code>GO FROM &quot;Tim&quot; OVER like,serve YIELD dst(edge), properties(edge).likeness, dst(edge)</code>。</p>
+</li>
+<li><p>校验输入输出</p>
+<p>校验管道符（|）前后的一致性。</p>
+<p>例如语句<code>GO FROM &quot;Tim&quot; OVER like YIELD dst(edge) AS ID | GO FROM $-.ID OVER serve YIELD dst(edge)</code>，Validator 模块会校验 <code>$-.ID</code> 在管道符左侧是否已经定义。</p>
+</li>
+</ul>
+</li>
+<li><p>校验完成后，Validator 模块还会生成一个默认可执行，但是未进行优化的执行计划，存储在目录 <code>src/planner</code> 内。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Planner</strong>：执行计划与优化器模块。</p>
+<ul>
+<li><p>如果配置文件 <code>nebula-graphd.conf</code> 中 <code>enable_optimizer</code> 设置为 <code>false</code>，Planner 模块不会优化 Validator 模块生成的执行计划，而是直接交给 Executor 模块执行。</p>
+</li>
+<li><p>如果配置文件 <code>nebula-graphd.conf</code>中<code>enable_optimizer</code> 设置为 <code>true</code>，Planner 模块会对 Validator 模块生成的执行计划进行优化。如下图所示。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103110458088.png" srcset="/img/loading.gif" class="" title="image-20230103110458088"></li>
+</ul>
+</li>
+<li><p><strong>Executor</strong>：执行引擎模块。</p>
+<ul>
+<li><p>Executor 模块包含调度器（Scheduler）和执行器（Executor），通过调度器调度执行计划，让执行器根据执行计划，<strong>从叶子节点开始执行，直到根节点结束</strong>。如下图所示。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103110821463.png" srcset="/img/loading.gif" class="" title="image-20230103110821463"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-5-4-Storage服务"><a href="#1-5-4-Storage服务" class="headerlink" title="1.5.4 Storage服务"></a>1.5.4 Storage服务</h3><p>NebulaGraph的存储包含两个部分，一个是 Meta 相关的存储，称为 Meta 服务。另一个是具体数据相关的存储，称为 Storage 服务。其运行在 nebula-storaged 进程中。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103140643987.png" srcset="/img/loading.gif" class="" title="image-20230103140643987">
+
+<p>Storage 服务是由 nebula-storaged 进程提供的，用户可以根据场景配置 nebula-storaged 进程数量，例如测试环境 1 个，生产环境 3 个。</p>
+<p>所有 nebula-storaged 进程构成了基于 Raft 协议的集群，整个服务架构可以分为三层，从上到下依次为：</p>
+<ul>
+<li><p>Storage interface 层</p>
+<p>Storage 服务的最上层，定义了一系列和图相关的 API。API 请求会在这一层被翻译成一组针对分片的 KV 操作，例如：</p>
+<ul>
+<li><p><code>getNeighbors</code>：查询一批点的出边或者入边，返回边以及对应的属性，并且支持条件过滤。</p>
+</li>
+<li><p><code>insert vertex/edge</code>：插入一条点或者边及其属性。</p>
+</li>
+<li><p><code>getProps</code>：获取一个点或者一条边的属性。</p>
+</li>
+</ul>
+<p>正是这一层的存在，使得 Storage 服务变成了真正的图存储，否则 Storage 服务只是一个 KV 存储服务。</p>
+</li>
+<li><p>Consensus 层</p>
+<p>Storage 服务的中间层，实现了 Multi Group Raft，保证强一致性和高可用性。</p>
+<p>由于 Storage 服务需要支持集群分布式架构，所以基于 Raft 协议实现了 Multi Group Raft，即每个分片的所有副本共同组成一个 Raft group，其中一个副本是 leader，其他副本是 follower。</p>
+</li>
+<li><p>Store Engine 层</p>
+<p>Storage 服务的最底层，是一个单机版本地存储引擎，提供对本地数据的<code>get</code>、<code>put</code>、<code>scan</code>等操作。相关接口存储在<code>KVStore.h</code>和<code>KVEngine.h</code>文件，用户可以根据业务需求定制开发相关的本地存储插件。</p>
+</li>
+</ul>
+<h4 id="Storage-写入流程"><a href="#Storage-写入流程" class="headerlink" title="Storage 写入流程"></a>Storage 写入流程</h4><img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103141407994.png" srcset="/img/loading.gif" class="" title="image-20230103141407994">
+
+<h4 id="数据存储格式"><a href="#数据存储格式" class="headerlink" title="数据存储格式"></a>数据存储格式</h4><p>图存储的主要数据是点和边，NebulaGraph 将点和边的信息存储为 key，同时将点和边的属性信息存储在 value 中，以便更高效地使用属性过滤。</p>
+<h5 id="点数据存储格式"><a href="#点数据存储格式" class="headerlink" title="点数据存储格式"></a>点数据存储格式</h5><p>相比 NebulaGraph 2.x 版本，3.x 版本在开启<strong>无 Tag</strong> 的点配置后，每个点多了一个不含 TagID 字段并且无 value 的 key。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103142138303.png" srcset="/img/loading.gif" class="" title="image-20230103142138303">
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Type</code></td>
+<td>key 类型。长度为 1 字节。</td>
+</tr>
+<tr>
+<td><code>PartID</code></td>
+<td>数据分片编号。长度为 3 字节。此字段主要用于 Storage 负载均衡（balance）时方便根据前缀扫描整个分片的数据。</td>
+</tr>
+<tr>
+<td><code>VertexID</code></td>
+<td>点 ID。当点 ID 类型为 int 时，长度为 8 字节；当点 ID 类型为 string 时，长度为创建图空间时指定的<code>fixed_string</code>长度。</td>
+</tr>
+<tr>
+<td><code>TagID</code></td>
+<td>点关联的 Tag ID。长度为 4 字节。</td>
+</tr>
+<tr>
+<td><code>SerializedValue</code></td>
+<td>序列化的 value，用于保存点的属性信息。</td>
+</tr>
+</tbody></table>
+<h5 id="边数据存储格式"><a href="#边数据存储格式" class="headerlink" title="边数据存储格式"></a>边数据存储格式</h5><img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103142305332.png" srcset="/img/loading.gif" class="" title="image-20230103142305332">
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Type</code></td>
+<td>key 类型。长度为 1 字节。</td>
+</tr>
+<tr>
+<td><code>PartID</code></td>
+<td>数据分片编号。长度为 3 字节。此字段主要用于 Storage 负载均衡（balance）时方便根据前缀扫描整个分片的数据。</td>
+</tr>
+<tr>
+<td><code>VertexID</code></td>
+<td>点 ID。前一个<code>VertexID</code>在出边里表示起始点 ID，在入边里表示目的点 ID；后一个<code>VertexID</code>出边里表示目的点 ID，在入边里表示起始点 ID。</td>
+</tr>
+<tr>
+<td><code>Edge type</code></td>
+<td>边的类型。大于 0 表示出边，小于 0 表示入边。长度为 4 字节。</td>
+</tr>
+<tr>
+<td><code>Rank</code></td>
+<td>用来处理两点之间有多个同类型边的情况。用户可以根据自己的需求进行设置，例如存放交易时间、交易流水号等。长度为 8 字节，</td>
+</tr>
+<tr>
+<td><code>PlaceHolder</code></td>
+<td>预留字段。长度为 1 字节。</td>
+</tr>
+<tr>
+<td><code>SerializedValue</code></td>
+<td>序列化的 value，用于保存边的属性信息。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>四元组 <code>&lt;起点 VID、Edge type、边排序值 (rank)、终点 VID&gt;</code> 用于唯一标识一条边。</p>
+</blockquote>
+<h4 id="数据分片"><a href="#数据分片" class="headerlink" title="数据分片"></a>数据分片</h4><p>由于超大规模关系网络的节点数量高达百亿到千亿，而边的数量更会高达万亿，即使仅存储点和边两者也远大于一般服务器的容量。因此需要有方法将图元素切割，并存储在不同逻辑分片（Partition）上。NebulaGraph 采用<strong>边分割</strong>的方式。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103144124276.png" srcset="/img/loading.gif" class="" title="image-20230103144124276">
+
+<h5 id="切边与存储放大"><a href="#切边与存储放大" class="headerlink" title="切边与存储放大"></a>切边与存储放大</h5><p>NebulaGraph 中逻辑上的一条边对应着硬盘上的两个键值对，在边的数量和属性较多时，存储放大现象较明显。边的存储方式如下图所示。<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103144337604.png" srcset="/img/loading.gif" class="" title="image-20230103144337604"></p>
+<p>上图以最简单的两个点和一条边为例，起点 SrcVertex 通过边 EdgeA 连接目的点 DstVertex，形成路径<code>(SrcVertex)-[EdgeA]-&gt;(DstVertex)</code>。这两个点和一条边会以 4 个键值对的形式保存在存储层的两个不同分片，即 Partition x 和 Partition y 中，详细说明如下：</p>
+<ul>
+<li><p>点 SrcVertex 的键值保存在 Partition x 中。</p>
+</li>
+<li><p>边 EdgeA 的第一份键值，这里用 EdgeA_Out 表示，与 SrcVertex 一同保存在 Partition x 中。key 的字段有 Type、PartID（x）、VID（Src，即点 SrcVertex 的 ID）、EdgeType（符号为正，代表边方向为出）、Rank（0）、VID（Dst，即点 DstVertex 的 ID）和 PlaceHolder。SerializedValue 即 Value，是序列化的边属性。</p>
+</li>
+<li><p>点 DstVertex 的键值保存在 Partition y 中。</p>
+</li>
+<li><p>边 EdgeA 的第二份键值，这里用 EdgeA_In 表示，与 DstVertex 一同保存在 Partition y 中。key 的字段有 Type、PartID（y）、VID（Dst，即点 DstVertex 的 ID）、EdgeType（符号为负，代表边方向为入）、Rank（0）、VID（Src，即点 SrcVertex 的 ID）和 PlaceHolder。SerializedValue 即 Value，是序列化的边属性，与 EdgeA_Out 中该部分的完全相同。</p>
+</li>
+</ul>
+<p>EdgeA_Out 和 EdgeA_In 以方向相反的两条边的形式存在于存储层，二者组合成了逻辑上的一条边 EdgeA。EdgeA_Out 用于从起点开始的遍历请求，例如<code>(a)-[]-&gt;()</code>；EdgeA_In 用于指向目的点的遍历请求，或者说从目的点开始，沿着边的方向逆序进行的遍历请求，例如例如<code>()-[]-&gt;(a)</code>。</p>
+<p>如 EdgeA_Out 和 EdgeA_In 一样，NebulaGraph 冗余了存储每条边的信息，导致存储边所需的实际空间翻倍。因为边对应的 key 占用的硬盘空间较小，但 value 占用的空间与属性值的长度和数量成正比，所以，当边的属性值较大或数量较多时候，硬盘空间占用量会比较大。</p>
+<p>如果对边进行操作，为了保证两个键值对的最终一致性，可以开启 TOSS 功能（开启后会增加相关操作的时延约 1 倍），开启后，会先在正向边所在的分片进行操作，然后在反向边所在分片进行操作，最后返回结果。</p>
+<h5 id="分片算法"><a href="#分片算法" class="headerlink" title="分片算法"></a>分片算法</h5><p>分片策略采用<strong>静态 Hash</strong> 的方式，即对点 VID 进行取模操作，同一个点的所有 Tag、出边和入边信息都会存储到同一个分片，这种方式极大地提升了查询效率。</p>
+<blockquote>
+<p>创建图空间时需指定分片数量，分片数量设置后无法修改，设置时提前满足业务将来的扩容需求。</p>
+<p>多机集群部署时，分片分布在集群内的不同机器上。分片数量在 CREATE SPACE 语句中指定，此后不可更改。</p>
+</blockquote>
+<hr>
+<h1 id="二、安装部署"><a href="#二、安装部署" class="headerlink" title="二、安装部署"></a>二、安装部署</h1><h2 id="2-1-本地部署"><a href="#2-1-本地部署" class="headerlink" title="2.1 本地部署"></a>2.1 本地部署</h2><p><strong>基本流程</strong></p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20221229220054976.png" srcset="/img/loading.gif" class="" title="image-20221229220054976">
+
+<h3 id="2-2-1-安装-NebulaGraph"><a href="#2-2-1-安装-NebulaGraph" class="headerlink" title="2.2.1 安装 NebulaGraph"></a>2.2.1 安装 NebulaGraph</h3><ul>
+<li>当前仅支持在 Linux 系统下安装 NebulaGraph，且仅支持 CentOS 7.x、CentOS 8.x、Ubuntu 16.04、Ubuntu 18.04、Ubuntu 20.04 操作系统。</li>
+</ul>
+<p>以CentOS7为例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir /software<br>cd /software<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">下载</span><br>wget https://oss-cdn.nebula-graph.com.cn/package/3.3.0/nebula-graph-3.3.0.el7.x86_64.rpm<br><span class="hljs-meta prompt_"># </span><span class="language-bash">安装 RPM 包</span><br>sudo rpm -ivh nebula-graph-3.3.0.el7.x86_64.rpm<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20221229220448267.png" srcset="/img/loading.gif" class="" title="image-20221229220448267">
+
+
+
+<h3 id="2-2-2-启动-NebulaGraph-服务"><a href="#2-2-2-启动-NebulaGraph-服务" class="headerlink" title="2.2.2 启动 NebulaGraph 服务"></a>2.2.2 启动 NebulaGraph 服务</h3><ul>
+<li>NebulaGraph 支持通过脚本管理服务。</li>
+</ul>
+<p>使用脚本<code>nebula.service</code>管理服务，包括启动、停止、重启、中止和查看。（<code>nebula.service</code>的默认路径是<code>/usr/local/nebula/scripts</code>，如果修改过安装路径，请使用实际路径。）</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">sudo /usr/local/nebula/scripts/nebula.service</span><br>[-v] [-c &lt;config_file_path&gt;]<br>&lt;start | stop | restart | kill | status&gt;<br>&lt;metad | graphd | storaged | all&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>参数</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-v</code></td>
+<td>显示详细调试信息。</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>指定配置文件路径，默认路径为<code>/usr/local/nebula/etc/</code>。</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td>启动服务。</td>
+</tr>
+<tr>
+<td><code>stop</code></td>
+<td>停止服务。</td>
+</tr>
+<tr>
+<td><code>restart</code></td>
+<td>重启服务。</td>
+</tr>
+<tr>
+<td><code>kill</code></td>
+<td>中止服务。</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>查看服务状态。</td>
+</tr>
+<tr>
+<td><code>metad</code></td>
+<td>管理 Meta 服务。</td>
+</tr>
+<tr>
+<td><code>graphd</code></td>
+<td>管理 Graph 服务。</td>
+</tr>
+<tr>
+<td><code>storaged</code></td>
+<td>管理 Storage 服务。</td>
+</tr>
+<tr>
+<td><code>all</code></td>
+<td>管理所有服务。</td>
+</tr>
+</tbody></table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">启动 NebulaGraph 服务</span><br>/usr/local/nebula/scripts/nebula.service start all<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">停止 NebulaGraph 服务</span><br>/usr/local/nebula/scripts/nebula.service stop all<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">查看 NebulaGraph 服务</span><br>/usr/local/nebula/scripts/nebula.service status all<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20221229220724975.png" srcset="/img/loading.gif" class="" title="image-20221229220724975">
+
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20221229220841715.png" srcset="/img/loading.gif" class="" title="image-20221229220841715">
+
+<blockquote>
+<p>正常启动 NebulaGraph 后，<code>nebula-storaged</code>进程的端口显示红色。这是因为<code>nebula-storaged</code>在启动流程中会等待<code>nebula-metad</code>添加当前 Storage 服务，当前 Storage 服务收到 Ready 信号后才会正式启动服务。从 3.0.0 版本开始，在配置文件中添加的 Storage 节点无法直接读写，配置文件的作用仅仅是将 Storage 节点注册至 Meta 服务中。必须使用<code>ADD HOSTS</code>命令后，才能正常读写 Storage 节点。</p>
+</blockquote>
+<h3 id="2-2-3-连接-NebulaGraph"><a href="#2-2-3-连接-NebulaGraph" class="headerlink" title="2.2.3 连接 NebulaGraph"></a>2.2.3 连接 NebulaGraph</h3><blockquote>
+<p>NebulaGraph 支持多种类型的客户端，包括命令行客户端、可视化界面客户端和流行编程语言客户端，此处使用原生命令行客户端 Nebula Console 连接。</p>
+<p>首次连接到 NebulaGraph 后，必须先[注册 Storage 服务，才能正常查询数据。</p>
+</blockquote>
+<ul>
+<li><p>建立连接的前提：</p>
+<ul>
+<li>NebulaGraph 服务已启动。</li>
+<li>运行 Nebula Console 的机器和运行 NebulaGraph 的服务器网络互通。</li>
+<li>Nebula Console 的版本兼容 NebulaGraph 的版本。</li>
+</ul>
+</li>
+<li><p>操作步骤</p>
+</li>
+</ul>
+<ol>
+<li><p>在 Nebula Console <a target="_blank" rel="noopener" href="https://github.com/vesoft-inc/nebula-console/releases">下载页面</a>，确认需要的版本，单击 <strong>Assets</strong>。</p>
+</li>
+<li><p>在 <strong>Assets</strong> 区域找到机器运行所需的二进制文件，下载文件到机器上。</p>
+</li>
+<li><p>（可选）为方便使用，重命名文件为<code>nebula-console</code>。（在 Windows 系统中，请重命名为<code>nebula-console.exe</code>。）</p>
+</li>
+<li><p>在运行 Nebula Console 的机器上执行如下命令，为用户授予 nebula-console 文件的执行权限。（Windows 系统请跳过此步骤。）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">chmod 111 nebula-console<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在命令行界面中，切换工作目录至 nebula-console 文件所在目录。</p>
+</li>
+<li><p>执行如下命令连接 NebulaGraph。</p>
+<ul>
+<li><p>Linux 或 macOS</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">./nebula-console -addr &lt;ip&gt; -port &lt;port&gt; -u &lt;username&gt; -p &lt;password&gt;<br>  [-t 120] [-e &quot;nGQL_statement&quot; | -f filename.nGQL]<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>Windows</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">nebula-console.exe -addr &lt;ip&gt; -port &lt;port&gt; -u &lt;username&gt; -p &lt;password&gt;<br>  [-t 120] [-e &quot;nGQL_statement&quot; | -f filename.nGQL]<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">nebula-console.exe -addr 192.168.48.128  -port 9669 -u root -p root<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>参数说明如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-h/-help</code></td>
+<td align="left">显示帮助菜单。</td>
+</tr>
+<tr>
+<td align="left"><code>-addr/-address</code></td>
+<td align="left">设置要连接的 Graph 服务的 IP 地址。默认地址为 127.0.0.1。</td>
+</tr>
+<tr>
+<td align="left"><code>-P/-port</code></td>
+<td align="left">设置要连接的 Graph 服务的端口。默认端口为 9669。</td>
+</tr>
+<tr>
+<td align="left"><code>-u/-user</code></td>
+<td align="left">设置 NebulaGraph 账号的用户名。未启用身份认证时，可以使用任意已存在的用户名（默认为<code>root</code>）。</td>
+</tr>
+<tr>
+<td align="left"><code>-p/-password</code></td>
+<td align="left">设置用户名对应的密码。未启用身份认证时，密码可以填写任意字符。</td>
+</tr>
+<tr>
+<td align="left"><code>-t/-timeout</code></td>
+<td align="left">设置整数类型的连接超时时间。单位为秒，默认值为 120。</td>
+</tr>
+<tr>
+<td align="left"><code>-e/-eval</code></td>
+<td align="left">设置字符串类型的 nGQL 语句。连接成功后会执行一次该语句并返回结果，然后自动断开连接。</td>
+</tr>
+<tr>
+<td align="left"><code>-f/-file</code></td>
+<td align="left">设置存储 nGQL 语句的文件的路径。连接成功后会执行该文件内的 nGQL 语句并返回结果，执行完毕后自动断开连接。</td>
+</tr>
+<tr>
+<td align="left"><code>-enable_ssl</code></td>
+<td align="left">连接 NebulaGraph 时使用 SSL 加密。</td>
+</tr>
+<tr>
+<td align="left"><code>-ssl_root_ca_path</code></td>
+<td align="left">指定 CA 证书的存储路径。</td>
+</tr>
+<tr>
+<td align="left"><code>-ssl_cert_path</code></td>
+<td align="left">指定 CRT 证书的存储路径。</td>
+</tr>
+<tr>
+<td align="left"><code>-ssl_private_key_path</code></td>
+<td align="left">指定私钥文件的存储路径。</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20221229222523195.png" srcset="/img/loading.gif" class="" title="image-20221229222523195">
+
+
+
+<h3 id="2-2-4-注册-Storage-服务"><a href="#2-2-4-注册-Storage-服务" class="headerlink" title="2.2.4 注册 Storage 服务"></a>2.2.4 注册 Storage 服务</h3><blockquote>
+<p>首次连接到 NebulaGraph 后，需要先添加 Storage 主机，并确认主机都处于在线状态。</p>
+</blockquote>
+<ul>
+<li><p>前提条件：</p>
+<ul>
+<li>已连接 NebulaGraph 服务。</li>
+</ul>
+</li>
+<li><p>操作步骤：</p>
+</li>
+</ul>
+<ol>
+<li><p>添加 Storage 主机。</p>
+<p>执行如下命令添加主机：</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-title class_">ADD</span> <span class="hljs-title class_">HOSTS</span> &lt;ip&gt;<span class="hljs-symbol">:&lt;port&gt;</span> [,&lt;ip&gt;<span class="hljs-symbol">:&lt;port&gt;</span> ...];<br></code></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">ADD</span> HOSTS <span class="hljs-number">192.168.48.128:9779</span><br></code></pre></td></tr></table></figure>
+
+<p>请确保添加的主机 IP 和配置文件<code>nebula-storaged.conf</code>中<code>local_ip</code>配置的 IP 一致，否则会导致添加 Storage 主机失败。</p>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103151931510.png" srcset="/img/loading.gif" class="" title="image-20230103151931510">
+</li>
+<li><p>检查主机状态，确认是否在线。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">show</span> hosts;<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103152014520.png" srcset="/img/loading.gif" class="" title="image-20230103152014520">
+
+<p>在返回结果的 <strong>Status</strong> 列，可以看到 Storage 主机离线。</p>
+</li>
+<li><p>重启nebulaGraph</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">/usr/local/nebula/scripts/nebula.service restart all<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103152438718.png" srcset="/img/loading.gif" class="" title="image-20230103152438718">
+</li>
+<li><p>检查主机状态，确认全部在线。</p>
+</li>
+</ol>
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103152725732.png" srcset="/img/loading.gif" class="" title="image-20230103152725732">
+
+
+
+
+
+
+
+<h1 id="三、nGQL"><a href="#三、nGQL" class="headerlink" title="三、nGQL"></a>三、nGQL</h1><h1 id="四、NebulaGraph-Dashboard集群监控"><a href="#四、NebulaGraph-Dashboard集群监控" class="headerlink" title="四、NebulaGraph Dashboard集群监控"></a>四、NebulaGraph Dashboard集群监控</h1><h2 id="4-1-概述"><a href="#4-1-概述" class="headerlink" title="4.1 概述"></a>4.1 概述</h2><ul>
+<li><p>本节以社区版为例</p>
+</li>
+<li><p>NebulaGraph Dashboard是一款用于监控 NebulaGraph 集群中机器和服务状态的可视化工具。</p>
+</li>
+<li><p>产品功能：</p>
+<ul>
+<li>监控集群中所有机器的状态，包括 CPU、内存、负载、磁盘和流量。</li>
+<li>监控集群中所有服务的信息，包括服务 IP 地址、版本和监控指标（例如查询数量、查询延迟、心跳延迟等）。</li>
+<li>监控集群本身的信息，包括集群的服务信息、分区信息、配置和长时任务。</li>
+<li>支持全局调整监控数据的页面更新频率。</li>
+</ul>
+</li>
+<li><p>适用场景：</p>
+<ul>
+<li>需要方便快捷地监测关键指标，集中呈现业务的多个重点信息，保证业务正常运行。</li>
+<li>需要多维度（例如时间段、聚合规则、指标）监控集群。</li>
+<li>故障发生后，需要复盘问题，确认故障发生时间、异常现象。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>监控数据默认保留 14 天，即只能查询最近 14 天内任意时间段的监控数据。可以手动修改。</p>
+</blockquote>
+<h2 id="4-2-下载"><a href="#4-2-下载" class="headerlink" title="4.2 下载"></a>4.2 下载</h2><h3 id="4-2-1-前提条件"><a href="#4-2-1-前提条件" class="headerlink" title="4.2.1 前提条件"></a>4.2.1 前提条件</h3><ul>
+<li><p>NebulaGraph 服务已经部署并启动。</p>
+</li>
+<li><p>以下端口未被使用：</p>
+<ul>
+<li><p>9200</p>
+</li>
+<li><p>9100</p>
+</li>
+<li><p>9090</p>
+</li>
+<li><p>8090</p>
+</li>
+<li><p>7003</p>
+</li>
+</ul>
+</li>
+<li><p>使用的 Linux 发行版为 CentOS ，安装有版本为 v10.12.0 以上的 Node.js，安装有版本为 1.13 及以上的 Go。</p>
+</li>
+</ul>
+<h3 id="4-2-2-下载"><a href="#4-2-2-下载" class="headerlink" title="4.2.2 下载"></a>4.2.2 下载</h3><p>在每台机器上下载 TAR 包 <a target="_blank" rel="noopener" href="https://oss-cdn.nebula-graph.com.cn/nebula-graph-dashboard/3.2.0/nebula-dashboard-3.2.0.x86_64.tar.gz">nebula-dashboard-3.2.0.x86_64.tar.gz</a>。</p>
+<ul>
+<li>目录结构说明</li>
+</ul>
+<p>执行命令<code>tar -xvf nebula-dashboard-3.2.0.x86_64.tar.gz</code>解压缩，目录<code>nebula-dashboard/vendors</code>内一共有 4 个子目录，功能如下：</p>
+<table>
+<thead>
+<tr>
+<th>目录名称</th>
+<th>说明</th>
+<th>端口号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>node-exporter</td>
+<td>收集集群中机器的资源信息，包括 CPU、内存、负载、磁盘和流量。</td>
+<td>9100</td>
+</tr>
+<tr>
+<td>nebula-stats-exporter</td>
+<td>收集集群的性能指标，包括服务 IP 地址、版本和监控指标（例如查询数量、查询延迟、心跳延迟等）。</td>
+<td>9200</td>
+</tr>
+<tr>
+<td>prometheus</td>
+<td>存储监控数据的时间序列数据库。</td>
+<td>9090</td>
+</tr>
+<tr>
+<td>nebula-http-gateway</td>
+<td>为集群服务提供 HTTP 接口，执行 nGQL 语句与 NebulaGraph 数据库进行交互。</td>
+<td>8090</td>
+</tr>
+</tbody></table>
+<h2 id="4-3-逐一部署Dashboard依赖服务"><a href="#4-3-逐一部署Dashboard依赖服务" class="headerlink" title="4.3 逐一部署Dashboard依赖服务"></a>4.3 逐一部署Dashboard依赖服务</h2><h3 id="4-3-1-部署node-exporter服务"><a href="#4-3-1-部署node-exporter服务" class="headerlink" title="4.3.1 部署node-exporter服务"></a>4.3.1 部署node-exporter服务</h3><p>集群中的每个机器都需要部署<code>node-exporter</code>服务。</p>
+<p>在目录<code>node-exporter</code>内执行如下命令启动服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">nohup ./node-exporter --web.listen-address=&quot;:9100&quot; &amp;<br></code></pre></td></tr></table></figure>
+
+<p>服务启动后，可以在浏览器中输入<code>&lt;IP&gt;:9100</code>检查服务是否正常启动。</p>
+<h3 id="4-3-2-部署nebula-stats-exporter服务"><a href="#4-3-2-部署nebula-stats-exporter服务" class="headerlink" title="4.3.2 部署nebula-stats-exporter服务"></a>4.3.2 部署nebula-stats-exporter服务</h3><p>需要在<code>nebula-dashboard</code>服务所在机器部署<code>nebula-stats-exporter</code>服务。</p>
+<ol>
+<li><p>在目录<code>nebula-stats-exporter</code>内修改文件<code>config.yaml</code>，配置所有服务的 HTTP 端口，示例如下：</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">clusters</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">name: nebula</span><br>    <span class="hljs-attribute">instances</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: metad0</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.157</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19559</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">metad</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: metad1</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.155</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19559</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">metad</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: metad2</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.154</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19559</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">metad</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: graphd0</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.157</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19669</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">graphd</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: graphd1</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.155</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19669</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">graphd</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: graphd2</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.154</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19669</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">graphd</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: storaged0</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.157</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19779</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">storaged</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: storaged1</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.155</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19779</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">storaged</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">name: storaged2</span><br>        <span class="hljs-attribute">endpointIP</span><span class="hljs-punctuation">:</span> <span class="hljs-string">192.168.8.154</span><br>        <span class="hljs-attribute">endpointPort</span><span class="hljs-punctuation">:</span> <span class="hljs-string">19779</span><br>        <span class="hljs-attribute">componentType</span><span class="hljs-punctuation">:</span> <span class="hljs-string">storaged</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>执行如下命令启动服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">nohup  ./nebula-stats-exporter --listen-address=&quot;:9200&quot; --bare-metal --bare-metal-config=./config.yaml &amp;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>服务启动后，可以在浏览器中输入<code>&lt;IP&gt;:9200</code>检查服务是否正常启动。</p>
+<h3 id="4-3-3-部署prometheus服务"><a href="#4-3-3-部署prometheus服务" class="headerlink" title="4.3.3 部署prometheus服务"></a>4.3.3 部署prometheus服务</h3><p>需要在<code>nebula-dashboard</code>服务所在机器部署<code>prometheus</code>服务。</p>
+<ol>
+<li><p>在目录<code>prometheus</code>内修改文件<code>prometheus.yaml</code>，配置<code>node-exporter</code>服务和<code>nebula-stats-exporter</code>服务的 IP 地址和端口，示例如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">global:</span><br>  <span class="hljs-attr">scrape_interval:</span>     <span class="hljs-string">5s</span><br>  <span class="hljs-attr">evaluation_interval:</span> <span class="hljs-string">5s</span><br><span class="hljs-attr">scrape_configs:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">job_name:</span> <span class="hljs-string">&#x27;nebula-stats-exporter&#x27;</span><br>    <span class="hljs-attr">static_configs:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">targets:</span> [<br>          <span class="hljs-string">&#x27;192.168.xx.100:9200&#x27;</span>  <span class="hljs-comment">#  nebula-stats-exporter 服务的 IP 地址和端口。</span><br>        ]<br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">job_name:</span> <span class="hljs-string">&#x27;node-exporter&#x27;</span><br>    <span class="hljs-attr">static_configs:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">targets:</span> [<br>          <span class="hljs-string">&#x27;192.168.xx.100:9100&#x27;</span>,  <span class="hljs-comment">#  node-exporter 服务的 IP 地址和端口。</span><br>          <span class="hljs-string">&#x27;192.168.xx.101:9100&#x27;</span><br>        ]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>scrape_interval：收集监控数据的间隔时间。默认为 1 分钟。</p>
+</li>
+<li><p>evaluation_interval：告警规则扫描时间间隔。默认为 1 分钟。</p>
+</li>
+</ul>
+</li>
+<li><p>执行如下命令启动服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">nohup ./prometheus --config.file=./prometheus.yaml &amp;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>服务启动后，可以在浏览器中输入<code>&lt;IP&gt;:9090</code>检查服务是否正常启动。</p>
+<h3 id="4-3-4-部署nebula-http-gateway服务"><a href="#4-3-4-部署nebula-http-gateway服务" class="headerlink" title="4.3.4 部署nebula-http-gateway服务"></a>4.3.4 部署nebula-http-gateway服务</h3><p>需要在<code>nebula-dashboard</code>服务所在机器部署<code>nebula-http-gateway</code>服务。</p>
+<p>在目录<code>nebula-http-gateway</code>内执行如下命令启动服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">nohup ./nebula-httpd &amp;<br></code></pre></td></tr></table></figure>
+
+<p>服务启动后，可以在浏览器中输入<code>&lt;IP&gt;:8090</code>检查服务是否正常启动。</p>
+<h3 id="4-3-5-部署dashboard服务"><a href="#4-3-5-部署dashboard服务" class="headerlink" title="4.3.5 部署dashboard服务"></a>4.3.5 部署dashboard服务</h3><ol>
+<li><p>在目录<code>nebula-dashboard</code>内修改文件<code>config.json</code>，配置代理信息，示例如下：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">port:</span> <span class="hljs-number">7003</span><br><span class="hljs-symbol">proxy:</span><br><span class="hljs-symbol">  gateway:</span><br><span class="hljs-symbol">    target:</span> <span class="hljs-string">&quot;127.0.0.1:8090&quot;</span>  <span class="hljs-comment">//  nebula-http-gateway 服务的 IP 和端口号。</span><br><span class="hljs-symbol">  prometheus:</span><br><span class="hljs-symbol">    target:</span> <span class="hljs-string">&quot;127.0.0.1:9090&quot;</span>  <span class="hljs-comment">// Prometheus 服务的 IP 和端口号。</span><br><span class="hljs-symbol">  graph:</span><br><span class="hljs-symbol">    target:</span> <span class="hljs-string">&quot;127.0.0.1:19669&quot;</span>    <span class="hljs-comment">// 用于获取 Graph 服务的运行配置。</span><br><span class="hljs-symbol">  storage:</span><br><span class="hljs-symbol">    target:</span> <span class="hljs-string">&quot;127.0.0.1:19779&quot;</span>   <span class="hljs-comment">// 用于获取 Storage 服务的运行配置。      </span><br><span class="hljs-symbol">  nebulaServer:</span><br><span class="hljs-symbol">    ip:</span> <span class="hljs-string">&quot;192.168.8.143&quot;</span>  <span class="hljs-comment">// 任一 Graph 服务的机器 IP。</span><br><span class="hljs-symbol">    port:</span> <span class="hljs-number">9669</span> <span class="hljs-comment">// Graph 服务的端口号。</span><br>...<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在目录<code>nebula-dashboard</code>内执行如下命令启动服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">nohup ./dashboard &amp;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>服务启动后，可以在浏览器中输入<code>&lt;IP&gt;:7003</code>检查服务是否正常启动。</p>
+<img src="NebulaGraph入门/image-20230103203227551.png" srcset="/img/loading.gif" alt="image-20230103203227551" style="zoom:50%;" />
+
+<ul>
+<li><p>如果 NebulaGraph 已经启用身份验证，用户可以使用已创建的账号连接 Dashboard。</p>
+</li>
+<li><p>如果 NebulaGraph 未启用身份验证，用户只能使用默认用户<code>root</code>和任意密码连接 Dashboard。</p>
+</li>
+</ul>
+<h1 id="五、NebulaGraph-Studio可视化工具"><a href="#五、NebulaGraph-Studio可视化工具" class="headerlink" title="五、NebulaGraph Studio可视化工具"></a>五、NebulaGraph Studio可视化工具</h1><h2 id="5-1-概述"><a href="#5-1-概述" class="headerlink" title="5.1 概述"></a>5.1 概述</h2><ul>
+<li><p>NebulaGraph Studio（简称 Studio）是一款可以通过 Web 访问的开源图数据库可视化工具，搭配NebulaGraph内核使用，提供构图、数据导入、编写 nGQL 查询等一站式服务。</p>
+</li>
+<li><p>产品功能：</p>
+<ul>
+<li>使用 <strong>Schema</strong> 管理功能，用户可以使用图形界面完成图空间、Tag（标签）、Edge Type（边类型）、索引的创建，查看图空间的统计数据，快速上手 NebulaGraph。</li>
+<li>使用<strong>导入</strong>功能，通过简单的配置，用户即能批量导入点和边数据，并能实时查看数据导入日志。</li>
+<li>使用<strong>控制台</strong>功能，用户可以使用 nGQL 语句创建 Schema，并对数据执行增删改查操作</li>
+</ul>
+</li>
+<li><p>适用场景：</p>
+<ul>
+<li>已经安装部署了 NebulaGraph 数据库，想使用 GUI 工具创建 Schema、导入数据、执行 nGQL 语句查询。</li>
+<li>不习惯用命令行工具，更希望使用 GUI 工具查看语句输出的结果。</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-2-Docker部署"><a href="#5-2-Docker部署" class="headerlink" title="5.2 Docker部署"></a>5.2 Docker部署</h2><h3 id="5-2-1-前提条件"><a href="#5-2-1-前提条件" class="headerlink" title="5.2.1 前提条件"></a>5.2.1 前提条件</h3><p>在部署 Docker 版 Studio 之前，需要确认：</p>
+<ul>
+<li><p>NebulaGraph 服务已经部署并启动。</p>
+</li>
+<li><p>在即将运行 Docker 版 Studio 的机器上安装并启动 Docker Compose。</p>
+</li>
+<li><p>确保以下端口未被占用。</p>
+<table>
+<thead>
+<tr>
+<th align="left">端口号</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">7001</td>
+<td align="left">Studio 提供的 web 服务</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="5-2-2-部署"><a href="#5-2-2-部署" class="headerlink" title="5.2.2 部署"></a>5.2.2 部署</h3><p>在命令行工具中按以下步骤依次运行命令，部署并启动 Docker 版 Studio，以NebulaGraph版本为 3.3.0为例：</p>
+<ol>
+<li><p>下载 Studio 的部署配置文件。</p>
+<table>
+<thead>
+<tr>
+<th align="left">安装包</th>
+<th align="left">适用 NebulaGraph 版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://oss-cdn.nebula-graph.com.cn/nebula-graph-studio/3.5.0/nebula-graph-studio-3.5.0.tar.gz">nebula-graph-studio-3.5.0.tar.gz</a></td>
+<td align="left">3.3.0</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>创建<code>nebula-graph-studio-3.5.0</code>目录，并将安装包解压至目录中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir nebula-graph-studio-3.5.0 &amp;&amp; tar -zxvf nebula-graph-studio-3.5.0.tar.gz -C nebula-graph-studio-3.5.0<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>解压后进入 <code>nebula-graph-studio-3.5.0</code> 目录。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd nebula-graph-studio-3.5.0<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>拉取 Studio 的 Docker 镜像。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker-compose pull<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>构建并启动 Studio 服务。其中，<code>-d</code> 表示在后台运行服务容器。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker-compose up -d<br></code></pre></td></tr></table></figure>
+
+<p>当屏幕返回以下信息时，表示 Docker 版 Studio 已经成功启动。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">Creating docker_web_1      ... done<br></code></pre></td></tr></table></figure>
+
+<img src="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/image-20230103205610713.png" srcset="/img/loading.gif" class="" title="image-20230103205610713">
+</li>
+<li><p>启动成功后，在浏览器地址栏输入 <code>http://&lt;ip address&gt;:7001</code>。</p>
+</li>
+</ol>
+<img src="NebulaGraph入门/image-20230103205637793.png" srcset="/img/loading.gif" alt="image-20230103205637793" style="zoom:50%;" />
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/">NebulaGraph</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/NebulaGraph/">NebulaGraph</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/20/Python/Python%E8%AF%AD%E6%B3%95/Python%E5%9F%BA%E7%A1%80/">
+                        <span class="hidden-mobile">Python基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      var inputArea = document.querySelector("#local-search-input");
+      inputArea.onclick = function () {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        this.onclick = null
+      }
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?cd190160b5401a029cee361d013e32a1";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+
+</body>
+</html>
