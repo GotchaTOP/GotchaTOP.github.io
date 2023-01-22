@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      7.5k 字
+      16.2k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      236
+      496
        分钟
     </span>
   
@@ -536,6 +536,25 @@
 <li><p>移除容器</p>
 </li>
 </ul>
+<p>**docker容器内apt更换国内阿里源 **</p>
+<ol>
+<li><p>备份/etc/apt/sources.list</p>
+<p><code>mv  /etc/apt/sources.list /etc/apt/sources.list.bak</code></p>
+</li>
+<li><p>写入阿里源内容</p>
+<p><code>echo &quot;deb http://mirrors.aliyun.com/debian jessie main&quot;&gt;&gt;/etc/apt/sources.list</code></p>
+<p><code>echo &quot;deb http://mirrors.aliyun.com/debian jessie-updates main&quot;&gt;&gt;/etc/apt/sources.list</code></p>
+<p><code>cat /etc/apt/sources.list</code></p>
+</li>
+<li><p>清空apt缓存，执行更新</p>
+<p><code>apt-get clean</code></p>
+<p><code>apt-get update</code></p>
+</li>
+<li><p>安装软件</p>
+<p><code>apt-get install iputils-ping</code></p>
+<p><code>ping host.docker.internal</code></p>
+</li>
+</ol>
 <h2 id="5-2-MySQL部署"><a href="#5-2-MySQL部署" class="headerlink" title="5.2 MySQL部署"></a>5.2 MySQL部署</h2><ol>
 <li>搜索mysql镜像</li>
 </ol>
@@ -771,7 +790,582 @@
 </li>
 </ol>
 <hr>
-<h2 id="6-2"><a href="#6-2" class="headerlink" title="6.2"></a>6.2</h2>
+<h2 id="6-2-Redis集群部署"><a href="#6-2-Redis集群部署" class="headerlink" title="6.2 Redis集群部署"></a>6.2 Redis集群部署</h2><h3 id="6-2-1-分区设计"><a href="#6-2-1-分区设计" class="headerlink" title="6.2.1 分区设计"></a>6.2.1 分区设计</h3><h4 id="6-2-1-1-哈希取余"><a href="#6-2-1-1-哈希取余" class="headerlink" title="6.2.1.1 哈希取余"></a>6.2.1.1 哈希取余</h4><p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116155008132.png" srcset="/img/loading.gif" lazyload alt="image-20230116155008132"></p>
+<p>假设有3台机器构成一个集群，用户每次读写操作都是根据公式：<strong>hash(key) % N个机器台数</strong>，计算出哈希值，用来决定数据映射到哪一个节点上。</p>
+<h5 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h5><p>  简单粗暴，直接有效，只需要预估好数据规划好节点，例如3台、8台、10台，就能保证一段时间的数据支撑。使用Hash算法让固定的一部分请求落到同一台服务器上，这样每台服务器固定处理一部分请求（并维护这些请求的信息），起到负载均衡+分而治之的作用。</p>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><p>进行扩容或者缩容就比较麻烦，不管扩缩，每次数据变动导致节点有变动，映射关系需要重新进行计算，在服务器个数固定不变时没有问题，如果需要弹性扩容或故障停机的情况下，原来的取模公式就会发生变化。此时地址经过取余运算的结果将发生很大变化，根据公式获取的服务器也会变得不可靠。某个redis机器宕机了，由于台数数量变化，会导致hash取余全部数据重新洗牌。</p>
+<h4 id="6-2-1-2-一致性哈希"><a href="#6-2-1-2-一致性哈希" class="headerlink" title="6.2.1.2 一致性哈希"></a>6.2.1.2 一致性哈希</h4><p>一致性哈希算法在1997年由麻省理工学院中提出的，设计目标是为了解决分布式缓存数据变动和映射问题，当服务器个数发生变动时，尽量减少影响客户端到服务器的映射关系。</p>
+<h5 id="算法构建步骤"><a href="#算法构建步骤" class="headerlink" title="算法构建步骤"></a>算法构建步骤</h5><h6 id="1-一致性哈希环"><a href="#1-一致性哈希环" class="headerlink" title="1.一致性哈希环"></a>1.一致性哈希环</h6><p>一致性哈希算法必然有个hash函数并按照算法产生hash值，这个算法的所有可能哈希值会构成一个全量集，这个集合可以成为一个hash空间[0,2^32-1]，这个是一个线性空间，但是在算法中，通过适当的逻辑控制将它首尾相连(0 = 2^32)，这样让它逻辑上形成了一个环形空间。</p>
+<p>一致性哈希算法也是按照使用取模的方法，普通取模法是对节点（服务器）的数量进行取模。而一致性Hash算法是对2^32取模，简单来说，一致性Hash算法将整个哈希值空间组织成一个虚拟的圆环，如假设某哈希函数H的值空间为0-2^32-1（即哈希值是一个32位无符号整形），整个哈希环如下图：整个空间按顺时针方向组织，圆环的正上方的点代表0，0点右侧的第一个点代表1，以此类推，2、3、4、……直到2^32-1，也就是说0点左侧的第一个点代表2^32-1， 0和2^32-1在零点中方向重合，这个由2^32个点组成的圆环被称为Hash环。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116155942754.png" srcset="/img/loading.gif" lazyload alt="image-20230116155942754" style="zoom:50%;">
+
+<h6 id="2-节点映射"><a href="#2-节点映射" class="headerlink" title="2.节点映射"></a>2.节点映射</h6><p>将集群中各个IP节点映射到环上的某一个位置。</p>
+<p>对各个服务器使用Hash进行哈希计算，具体可以选择服务器的IP或主机名作为关键字进行哈希，这样每台机器就能确定其在哈希环上的位置。假如4个节点NodeA、B、C、D，经过IP地址的哈希函数计算(hash(ip))，使用IP地址哈希后在环空间的位置如下： </p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116160309100.png" srcset="/img/loading.gif" lazyload alt="image-20230116160309100" style="zoom:50%;">
+
+<h6 id="3-key落到服务器的落键规则"><a href="#3-key落到服务器的落键规则" class="headerlink" title="3.key落到服务器的落键规则"></a>3.key落到服务器的落键规则</h6><p>当需要存储一个kv键值对时，首先计算key的hash值，hash(key)，将这个key使用相同的函数Hash计算出哈希值并确定此数据在环上的位置，从此位置沿环顺时针“行走”，第一台遇到的服务器就是其应该定位到的服务器，并将该键值对存储在该节点上。</p>
+<p>如有Object A、Object B、Object C、Object D四个数据对象，经过哈希计算后，在环空间上的位置如下：根据一致性Hash算法，数据A会被定为到Node A上，B被定为到Node B上，C被定为到Node C上，D被定为到Node D上。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116160843822.png" srcset="/img/loading.gif" lazyload alt="image-20230116160843822" style="zoom:50%;">
+
+<h5 id="优点-2"><a href="#优点-2" class="headerlink" title="优点"></a>优点</h5><ul>
+<li>容错性</li>
+</ul>
+<p>假设Node C宕机，可以看到此时对象A、B、D不会受到影响，只有C对象被重定位到Node D。</p>
+<p>一般的，在一致性Hash算法中，如果一台服务器不可用，则受影响的数据仅仅是此服务器到其环空间中前一台服务器（即沿着逆时针方向行走遇到的第一台服务器）之间数据，其它不会受到影响。简单说，就是C挂了，受到影响的只是B、C之间的数据，并且这些数据会转移到D进行存储。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116160950985.png" srcset="/img/loading.gif" lazyload alt="image-20230116160950985" style="zoom:50%;">
+
+<ul>
+<li>扩展性</li>
+</ul>
+<p>当数据量增加，需要增加一台节点NodeX时，X的位置在A和B之间，那受到影响的只是A到X之间的数据，重新把A到X的数据录入到X上即可，不会导致全部数据重新洗牌。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116161123154.png" srcset="/img/loading.gif" lazyload alt="image-20230116161123154" style="zoom:50%;">
+
+<h5 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h5><ul>
+<li>数据倾斜问题</li>
+</ul>
+<p>一致性Hash算法在服务节点太少时，容易因为节点分布不均匀而造成数据倾斜（被缓存的对象大部分集中缓存在某一台服务器上）问题，例如系统中只有两台服务器：</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116161219167.png" srcset="/img/loading.gif" lazyload alt="image-20230116161219167" style="zoom:50%;">
+
+
+
+<h4 id="6-2-1-3-哈希槽"><a href="#6-2-1-3-哈希槽" class="headerlink" title="6.2.1.3 哈希槽"></a>6.2.1.3 哈希槽</h4><p>这种分区方法就是在数据和节点之间又加入了一层，并把这层称为哈希槽（slot），哈希槽实质就是一个<strong>数组</strong>，数组[0,2^14 -1]形成hash slot空间，用于管理数据和节点之间的关系，解决均匀分配的问题。</p>
+<p>现在就相当于节点上放的是槽，槽里放的是数据。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116161454029.png" srcset="/img/loading.gif" lazyload alt="image-20230116161454029" style="zoom:67%;">
+
+
+
+<ul>
+<li>哈希解决的是映射问题，使用key的哈希值来计算所在的槽，便于数据分配。</li>
+<li>槽解决的是粒度问题，相当于把粒度变大了，这样便于数据移动。</li>
+</ul>
+<p><strong>哈希槽数量</strong></p>
+<p>一个集群只能有16384个槽，编号0-16383（0-2^14-1）。这些槽会分配给集群中的所有主节点，分配策略没有要求。可以指定哪些编号的槽分配给哪个主节点。集群会记录节点和槽的对应关系。解决了节点和槽的关系后，接下来就需要对key求哈希值，然后对16384取余，余数是几key就落入对应的槽里。slot = CRC16(key) % 16384。以槽为单位移动数据，因为槽的数目是固定的，处理起来比较容易，这样数据移动问题就解决了。</p>
+<p>CRC16算法产生的hash值有16bit，即该算法可以产生2^16=65536个值，什么Redis计算时候不mod65536，而选择mod16384？</p>
+<ul>
+<li>为了在满足业务需求的情况下，尽可能传输较少的数据</li>
+</ul>
+<p>正常的心跳数据包带有节点的完整配置，可以用幂等方式更新旧节点信息，这意味着心跳包内，包含原始节点的哈希槽配置。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116163219465.png" srcset="/img/loading.gif" lazyload alt="image-20230116163219465" style="zoom:80%;">
+
+<ul>
+<li><p>如果槽位为65536，发送心跳信息的消息头达到8K，心跳包过于庞大。</p>
+<p>在消息头中最占空间的是myslots[CLUSTER_SLOTS/8]，当槽位为65536时，这块的大小时：65536/8/1024=8kb，每秒钟redis节点会发送一定数量的ping消息作为心跳包，如果槽位为65536这个ping消息头太大，浪费带宽。</p>
+</li>
+<li><p>redis的集群主节点数量基本不可能超过1000个。</p>
+<p>集群节点越多，心跳包的消息体内携带的数据越多。如果节点过1000个，可能导致网络阻塞。因此Redis作者不建议redis cluster节点数量超过1000个，因此16384个槽位足够了，没有必要扩展到65536个。</p>
+</li>
+<li><p>槽位越少，节点少的情况下，消息压缩比高，容易传输。</p>
+<p>Redis主节点的配置信息中心中，它所负责的哈希槽是通过一张bitmap的形式来保存的，在传输过程会对bitmap进行压缩，但是如果bitmap的填充率slots/N很高的话（N表示节点数），bitmap的压缩率会很低。如果节点数很少，而哈希槽数据很多的话，bitmap的压缩率就会很低。</p>
+</li>
+</ul>
+<p>Redis 集群中内置了 16384 个哈希槽，redis 会根据节点数量大致均等的将哈希槽映射到不同的节点。当需要在 Redis 集群中放置一个 key-value时，redis 先对 key 使用 crc16 算法算出一个结果，然后把结果对 16384 求余数，这样每个 key 都会对应一个编号在 0-16383 之间的哈希槽，也就是映射到某个节点上。如下代码，key之A 、B在Node2， key之C落在Node3上</p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116172603016.png" srcset="/img/loading.gif" lazyload alt="image-20230116172603016"></p>
+<h2 id="6-3-部署"><a href="#6-3-部署" class="headerlink" title="6.3 部署"></a>6.3 部署</h2><p>Redis的集群方案大致有三种：</p>
+<ol>
+<li>redis cluster集群方案</li>
+<li>master/slave主从方案</li>
+<li>使用哨兵模式来进行主从替换以及故障恢复，Sentinel系统可以监视一个或者多个redis master服务，以及master服务的所有从服务；当某个master服务下线时，自动将该master下的某个从服务升级为master服务替代已下线的master服务继续处理请求。</li>
+</ol>
+<p>以下配置哨兵模式：</p>
+<ul>
+<li>新建redis-sentinel主目录，进入目录内部，在新建一个sentinel目录用来存放哨兵脚本。在sentinel目录中新建 <strong>sentinel.conf</strong> 配置文件、<strong>Dockerfile</strong>、<strong>sentinel-entrypoint.sh</strong>脚本文件。</li>
+</ul>
+<ul>
+<li>配置文件架构<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">redis-sentinel                        # 项目根路径<br>    ├── docker-compose.yml            # docker-compose文件<br>    └── sentinel                      # 存放初始化sentinel容器的相关文件<br>        ├── Dockerfile                # sentinel构建镜像文件<br>        ├── sentinel.conf             # sentinel配置文件<br>        └── sentinel-entrypoint.sh    # sentinel.sh启动脚本<br></code></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><h4 id="sentinel-conf-文件配置"><a href="#sentinel-conf-文件配置" class="headerlink" title="sentinel.conf 文件配置"></a>sentinel.conf 文件配置</h4></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 哨兵sentinel实例运行的端口 默认26379</span>  <br>port 26379  <br><br>sentinel monitor mymaster redis-master 6379 3<br><span class="hljs-meta">#</span><span class="bash"> 指定多少毫秒之后 主节点没有应答哨兵sentinel 此时 哨兵主观上认为主节点下线 默认30秒</span><br>sentinel down-after-milliseconds mymaster 5000<br><span class="hljs-meta">#</span><span class="bash"> 指定了在发生failover主备切换时最多可以有多少个slave同时对新的master进行同步,这个数字越小，完成failover所需的时间就越长</span><br>sentinel parallel-syncs mymaster 1<br><span class="hljs-meta">#</span><span class="bash"> 故障转移的超时时间</span><br>sentinel failover-timeout mymaster 5000<br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><h4 id="sentinel-entrypoint-sh脚本文件配置"><a href="#sentinel-entrypoint-sh脚本文件配置" class="headerlink" title="sentinel-entrypoint.sh脚本文件配置"></a>sentinel-entrypoint.sh脚本文件配置</h4></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 同步配置文件,启动哨兵</span><br><br>sed -i &quot;s/$SENTINEL_QUORUM/$SENTINEL_QUORUM/g&quot; /etc/redis/sentinel.conf<br>sed -i &quot;s/$SENTINEL_DOWN_AFTER/$SENTINEL_DOWN_AFTER/g&quot; /etc/redis/sentinel.conf<br>sed -i &quot;s/$SENTINEL_FAILOVER/$SENTINEL_FAILOVER/g&quot; /etc/redis/sentinel.conf<br><br>exec docker-entrypoint.sh redis-server /etc/redis/sentinel.conf --sentinel<br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><h4 id="Dockerfile文件配置"><a href="#Dockerfile文件配置" class="headerlink" title="Dockerfile文件配置"></a>Dockerfile文件配置</h4></li>
+</ul>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-comment"># 建立Dockerfile指定基础镜像，同时拷贝配置文件到镜像内部</span><br><br><span class="hljs-keyword">FROM</span> redis<br><br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">26379</span><br><span class="hljs-keyword">ADD</span><span class="bash"> sentinel.conf /etc/redis/sentinel.conf</span><br><span class="hljs-keyword">RUN</span><span class="bash"> chown redis:redis /etc/redis/sentinel.conf</span><br><span class="hljs-keyword">COPY</span><span class="bash"> sentinel-entrypoint.sh /usr/<span class="hljs-built_in">local</span>/bin/</span><br><span class="hljs-keyword">RUN</span><span class="bash"> chmod +x /usr/<span class="hljs-built_in">local</span>/bin/sentinel-entrypoint.sh</span><br><span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;sentinel-entrypoint.sh&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><h4 id="docker-compose-yml文件配置"><a href="#docker-compose-yml文件配置" class="headerlink" title="docker-compose.yml文件配置"></a>docker-compose.yml文件配置</h4></li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 搭建几个从库,就需要在services中配置几个信息，开放相应端口</span><br><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><br><span class="hljs-attr">networks:</span><br>  <span class="hljs-attr">app-tier:</span><br>    <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span><br><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&#x27;redis:6.0.7&#x27;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_REPLICATION_MODE=master</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_PASSWORD=&quot;&quot;</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">app-tier</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;6380:6379&#x27;</span><br>  <span class="hljs-attr">redis-slave:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&#x27;redis:6.0.7&#x27;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_REPLICATION_MODE=slave</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_MASTER_HOST=redis</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_MASTER_PASSWORD=&quot;&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_PASSWORD=&quot;&quot;</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;6381:6379&#x27;</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">app-tier</span><br>  <span class="hljs-attr">redis-slave2:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&#x27;redis:6.0.7&#x27;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_REPLICATION_MODE=slave</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_MASTER_HOST=redis</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_MASTER_PASSWORD=&quot;&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_PASSWORD=&quot;&quot;</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;6382:6379&#x27;</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">app-tier</span><br>  <span class="hljs-attr">redis-slave3:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&#x27;redis:6.0.7&#x27;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_REPLICATION_MODE=slave</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_MASTER_HOST=redis</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_MASTER_PASSWORD=&quot;&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_PASSWORD=&quot;&quot;</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;6383:6379&#x27;</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">app-tier</span>  <br>  <span class="hljs-attr">redis-sentinel:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&#x27;redis:6.0.7&#x27;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_MASTER_PASSWORD=&quot;&quot;</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis-slave</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis-slave2</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis-slave3</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;26379-26382:26379&#x27;</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">app-tier</span><br><br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>启动服务</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在后面加 -d 为在后台启动</span> <br><span class="hljs-meta">#</span><span class="bash"> compose启动失败可以尝试手动启动Containers</span><br><br>docker-compose up --scale redis-sentinel=4<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h1 id="七、DockerFile"><a href="#七、DockerFile" class="headerlink" title="七、DockerFile"></a>七、DockerFile</h1><h2 id="7-1-概述"><a href="#7-1-概述" class="headerlink" title="7.1 概述"></a>7.1 概述</h2><p>Dockerfile是用来构建Docker镜像的文本文件，是由一条条构建镜像所需的指令和参数构成的脚本。</p>
+<p>使用步骤：</p>
+<ul>
+<li>编写Dockerfile文件</li>
+<li>docker build命令构造镜像</li>
+<li>docker run使用镜像运行容器实例</li>
+</ul>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116173815899.png" srcset="/img/loading.gif" lazyload alt="image-20230116173815899" style="zoom:80%;">
+
+<h2 id="7-2-编写"><a href="#7-2-编写" class="headerlink" title="7.2 编写"></a>7.2 编写</h2><h3 id="7-2-1-基础规则"><a href="#7-2-1-基础规则" class="headerlink" title="7.2.1 基础规则"></a>7.2.1 基础规则</h3><ul>
+<li>每条保留字指令都必须为大写字母且后面要跟随至少一个参数</li>
+<li>指令按照从上到下，顺序执行</li>
+<li>#表示注释</li>
+<li>每条指令都会创建一个新的镜像层并对镜像进行提交</li>
+</ul>
+<h3 id="7-2-2-DockerFile构建过程"><a href="#7-2-2-DockerFile构建过程" class="headerlink" title="7.2.2 DockerFile构建过程"></a>7.2.2 DockerFile构建过程</h3><p>（1）docker从基础镜像运行一个容器</p>
+<p>（2）执行一条指令并对容器作出修改</p>
+<p>（3）执行类似docker commit的操作提交一个新的镜像层</p>
+<p>（4）docker再基于刚提交的镜像运行一个新容器</p>
+<p>（5）执行dockerfile中的下一条指令直到所有指令都执行完成</p>
+<p>从应用软件的角度来看，Dockerfile、Docker镜像与Docker容器分别代表软件的三个不同阶段，</p>
+<ul>
+<li><p>Dockerfile是软件的原材料：Dockerfile定义了进程需要的一切东西。Dockerfile涉及的内容包括执行代码或者是文件、环境变量、依赖包、运行时环境、动态链接库、操作系统的发行版、服务进程和内核进程（当应用进程需要和系统服务和内核进程打交道，这时需要考虑如何设计namespace的权限控制）等等；</p>
+</li>
+<li><p>Docker镜像是软件的交付品：在用Dockerfile定义一个文件之后，docker build时会产生一个Docker镜像，当运行 Docker镜像时会真正开始提供服务；</p>
+</li>
+<li><p>Docker容器则可以认为是软件镜像的运行态，是依照镜像运行的容器实例，用于直接提供服务的。</p>
+</li>
+</ul>
+<p>Dockerfile面向开发，Docker镜像成为交付标准，Docker容器则涉及部署与运维，三者缺一不可，合力充当Docker体系的基石。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230116175744055.png" srcset="/img/loading.gif" lazyload alt="image-20230116175744055" style="zoom:67%;">
+
+
+
+<h3 id="7-2-3-常用保留字指令"><a href="#7-2-3-常用保留字指令" class="headerlink" title="7.2.3 常用保留字指令"></a>7.2.3 常用保留字指令</h3><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117095902868.png" srcset="/img/loading.gif" lazyload alt="image-20230117095902868" style="zoom:50%;">
+
+<ul>
+<li><p>FROM</p>
+<ul>
+<li>基础镜像，当前新镜像是基于哪个镜像的，指定一个已经存在的镜像作为模板，第一条必须是from</li>
+</ul>
+</li>
+<li><p>MAINTAINER</p>
+<ul>
+<li>镜像维护者的姓名和邮箱地址</li>
+</ul>
+</li>
+<li><p>RUN</p>
+<ul>
+<li>容器构建时需要运行的命令，两种格式<ul>
+<li>shell格式：<code>RUN yum -y install vim</code></li>
+<li>exec格式：<code>RUN [&quot;可执行文件&quot;,&quot;参数1&quot;,&quot;参数2&quot;]</code></li>
+</ul>
+</li>
+<li>RUN是在 docker build时运行</li>
+</ul>
+</li>
+<li><p>EXPOSE</p>
+<ul>
+<li>当前容器对外暴露出的端口</li>
+</ul>
+</li>
+<li><p>WORKDIR</p>
+<ul>
+<li>指定在创建容器后，终端默认登陆的进来工作目录，一个落脚点</li>
+</ul>
+</li>
+<li><p>USER</p>
+<ul>
+<li>指定该镜像以什么样的用户去执行，如果都不指定，默认是root</li>
+</ul>
+</li>
+<li><p>ENV</p>
+<ul>
+<li><p>用来在构建镜像过程中设置环境变量</p>
+<p><code>ENV MY_PATH /usr/mytest</code></p>
+<p>这个环境变量可以在后续的任何RUN指令中使用，这就如同在命令前面指定了环境变量前缀一样，也可以在其它指令中直接使用这些环境变量，比如：<code>WORKDIR $MY_PATH</code></p>
+</li>
+</ul>
+</li>
+<li><p>ADD</p>
+<ul>
+<li>将宿主机目录下的文件拷贝进镜像且会自动处理URL和解压tar压缩包</li>
+</ul>
+</li>
+<li><p>COPY</p>
+<ul>
+<li><p>类似ADD，拷贝文件和目录到镜像中。</p>
+<p>将从构建上下文目录中 &lt;源路径&gt; 的文件/目录复制到新的一层的镜像内的 &lt;目标路径&gt; 位置</p>
+<ul>
+<li><code>COPY src dest</code></li>
+<li><code>COPY [&quot;src&quot;, &quot;dest&quot;]</code></li>
+<li><code>&lt;src源路径&gt;：源文件或者源目录</code></li>
+<li><code>&lt;dest目标路径&gt;：容器内的指定路径，该路径不用事先建好，路径不存在的话，会自动创建。</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>VOLUME</p>
+<ul>
+<li>容器数据卷，用于数据保存和持久化工作</li>
+</ul>
+</li>
+<li><p>CMD</p>
+<ul>
+<li>指定容器启动后的要干的事情，<strong>Dockerfile 中可以有多个 CMD 指令，但只有最后一个生效，CMD 会被 docker run 之后的参数替换</strong>，三种格式<ul>
+<li>shell格式：<code>CMD &lt;命令&gt;</code></li>
+<li>exec格式：<code>CMD [&quot;可执行文件&quot;,&quot;参数1&quot;,&quot;参数2&quot;]</code></li>
+<li>参数列表格式：<code>CMD [&quot;参数1&quot;,&quot;参数2&quot;]</code>，在指定了<code>ENTRYPOINT</code>指令后，用<code>CMD</code>指定具体的参数</li>
+</ul>
+</li>
+<li>与RUN命令的区别在于：<ul>
+<li>CMD是在docker run 时运行</li>
+<li>RUN是在 docker build时运行</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>ENTRYPOINT</p>
+<ul>
+<li><p>用来指定容器启动时要运行的命令，类似于 CMD 指令，<strong>但是ENTRYPOINT不会被docker run后面的命令覆盖，而且这些命令行参数会被当作参数送给 ENTRYPOINT 指令指定的程序</strong>，命令格式如下：</p>
+<ul>
+<li><code>ENTRYPOINT [&quot;&lt;executeable&gt;&quot;,&quot;&lt;param1&gt;&quot;,&quot;&lt;param2&gt;&quot;,...]</code></li>
+</ul>
+</li>
+<li><p>如果 Dockerfile 中如果存在多个 ENTRYPOINT 指令，<strong>仅最后一个生效</strong></p>
+</li>
+<li><p>在执行docker run的时候可以指定 ENTRYPOINT 运行所需的参数</p>
+</li>
+<li><p>ENTRYPOINT可以和CMD一起使用，一般变参才使用CMD，CMD用于给ENTRYPOINT传参</p>
+</li>
+<li><p>当指定了ENTRYPOINT后，CMD的含义就发生了变化。他们组合变为<code>&lt;ENTRYPOINT&gt;&lt;CMD&gt;</code></p>
+<ul>
+<li><p>假设通过Dockerfile构建了nginx:test镜像：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> nginx<br><br><span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> [<span class="hljs-string">&quot;nginx&quot;</span>,<span class="hljs-string">&quot;-c&quot;</span>] <span class="hljs-comment">#定参</span></span><br><span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;/etc/nginx/nginx.conf&quot;</span>] <span class="hljs-comment">#变参</span></span><br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>按照dockerfile直接执行</th>
+<th>按照dockerfile传参后执行</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输入的命令</td>
+<td>docker run nginx:test</td>
+<td>docker run nginx:test -c /etc/nginx/new.conf</td>
+</tr>
+<tr>
+<td>衍生的实际命令</td>
+<td>nginx -c /etc/nginx/nginx.conf</td>
+<td>nginx -c /etc/nginx/new.conf</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-2-4-案例"><a href="#7-2-4-案例" class="headerlink" title="7.2.4 案例"></a>7.2.4 案例</h3><ul>
+<li><p>目标：自定义镜像 centos+vim+ifconfig+jdk8</p>
+</li>
+<li><p>编写Dockerfile文件</p>
+<p><code>vim Dockerfile</code></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> centos:<span class="hljs-number">7.9</span>.<span class="hljs-number">2009</span><br><span class="hljs-keyword">MAINTAINER</span> gotcha<br><span class="hljs-keyword">ENV</span> MYPATH /usr/local<br><span class="hljs-keyword">WORKDIR</span><span class="bash"> <span class="hljs-variable">$MYPATH</span></span><br><span class="hljs-comment">#安装vim编辑器</span><br><span class="hljs-keyword">RUN</span><span class="bash"> yum -y install vim</span><br><span class="hljs-comment">#安装ifconfig命令查看网络IP</span><br><span class="hljs-keyword">RUN</span><span class="bash"> yum -y install net-tools</span><br><span class="hljs-comment">#安装java8及lib库</span><br><span class="hljs-keyword">RUN</span><span class="bash"> yum -y install glibc.i686</span><br><span class="hljs-keyword">RUN</span><span class="bash"> mkdir /usr/<span class="hljs-built_in">local</span>/java</span><br><span class="hljs-comment">#ADD 是相对路径jar,把jdk-8u171-linux-x64.tar.gz添加到容器中,安装包必须要和Dockerfile文件在同一位置</span><br><span class="hljs-keyword">ADD</span><span class="bash"> jdk-8u171-linux-x64.tar.gz /usr/<span class="hljs-built_in">local</span>/java/</span><br><span class="hljs-comment">#配置java环境变量</span><br><span class="hljs-keyword">ENV</span> JAVA_HOME /usr/local/java/jdk1.<span class="hljs-number">8.0</span>_171<br><span class="hljs-keyword">ENV</span> JRE_HOME $JAVA_HOME/jre<br><span class="hljs-keyword">ENV</span> CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH<br><span class="hljs-keyword">ENV</span> PATH $JAVA_HOME/bin:$PATH<br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">80</span><br><span class="hljs-keyword">CMD</span><span class="bash"> <span class="hljs-built_in">echo</span> <span class="hljs-variable">$MYPATH</span></span><br><span class="hljs-keyword">CMD</span><span class="bash"> <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;success--------------ok&quot;</span></span><br><span class="hljs-keyword">CMD</span><span class="bash"> /bin/bash</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117103702686.png" srcset="/img/loading.gif" lazyload alt="image-20230117103702686"></p>
+</li>
+<li><p>构建</p>
+<ul>
+<li><p><code>docker build -t 新镜像名字:TAG .</code></p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117104824107.png" srcset="/img/loading.gif" lazyload alt="image-20230117104824107"></p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117105447476.png" srcset="/img/loading.gif" lazyload alt="image-20230117105447476"></p>
+</li>
+</ul>
+</li>
+<li><p>运行</p>
+<ul>
+<li><p><code>docker run -it 新镜像名字:TAG </code></p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117105902564.png" srcset="/img/loading.gif" lazyload alt="image-20230117105902564"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="八、Docker网络"><a href="#八、Docker网络" class="headerlink" title="八、Docker网络"></a>八、Docker网络</h1><h2 id="8-1-网络情况"><a href="#8-1-网络情况" class="headerlink" title="8.1 网络情况"></a>8.1 网络情况</h2><h3 id="8-1-1-docker不启动"><a href="#8-1-1-docker不启动" class="headerlink" title="8.1.1 docker不启动"></a>8.1.1 docker不启动</h3><ul>
+<li>ens33<ul>
+<li>en标识ethernet，s：热插拔网卡，USB之类的扩展槽索引号</li>
+</ul>
+</li>
+<li>eth0<ul>
+<li>eth0是内核的命名风格</li>
+</ul>
+</li>
+<li>lo<ul>
+<li>lo是local的缩写，表示本地回环地址</li>
+</ul>
+</li>
+<li>virbr0<ul>
+<li>在CentOS7的安装过程中如果选择虚拟化相关的服务后，安装完成，启动网卡时会发现有一个以网桥连接的私网地址的virbr0网卡(virbr0网卡：它还有一个固定的默认IP地址192.168.122.1)，是做虚拟机网桥的使用的，其作用是为连接其上的虚机网卡提供 NAT访问外网的功能。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117135608715.png" srcset="/img/loading.gif" lazyload alt="image-20230117135608715"></p>
+<h3 id="8-1-2-docker启动"><a href="#8-1-2-docker启动" class="headerlink" title="8.1.2 docker启动"></a>8.1.2 docker启动</h3><ul>
+<li>新增了docker0网桥</li>
+</ul>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117142559268.png" srcset="/img/loading.gif" lazyload alt="image-20230117142559268"></p>
+<h3 id="8-1-3-网络架构"><a href="#8-1-3-网络架构" class="headerlink" title="8.1.3 网络架构"></a>8.1.3 网络架构</h3><p>从其架构和运行流程来看，Docker 是一个 C/S 模式的架构，后端是一个松耦合架构，众多模块各司其职。 </p>
+<p>Docker 运行的基本流程为：</p>
+<ol>
+<li><p>用户是使用 Docker Client 与 Docker Daemon 建立通信，并发送请求给后者。</p>
+</li>
+<li><p>Docker Daemon 作为 Docker 架构中的主体部分，首先提供 Docker Server 的功能使其可以接受 Docker Client 的请求。</p>
+</li>
+<li><p>Docker Engine 执行 Docker 内部的一系列工作，每一项工作都是以一个 Job 的形式的存在。</p>
+</li>
+<li><p>Job 的运行过程中，当需要容器镜像时，则从 Docker Registry 中下载镜像，并通过镜像管理驱动 Graph driver将下载镜像以Graph的形式存储。</p>
+</li>
+<li><p>当需要为 Docker 创建网络环境时，通过网络管理驱动 Network driver 创建并配置 Docker 容器网络环境。</p>
+</li>
+<li><p>当需要限制 Docker 容器运行资源或执行用户指令等操作时，则通过 Execdriver 来完成。</p>
+</li>
+<li><p>Libcontainer是一项独立的容器管理包，Network driver以及Exec driver都是通过Libcontainer来实现具体对容器进行的操作。</p>
+</li>
+</ol>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/Users/郭彬/AppData/Local/Temp/mindmaster/ba2d3195/bin/4C6BA163-ACC9-43C0-B173-2859C58E79F4.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="8-2-常用命令"><a href="#8-2-常用命令" class="headerlink" title="8.2 常用命令"></a>8.2 常用命令</h2><ul>
+<li>查看网络<ul>
+<li><code>docker network ls</code></li>
+</ul>
+</li>
+<li>查看网络源数据<ul>
+<li><code>docker network inspect  XXX网络名字</code></li>
+</ul>
+</li>
+<li>删除网络<ul>
+<li><code>docker network rm XXX网络名字</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="8-3-网络模式"><a href="#8-3-网络模式" class="headerlink" title="8.3 网络模式"></a>8.3 网络模式</h2><h3 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h3><p>docker network用于实现容器间的互联和通信以及端口映射，使得容器IP变动时候可以通过服务名直接网络通信而不受到IP变动影响。共包5种网络模式。</p>
+<table>
+<thead>
+<tr>
+<th>网络模式</th>
+<th>简介</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bridge：虚拟网桥</td>
+<td>为每一个容器分配、设置IP等信息，并将容器连接到docker0，该模式为默认模式</td>
+</tr>
+<tr>
+<td>host：主机模式</td>
+<td>容器将不会虚拟出自己的网卡，配置自己的IP等信息，而是使用宿主机的IP和端口</td>
+</tr>
+<tr>
+<td>none：无网络模式</td>
+<td>容器有独立的Network namespace，但并没有对其进行任何网络设置，如分配veth pair和网桥连接、IP等信息</td>
+</tr>
+<tr>
+<td>container：容器模式</td>
+<td>新创建的容器不会创建自己的网卡和配置自己的IP，而是和一个指定容器共享IP，端口范围等</td>
+</tr>
+<tr>
+<td>network-name：自定义网络</td>
+<td>开发者可以使用任何docker支持的第三方网络driver来定制容器的网络</td>
+</tr>
+</tbody></table>
+<h3 id="8-3-1-bridge"><a href="#8-3-1-bridge" class="headerlink" title="8.3.1 bridge"></a>8.3.1 bridge</h3><h4 id="概述-2"><a href="#概述-2" class="headerlink" title="概述"></a>概述</h4><p>brigde模式是docker的默认模式，即不指定任何模式就是bridge模式，也是使用比较多的模式，此模式创建的容器会为每一个容器分配自己的网络 IP 等信息，并将容器连接到一个虚拟网桥与外界通信，桥接网络的名称为docker0，它在内核层连通了其他的物理或虚拟网卡，这就将所有容器和本地主机都放到同一个物理网络，让主机和容器之间可以通过网桥相互通信。并从docker子网中分配一个ip给容器使用，并设置docker0的IP地址为容器的默认网关。再在主机上创建一对虚拟网卡veth pair设备，docker将veth pair设备的一段放在新创建的容器中，并命名为eth0（容器的网卡），另一端放在主机中，以vethxxx这样类似的名字命名，并将这个网络设备加入到docker网桥中，可以通过brctl show命令查看。</p>
+<p>使用docker run -p时，docker实际上是在iptables做了DNAT规则，实现端口转发功能。</p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117161005251.png" srcset="/img/loading.gif" lazyload alt="image-20230117161005251"></p>
+<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><p>bridge网络模式特点</p>
+<ul>
+<li>宿主机的需要启动ip_forward功能</li>
+<li>网络资源隔离：不同宿主机的容器无法直接通信，各自使用独立风络</li>
+<li>无需手动配置：容器默认自动获取172.17.0.0/16的IP地址，此地址可以修改</li>
+<li>可访问外网：利用宿主机的物理网卡，SNAT连接外网</li>
+<li>外部主机无法直接访问容器：可以通过配置DNAT接受外网的访问</li>
+<li>端口管理繁琐：每个容器必须手动指定唯一的端口，容器产生端口冲容    </li>
+<li>bridge模式的容器与外界通信时，必定会占用宿主机上的端口，从而与宿主机竞争端口资源，对宿主机端口的管理会是一个比较大的问题。</li>
+<li>由于容器与外界通信是基于三层上iptables NAT，性能和效率上的损耗是可以预见的。</li>
+</ul>
+<ul>
+<li>Docker使用Linux桥接，在宿主机虚拟一个Docker容器网桥(docker0)，Docker启动一个容器时会根据Docker网桥的网段分配给容器一个IP地址，称为Container-IP，同时Docker网桥是每个容器的默认网关。因为在同一宿主机内的容器都接入同一个网桥，这样容器之间就能够通过容器的Container-IP直接通信。</li>
+<li>docker run 的时候，没有指定network的话默认使用的网桥模式就是bridge，使用的就是docker0。</li>
+<li>网桥docker0创建一对对等虚拟设备接口一个叫veth，另一个叫eth0，成对匹配。<ul>
+<li>整个宿主机的网桥模式都是docker0，类似一个交换机有一堆接口，每个接口叫veth，在本地主机和容器内分别创建一个虚拟接口，并让他们彼此联通（这样一对接口叫veth pair）。</li>
+<li>每个容器实例内部也有一块网卡，每个接口叫eth0。</li>
+<li>docker0上面的每个veth匹配某个容器实例内部的eth0，一一匹配。</li>
+</ul>
+</li>
+</ul>
+<p>通过上述，将宿主机上的所有容器都连接到这个内部网络上，两个容器在同一个网络下,会从这个网关下各自拿到分配的ip，此时两个容器的网络是互通的。</p>
+<blockquote>
+<p>从上面的网络模型可以看出，bridge模型中，同一宿主机上，容器之间都是连接到docker0这个网桥上的。<br>它可以作为虚拟交换机使容器可以相互通信。然而，由于宿主机的IP地址与容器veth pair的 IP地址均不在同一个网段，故仅仅依靠veth pair和namespace的技术，还不足以使宿主机以外的网络主动发现容器的存在。为了使外界可以定位容器中的进程，docker采用了端口绑定的方式，也就是通过iptables的NAT，将宿主机上的端口端口流量转发到容器内的端口上。</p>
+<p>举一个简单的例子，使用下面的命令创建容器，并将宿主机的3306端口绑定到容器的3306端口：<br><code>docker run -d -p 3306:3306  --name mysqlA  -e  MYSQL_ROOT_PASSWORD=123456  mysql:5.7.29</code><br>在宿主机上，可以通过iptables -t nat -L -n，查到一条DNAT规则：</p>
+<p><code>DNAT tcp -- 0.0.0.0/0 0.0.0.0/0 tcp dpt:3306 to:172.17.0.5:3306</code></p>
+</blockquote>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><ul>
+<li>案例一</li>
+</ul>
+<p>启动两个tomcat容器，端口分别映射在8081和8082</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -d -p 8081:8080   --name tomcat81 billygoo/tomcat8-jdk8<br>docker run -d -p 8082:8080   --name tomcat82 billygoo/tomcat8-jdk8<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117162746671.png" srcset="/img/loading.gif" lazyload alt="image-20230117162746671"></p>
+<h3 id="8-3-2-host"><a href="#8-3-2-host" class="headerlink" title="8.3.2 host"></a>8.3.2 host</h3><h4 id="概述-3"><a href="#概述-3" class="headerlink" title="概述"></a>概述</h4><p>host模式直接使用宿主机的 IP 地址与外界进行通信，不再需要额外进行NAT 转换。</p>
+<p>容器将不会获得一个独立的Network Namespace， 而是和宿主机共用一个Network Namespace。容器将不会虚拟出自己的网卡而是使用宿主机的IP和端口。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117171831098.png" srcset="/img/loading.gif" lazyload alt="image-20230117171831098" style="zoom:67%;">
+
+<h4 id="特点-2"><a href="#特点-2" class="headerlink" title="特点"></a>特点</h4><ul>
+<li><p>此模式由于直接使用宿主机的网络无需转换，网络性能最高，但是各容器之间端口不能相同，适用于运行容器端口比较固定的业务</p>
+</li>
+<li><p>容器内除网络以外的其它资源，如：文件系统、系统进程等仍然和宿主机保持隔离</p>
+</li>
+<li><p>在容器里面查看到的IP信息就是宿主机的信息，访问容器的时候直接使用宿主机IP+容器端口即可</p>
+</li>
+<li><p>不支持端口映射</p>
+</li>
+<li><p><strong>一个宿主机只能有一个host网络模式实例，不能创建多个</strong></p>
+</li>
+</ul>
+<h4 id="验证-1"><a href="#验证-1" class="headerlink" title="验证"></a>验证</h4><ul>
+<li>案例一</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 以下操作会产生警告（不是错误）</span><br>docker run -d -p 8083:8080 --network host --name tomcat83 billygoo/tomcat8-jdk8<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117172453468.png" srcset="/img/loading.gif" lazyload alt="image-20230117172453468"></p>
+<p>原因：</p>
+<p>docker启动时指定–network=host或-net=host，如果还指定了-p映射端口，那这个时候就会有此警告，并且通过-p设置的参数将不会起到任何作用，端口号会以主机端口号为主，重复时则递增。</p>
+<p>解决:</p>
+<p>解决的办法就是使用docker的其他网络模式，例如–network=bridge，这样就可以解决问题，或者直接无视。</p>
+<ul>
+<li>案例二</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 以下操作正确</span><br>docker run -d --network host --name tomcat83 billygoo/tomcat8-jdk8<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-3-3-none"><a href="#8-3-3-none" class="headerlink" title="8.3.3 none"></a>8.3.3 none</h3><h4 id="概述-4"><a href="#概述-4" class="headerlink" title="概述"></a>概述</h4><p>在none模式下，并不为Docker容器进行任何网络配置。 也就是说，这个Docker容器没有网卡、IP、路由等信息，只有一个lo回环地址。需要使用者为Docker容器添加网卡、配置IP等。</p>
+<h4 id="特点-3"><a href="#特点-3" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>禁用网络功能，只有lo标识(就是127.0.0.1表示本地回环)</li>
+</ul>
+<h4 id="验证-2"><a href="#验证-2" class="headerlink" title="验证"></a>验证</h4><ul>
+<li>案例一</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -d -p 8084:8080 --network none --name tomcat84 billygoo/tomcat8-jdk8<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117174028401.png" srcset="/img/loading.gif" lazyload alt="image-20230117174028401"></p>
+<h3 id="8-3-4-container"><a href="#8-3-4-container" class="headerlink" title="8.3.4 container"></a>8.3.4 container</h3><h4 id="概述-5"><a href="#概述-5" class="headerlink" title="概述"></a>概述</h4><p>使用此模式创建的容器需指定和一个已经存在的容器共享一个网络，而不是和宿主机共享网，新创建的容器不会创建自己的网卡也不会配置自己的IP，而是和一个已经存在的被指定的容器共享IP和端口范围，因此这个容器的端口不能和被指定的端口冲突，除了网络之外的文件系统、进程信息等仍然保持相互隔离，两个容器的进程可以通过lo网卡进行通信。</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117174154930.png" srcset="/img/loading.gif" lazyload alt="image-20230117174154930" style="zoom:50%;">
+
+<h4 id="特点-4"><a href="#特点-4" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>使用参数 –-network container:名称或ID 指定</li>
+<li>与宿主机网络空间隔离</li>
+<li>容器间共享网络空间</li>
+<li>适合频繁的容器间的网络通信</li>
+</ul>
+<h4 id="验证-3"><a href="#验证-3" class="headerlink" title="验证"></a>验证</h4><ul>
+<li>案例一</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 以下操作会产生错误</span><br>docker run -d -p 8085:8080 --name tomcat85 billygoo/tomcat8-jdk8<br>docker run -d -p 8086:8080 --network container:tomcat85 --name tomcat86 billygoo/tomcat8-jdk8<br><span class="hljs-meta">#</span><span class="bash"> 这是由于tomcat86和tomcat85公用同一个ip同一个端口，导致端口冲突</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117174941015.png" srcset="/img/loading.gif" lazyload alt="image-20230117174941015"></p>
+<ul>
+<li>案例二</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> Alpine Linux 是一款独立的、非商业的通用 Linux 发行版，专为追求安全性、简单性和资源效率的用户而设计。镜像非常小巧，不到 6M的大小，适合容器打包。</span><br>docker run -it --name alpine1  alpine /bin/sh<br>docker run -it --network container:alpine1 --name alpine2  alpine /bin/sh<br></code></pre></td></tr></table></figure>
+
+<p>通过下图可以看到，两者都使用的是eht0@if16网卡</p>
+<img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117175307757.png" srcset="/img/loading.gif" lazyload alt="image-20230117175307757" style="zoom:80%;">
+
+<p>此时关闭alpine1，alpine2也没有了网卡</p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230117175549714.png" srcset="/img/loading.gif" lazyload alt="image-20230117175549714"></p>
+<h3 id="8-3-5-自定义网络"><a href="#8-3-5-自定义网络" class="headerlink" title="8.3.5 自定义网络"></a>8.3.5 自定义网络</h3><h4 id="概述-6"><a href="#概述-6" class="headerlink" title="概述"></a>概述</h4><p>在用户定义网络模式下，开发者可以使用任何docker支持的第三方网络driver来定制容器的网络。并且，docker 1.9以上的版本默认自带了bridge和overlay两种类型的自定义网络driver。可以用于集成calico、weave、openvswitch等第三方厂商的网络实现。 除了docker自带的bridge driver，其他的几种driver都可以实现容器的跨主机通信。</p>
+<h4 id="特点-5"><a href="#特点-5" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>自定义网络本身就维护好了主机名和ip的对应关系，确保按照ip和容器名都能通</li>
+</ul>
+<h4 id="验证-4"><a href="#验证-4" class="headerlink" title="验证"></a>验证</h4><p>自定义桥接网络，自定义网络默认使用的是桥接网络bridge</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 1.新建自定义网络</span><br>docker network create zzyy_network<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 2.新建容器加入上一步新建的自定义网络</span><br>docker run -d -p 8081:8080 --network zzyy_network  --name tomcat81 billygoo/tomcat8-jdk8<br>docker run -d -p 8082:8080 --network zzyy_network  --name tomcat82 billygoo/tomcat8-jdk8<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 3.可以直接使用r名ping通</span><br>ping tomcat82<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<h1 id="九、DockerCompose"><a href="#九、DockerCompose" class="headerlink" title="九、DockerCompose"></a>九、DockerCompose</h1><h2 id="9-1-概述"><a href="#9-1-概述" class="headerlink" title="9.1 概述"></a>9.1 概述</h2><p>Docker-Compose是Docker官方的开源项目，是一款工具软件，可以管理多个 Docker 容器组成一个应用。通过定义 YAML 格式的配置文件docker-compose.yml，实现对Docker容器集群的快速编排。</p>
+<p>Docker官方建议每一个容器中只运行一个服务，因为docker容器本身占用资源极少，所以最好是将每个服务单独的分割开来但是这样如果需要同时部署多个服务,较为繁琐，所以docker官方提供了docker-compose多服务部署的工具。</p>
+<p>通过使用DockeCompose可以很容易地用一个配置文件定义一个多容器的应用，然后使用一条指令安装这个应用的所有依赖，完成构建。Docker-Compose 解决了容器与容器之间如何管理编排的问题。</p>
+<h2 id="9-2-核心概念"><a href="#9-2-核心概念" class="headerlink" title="9.2 核心概念"></a>9.2 核心概念</h2><ul>
+<li>docker-compose.yml文件</li>
+<li>服务（service）<ul>
+<li>对应一个应用容器实例，比如订单微服务、库存微服务、mysql容器、nginx容器或者redis容器。</li>
+</ul>
+</li>
+<li>工程（project）<ul>
+<li>由一组关联的应用容器组成的一个完整业务单元，在 docker-compose.yml 文件中定义。</li>
+</ul>
+</li>
+</ul>
+<h2 id="9-3-使用步骤"><a href="#9-3-使用步骤" class="headerlink" title="9.3 使用步骤"></a>9.3 使用步骤</h2><ol>
+<li>编写Dockerfile定义各个微服务应用并构建出对应的镜像文件。</li>
+<li>使用 docker-compose.yml 定义一个完整业务单元，安排好整体应用中的各个容器服务。</li>
+<li>最后，执行docker-compose up命令 来启动并运行整个应用程序，完成一键部署上线。</li>
+</ol>
+<h2 id="9-4-常用命令"><a href="#9-4-常用命令" class="headerlink" title="9.4 常用命令"></a>9.4 常用命令</h2><ul>
+<li>docker-compose -h               # 查看帮助</li>
+<li>docker-compose up              # 启动所有docker-compose服务</li>
+<li>docker-compose up -d             # 启动所有docker-compose服务并后台运行</li>
+<li>docker-compose down             # 停止并删除容器、网络、卷、镜像。</li>
+<li>docker-compose exec  yml里面的服务id         # 进入容器实例内部 docker-compose exec docker-compose.yml文件中写的服务id /bin/bash</li>
+<li>docker-compose ps            # 展示当前docker-compose编排过的运行的所有容器</li>
+<li>docker-compose top           # 展示当前docker-compose编排过的容器进程</li>
+<li>docker-compose logs  yml里面的服务id   # 查看容器输出日志</li>
+<li>docker-compose config   # 检查配置</li>
+<li>docker-compose config -q # 检查配置，有问题才有输出</li>
+<li>docker-compose restart  # 重启服务</li>
+<li>docker-compose start   # 启动服务</li>
+<li>docker-compose stop    # 停止服务</li>
+</ul>
+<h2 id="9-5-示例"><a href="#9-5-示例" class="headerlink" title="9.5 示例"></a>9.5 示例</h2><ol>
+<li>编写docker-compose.yml</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&quot;3&quot;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">microService:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">zzyy_docker:1.6</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">ms01</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;6001:6001&quot;</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">/app/microService:/data</span><br>    <span class="hljs-attr">networks:</span> <br>      <span class="hljs-bullet">-</span> <span class="hljs-string">atguigu_net</span> <br>    <span class="hljs-attr">depends_on:</span> <br>      <span class="hljs-bullet">-</span> <span class="hljs-string">redis</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">mysql</span><br>  <span class="hljs-attr">redis:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">redis:6.0.8</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;6379:6379&quot;</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">/app/redis/redis.conf:/etc/redis/redis.conf</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">/app/redis/data:/data</span><br>    <span class="hljs-attr">networks:</span> <br>      <span class="hljs-bullet">-</span> <span class="hljs-string">atguigu_net</span><br>    <span class="hljs-attr">command:</span> <span class="hljs-string">redis-server</span> <span class="hljs-string">/etc/redis/redis.conf</span><br>  <span class="hljs-attr">mysql:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">mysql:5.7</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">MYSQL_ROOT_PASSWORD:</span> <span class="hljs-string">&#x27;123456&#x27;</span><br>      <span class="hljs-attr">MYSQL_ALLOW_EMPTY_PASSWORD:</span> <span class="hljs-string">&#x27;no&#x27;</span><br>      <span class="hljs-attr">MYSQL_DATABASE:</span> <span class="hljs-string">&#x27;db2021&#x27;</span><br>      <span class="hljs-attr">MYSQL_USER:</span> <span class="hljs-string">&#x27;zzyy&#x27;</span><br>      <span class="hljs-attr">MYSQL_PASSWORD:</span> <span class="hljs-string">&#x27;zzyy123&#x27;</span><br>    <span class="hljs-attr">ports:</span><br>       <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;3306:3306&quot;</span><br>    <span class="hljs-attr">volumes:</span><br>       <span class="hljs-bullet">-</span> <span class="hljs-string">/app/mysql/db:/var/lib/mysql</span><br>       <span class="hljs-bullet">-</span> <span class="hljs-string">/app/mysql/conf/my.cnf:/etc/my.cnf</span><br>       <span class="hljs-bullet">-</span> <span class="hljs-string">/app/mysql/init:/docker-entrypoint-initdb.d</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">atguigu_net</span><br>    <span class="hljs-attr">command:</span> <span class="hljs-string">--default-authentication-plugin=mysql_native_password</span> <span class="hljs-comment">#解决外部无法访问</span><br><span class="hljs-attr">networks:</span> <br>   <span class="hljs-attr">atguigu_net:</span> <br><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>修改微服务工程</p>
+<ul>
+<li><p>修改yml配置，通过服务名访问，IP无关</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">server.port=6001</span><br><br><span class="hljs-comment"># ========================alibaba.druid相关配置=====================</span><br><span class="hljs-string">spring.datasource.type=com.alibaba.druid.pool.DruidDataSource</span><br><span class="hljs-string">spring.datasource.driver-class-name=com.mysql.jdbc.Driver</span><br><span class="hljs-comment">#spring.datasource.url=jdbc:mysql://192.168.111.169:3306/db2021?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span><br><span class="hljs-string">spring.datasource.url=jdbc:mysql://mysql:3306/db2021?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span><br><span class="hljs-string">spring.datasource.username=root</span><br><span class="hljs-string">spring.datasource.password=123456</span><br><span class="hljs-string">spring.datasource.druid.test-while-idle=false</span><br><br><span class="hljs-comment"># ========================redis相关配置=====================</span><br><span class="hljs-string">spring.redis.database=0</span><br><span class="hljs-comment">#spring.redis.host=192.168.111.169</span><br><span class="hljs-string">spring.redis.host=redis</span><br><span class="hljs-string">spring.redis.port=6379</span><br><span class="hljs-string">spring.redis.password=</span><br><span class="hljs-string">spring.redis.lettuce.pool.max-active=8</span><br><span class="hljs-string">spring.redis.lettuce.pool.max-wait=-1ms</span><br><span class="hljs-string">spring.redis.lettuce.pool.max-idle=8</span><br><span class="hljs-string">spring.redis.lettuce.pool.min-idle=0</span><br><br><span class="hljs-comment"># ========================mybatis相关配置===================</span><br><span class="hljs-string">mybatis.mapper-locations=classpath:mapper/*.xml</span><br><span class="hljs-string">mybatis.type-aliases-package=com.atguigu.docker.entities</span><br><br><span class="hljs-comment"># ========================swagger=====================</span><br><span class="hljs-string">spring.swagger2.enabled=true</span><br><br></code></pre></td></tr></table></figure></li>
+<li><p>mvn package命令将微服务形成新的jar包，并上传到Linux服务器/mydocker目录下。</p>
+</li>
+<li><p>编写Dockerfile</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 基础镜像使用java</span><br>FROM java:8<br><span class="hljs-meta">#</span><span class="bash"> 作者</span><br>MAINTAINER zzyy<br><span class="hljs-meta">#</span><span class="bash"> VOLUME 指定临时文件目录为/tmp，在主机/var/lib/docker目录下创建了一个临时文件并链接到容器的/tmp</span><br>VOLUME /tmp<br><span class="hljs-meta">#</span><span class="bash"> 将jar包添加到容器中并更名为zzyy_docker.jar</span><br>ADD docker_boot-0.0.1-SNAPSHOT.jar zzyy_docker.jar<br><span class="hljs-meta">#</span><span class="bash"> 运行jar包</span><br>RUN bash -c &#x27;touch /zzyy_docker.jar&#x27;<br>ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;/zzyy_docker.jar&quot;]<br><span class="hljs-meta">#</span><span class="bash">暴露6001端口作为微服务</span><br>EXPOSE 6001<br></code></pre></td></tr></table></figure></li>
+<li><p>构建镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker build -t zzyy_docker:1.6 .<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>执行 <code>docker-compose up</code>或者执行 <code>docker-compose up -d</code></p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230119113533011.png" srcset="/img/loading.gif" lazyload alt="image-20230119113533011"></p>
+</li>
+<li><p>进入mysql容器实例并新建和表</p>
+</li>
+<li><p>测试</p>
+</li>
+<li><p>关停</p>
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230119113220265.png" srcset="/img/loading.gif" lazyload alt="image-20230119113220265"></p>
+</li>
+</ol>
+
             </div>
             <hr>
             <div>
