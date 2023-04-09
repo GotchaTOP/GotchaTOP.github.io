@@ -1,0 +1,1566 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="懂一点点">
+  <meta name="author" content="Gotcha">
+  <meta name="keywords" content="">
+  
+  <title>Kubernetes入门 - Gotcha的笔记总结</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.11","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"cd190160b5401a029cee361d013e32a1","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"U8yaiFQ2fUef4ujWTig83mSL-gzGzoHsz","app_key":"akCMytdeJqrMuKP84F4oblqz","server_url":"https://u8yaifq2.lc-cn-n1-shared.com"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Gotcha的笔记总结</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/background/01.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Kubernetes入门">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-01-22 00:00" pubdate>
+        2022年1月22日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      13.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      453
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Kubernetes入门</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年1月22日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h1><h2 id="1-1-Kubernetes概念"><a href="#1-1-Kubernetes概念" class="headerlink" title="1.1 Kubernetes概念"></a>1.1 Kubernetes概念</h2><p>kubernetes，简称 K8s，是用 8 代替 8 个字符“ubernete”而成的缩写。是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes 的目标是让部署容器化的应用简单并且高效（powerful），Kubernetes 提供了应用部署，规划，更新，维护的一种机制。 传统的应用部署方式是通过插件或脚本来安装应用。这样做的缺点是应用的运行、配置、管理、所有生存周期将与当前操作系统绑定，这样做并不利于应用的升级更新/回滚等操作，当然也可以通过创建虚拟机的方式来实现某些功能，但是虚拟机非常重，并不利于可移植性。 新的方式是通过部署容器方式实现，每个容器之间互相隔离，每个容器有自己的文件系统 ，容器之间进程不会相互影响，能区分计算资源。相对于虚拟机，容器能快速部署，由于容器与底层设施、机器文件系统解耦，它能在不同云、不同版本操作系统间进行迁移。容器占用资源少、部署快，每个应用可以被打包成一个容器镜像，每个应用与容器间成一对一关系也使容器有更大优势，使用容器可以在 build 或 release 的阶段，为应用创建容器镜像，因为每个应用不需要与其余的应用堆栈组合，也不依赖于生产环境基础结构， 这使得从研发到测试、生产能提供一致环境。类似地，容器比虚拟机轻量、更“透明”，这更便于监控和管理。</p>
+<p>Kubernetes 是 Google 开源的一个容器编排引擎，它支持自动化部署、大规模可伸缩、 应用容器化管理。在生产环境中部署一个应用程序时，通常要部署该应用的多个实例以便对应用请求进行负载均衡。 在 Kubernetes 中，可以创建多个容器，每个容器里面运行一个应用实例，然后通过内置的负载均衡策略，实现对这一组应用实例的管理、发现、访问，这些细节都不需要运维人员去进行复杂的手工配置和处理。</p>
+<h2 id="1-2-特点"><a href="#1-2-特点" class="headerlink" title="1.2 特点"></a>1.2 特点</h2><ul>
+<li><p>自动装箱</p>
+<p>基于容器对应用运行环境的资源配置要求自动部署应用容器</p>
+</li>
+<li><p>自我修复(自愈能力)</p>
+<p>当容器失败时，会对容器进行重启。当所部署的 Node 节点有问题时，会对容器进行重新部署和重新调度，当容器未通过监控检查时，会关闭此容器直到容器正常运行时，才会对外提供服务</p>
+</li>
+<li><p>水平扩展</p>
+<p>通过简单的命令、用户 UI 界面或基于 CPU 等资源使用情况，对应用容器进行规模扩大或规模剪裁</p>
+</li>
+<li><p>服务发现</p>
+<p>用户不需使用额外的服务发现机制，就能够基于 Kubernetes 自身能力实现服务发现和负载均衡</p>
+</li>
+<li><p>滚动更新</p>
+<p>可以根据应用的变化，对应用容器运行的应用，进行一次性或批量式更新</p>
+</li>
+<li><p>版本回退</p>
+<p>可以根据应用部署情况，对应用容器运行的应用，进行历史版本即时回退</p>
+</li>
+<li><p>密钥和配置管理</p>
+<p>在不需要重新构建镜像的情况下，可以部署和更新密钥和应用配置，类似热部署</p>
+</li>
+<li><p>存储编排</p>
+<p>自动实现存储系统挂载及应用，特别对有状态应用实现数据持久化非常重要，存储系统可以来自于本地目录、网络存储(NFS、Gluster、Ceph 等)、公共云存储服务</p>
+</li>
+<li><p>批处理</p>
+<p>提供一次性任务，定时任务。满足批量数据处理和分析的场景</p>
+</li>
+</ul>
+<h2 id="1-3-集群架构"><a href="#1-3-集群架构" class="headerlink" title="1.3 集群架构"></a>1.3 集群架构</h2><ul>
+<li>无中心节点架构：GlusterFS</li>
+<li>有中心节点架构：HDFS</li>
+</ul>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230123112407656.png" srcset="/img/loading.gif" lazyload alt="image-20230123112407656"></p>
+<p><strong>Master Node</strong>：k8s集群控制节点，对集群进行调度管理，接受集群外用户去集群操作请求。Master Node 由 **API Server、Scheduler、ClusterState Store（ETCD 数据库）和 Controller MangerServer **所组成。其中API Server是集群统一入口，以restful方式，交给etcd存储。scheduler负责节点调度，选择node节点应用部署。controller-manager负责处理集群中常规后台任务，一个资源对应一个控制器。etcd是存储系统，用于保存集群相关的数据。</p>
+<p><strong>Worker Node</strong>：是集群工作节点，运行用户业务应用容器。Worker Node 包含<strong>kubelet、kube proxy 和 ContainerRuntime</strong>，其中kubelet是master派到node节点中的代表，用于管理本机容器，kebe-proxy负责提供网络代理，负载均衡等操作。</p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230123113510417.png" srcset="/img/loading.gif" lazyload alt="image-20230123113510417"></p>
+<h1 id="二、集群构建"><a href="#二、集群构建" class="headerlink" title="二、集群构建"></a>二、集群构建</h1><p>目前生产部署 Kubernetes 集群主要有两种方式：</p>
+<p>（1）kubeadm，Kubeadm 是一个 K8s 部署工具，提供 kubeadm init 和 kubeadm join，用于快速部 署 Kubernetes 集群。</p>
+<p>（2）二进制包 ，从 github 下载发行版的二进制包，手动部署每个组件，组成 Kubernetes 集群。</p>
+<p>Kubeadm 降低部署门槛，但屏蔽了很多细节，遇到问题很难排查。如果想更容易可控，推荐使用二进制包部署 Kubernetes 集群，虽然手动部署麻烦，期间可以学习工作原理，也利于后期维护。</p>
+<h2 id="2-1-kubeadm构建"><a href="#2-1-kubeadm构建" class="headerlink" title="2.1 kubeadm构建"></a>2.1 kubeadm构建</h2><p>kubeadm 是官方社区推出的一个用于快速部署 kubernetes 集群的工具，这个工具能通过两条指令完成一个 kubernetes 集群的部署。</p>
+<ol>
+<li><p>创建一个 Master 节点 <code>kubeadm init</code></p>
+</li>
+<li><p>将 Node 节点加入到当前集群中 <code>kubeadm join &lt;Master节点的IP和端口 &gt;</code> </p>
+</li>
+</ol>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130111729016.png" srcset="/img/loading.gif" lazyload alt="image-20230130111729016"></p>
+<h3 id="2-1-1-集群规划"><a href="#2-1-1-集群规划" class="headerlink" title="2.1.1 集群规划"></a>2.1.1 集群规划</h3><p>本地VMnet8设置：</p>
+<img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230129100329280.png" srcset="/img/loading.gif" lazyload alt="image-20230129100329280" style="zoom: 80%;">
+
+<p>网关IP：192.168.48.1</p>
+<p>集群设置：</p>
+<table>
+<thead>
+<tr>
+<th>IP</th>
+<th>主机名</th>
+<th>环境配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.48.2</td>
+<td>kubeadm-master</td>
+<td>关防火墙和selinux，禁止swap分区，时间同步，IP与域名映射</td>
+</tr>
+<tr>
+<td>192.168.48.3</td>
+<td>kubeadm-node01</td>
+<td>关防火墙和selinux，禁止swap分区，时间同步，IP与域名映射</td>
+</tr>
+<tr>
+<td>192.168.48.4</td>
+<td>kubeadm-node02</td>
+<td>关防火墙和selinux，禁止swap分区，时间同步，IP与域名映射</td>
+</tr>
+</tbody></table>
+<h3 id="2-1-2-环境搭建"><a href="#2-1-2-环境搭建" class="headerlink" title="2.1.2 环境搭建"></a>2.1.2 环境搭建</h3><h4 id="设置IP地址"><a href="#设置IP地址" class="headerlink" title="设置IP地址"></a>设置IP地址</h4><p>分别在每一台虚拟机的<code>/etc/sysconfig/network-scripts/ifcfg-ens33</code>文件中设置固定IP</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi /etc/sysconfig/network-scripts/ifcfg-ens33<br><br>TYPE=Ethernet<br>PROXY_METHOD=none<br>BROWSER_ONLY=no<br>BOOTPROTO=static	#静态IP<br>DEFROUTE=yes<br>IPV4_FAILURE_FATAL=no<br>IPV6INIT=yes<br>IPV6_AUTOCONF=yes<br>IPV6_DEFROUTE=yes<br>IPV6_FAILURE_FATAL=no<br>IPV6_ADDR_GEN_MODE=stable-privacy<br>NAME=ens33<br>UUID=dac435bd-cc0d-462e-bb66-75fb302272d5<br>DEVICE=ens33<br>ONBOOT=yes	#开机使用这个网卡<br><br>IPADDR=192.168.48.2  #按需配置<br>GATEWAY=192.168.48.1	#按需配置<br>NETMASK=255.255.255.0	#基本固定<br>DNS1=8.8.8.8	#基本固定<br></code></pre></td></tr></table></figure>
+
+
+
+<p>设置完成后重启网卡</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">service network restart<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="设置主机名"><a href="#设置主机名" class="headerlink" title="设置主机名"></a>设置主机名</h4><p>分别在每一台虚拟机的<code>/etc/sysconfig/network</code>文件下配置主机名</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /etc/sysconfig/network<br><br>NETWORKING=yes<br>HOSTNAME=kubeadm-master<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="设置IP与域名映射"><a href="#设置IP与域名映射" class="headerlink" title="设置IP与域名映射"></a>设置IP与域名映射</h4><p>分别在每一台虚拟机的<code>/etc/hosts</code>文件下配置IP与域名映射关系</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /etc/hosts<br><br>192.168.48.2 kubeadm-master<br>192.168.48.3 kubeadm-node01<br>192.168.48.4 kubeadm-node02<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230129110553725.png" srcset="/img/loading.gif" lazyload alt="image-20230129110553725"></p>
+<p>设置完成后重启机器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">reboot<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="yum源切换"><a href="#yum源切换" class="headerlink" title="yum源切换"></a>yum源切换</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /etc/yum.repos.d/<br><span class="hljs-meta"></span><br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">下载ailiyun的yum源配置文件到/etc/yum.repos.d/</span><br>wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo<br><span class="hljs-meta">#</span><span class="bash">或者</span><br>curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-7.repo<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">清除全部缓存</span><br>yum clean all <br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">把yum源缓存到本地，加快软件的搜索好安装速度</span><br>yum makecache <br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">更新yum库存</span><br>sudo yum -y update<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 关闭防火墙</span><br>systemctl stop firewalld<br>systemctl disable firewalld<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 关闭selinux</span><br>sed -i &#x27;s/enforcing/disabled/&#x27; /etc/selinux/config  # 永久<br>setenforce 0  # 临时<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 关闭swap</span><br>swapoff -a  # 临时<br>sed -ri &#x27;s/.*swap.*/#&amp;/&#x27; /etc/fstab    # 永久<br><span class="hljs-meta"></span><br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 将桥接的IPv4流量传递到iptables的链</span><br>cat &gt; /etc/sysctl.d/k8s.conf &lt;&lt; EOF<br>net.bridge.bridge-nf-call-ip6tables = 1<br>net.bridge.bridge-nf-call-iptables = 1<br>EOF<br>sysctl --system  # 生效<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 时间同步</span><br>yum install ntpdate -y<br>systemctl start ntpdate<br>ntpdate time.windows.com<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-1-3-所有节点软件安装"><a href="#2-1-3-所有节点软件安装" class="headerlink" title="2.1.3 所有节点软件安装"></a>2.1.3 所有节点软件安装</h3><h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo<br><br>yum -y install docker-ce-18.06.1.ce-3.el7<br><br>systemctl enable docker &amp;&amp; systemctl start docker<br><br>docker --version<br><span class="hljs-meta">#</span><span class="bash">Docker version 18.06.1-ce, build e68fc7a</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /etc/docker/daemon.json &lt;&lt; EOF<br>&#123;<br>  &quot;registry-mirrors&quot;: [&quot;https://b9pmyelo.mirror.aliyuncs.com&quot;]<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 配置完成后重启docker</span><br>systemctl restart docker<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 添加阿里云yun源</span><br>cat &gt; /etc/yum.repos.d/kubernetes.repo &lt;&lt; EOF<br>[kubernetes]<br>name=Kubernetes<br>baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64<br>enabled=1<br>gpgcheck=0<br>repo_gpgcheck=0<br>gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg<br>EOF<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="kubeadm、kubelet、kubectl"><a href="#kubeadm、kubelet、kubectl" class="headerlink" title="kubeadm、kubelet、kubectl"></a>kubeadm、kubelet、kubectl</h4><p>由于版本更新频繁，这里指定版本号部署：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum install -y kubelet-1.18.0 kubeadm-1.18.0 kubectl-1.18.0<br>systemctl enable kubelet<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-1-4-部署Kubernetes-Master"><a href="#2-1-4-部署Kubernetes-Master" class="headerlink" title="2.1.4 部署Kubernetes Master"></a>2.1.4 部署Kubernetes Master</h3><p>在192.168.48.2（Master）执行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubeadm init --apiserver-advertise-address=192.168.48.2 --image-repository registry.aliyuncs.com/google_containers --kubernetes-version v1.18.0 --service-cidr=10.96.0.0/12 --pod-network-cidr=10.244.0.0/16<br></code></pre></td></tr></table></figure>
+
+<p>拉取成功后可以查到容器镜像</p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130103023289.png" srcset="/img/loading.gif" lazyload alt="image-20230130103023289"></p>
+<p>使用kubectl工具查看节点：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir -p $HOME/.kube<br>sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config<br>sudo chown $(id -u):$(id -g) $HOME/.kube/config<br>kubectl get nodes<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130103334653.png" srcset="/img/loading.gif" lazyload alt="image-20230130103334653"></p>
+<h3 id="2-1-5-加入Kubernetes-Node"><a href="#2-1-5-加入Kubernetes-Node" class="headerlink" title="2.1.5 加入Kubernetes Node"></a>2.1.5 加入Kubernetes Node</h3><p>在192.168.48.3、192.168.48.4（Node）执行。</p>
+<p>向集群添加新节点，执行在kubeadm init输出的kubeadm join命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubeadm join 192.168.48.2:6443 --token v88l65.5npcmiovnlbys6cv \<br>    --discovery-token-ca-cert-hash sha256:00196a390708e238e65ca927586f1e903da6a44acd5d3eaed6de4a90c0a3e1a6<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130103833204.png" srcset="/img/loading.gif" lazyload alt="image-20230130103833204"></p>
+<blockquote>
+<p>默认token有效期为24小时，当过期之后，该token就不可用了。这时就需要重新创建token，操作如下：</p>
+<p><code>kubeadm token create --print-join-command</code></p>
+</blockquote>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130104426047.png" srcset="/img/loading.gif" lazyload alt="image-20230130104426047"></p>
+<h3 id="2-1-6-部署CNI网络插件"><a href="#2-1-6-部署CNI网络插件" class="headerlink" title="2.1.6 部署CNI网络插件"></a>2.1.6 部署CNI网络插件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml<br><span class="hljs-meta">#</span><span class="bash"> 下载过慢的话，可以下载后传进去</span><br><br>kubectl get pods -n kube-system<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130105413986.png" srcset="/img/loading.gif" lazyload alt="image-20230130105413986"></p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130113537873.png" srcset="/img/loading.gif" lazyload alt="image-20230130113537873"></p>
+<blockquote>
+<p>部署完成之后约二十分钟，可以看到节点状态由notReady转为Ready</p>
+</blockquote>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130113511525.png" srcset="/img/loading.gif" lazyload alt="image-20230130113511525"></p>
+<blockquote>
+<p>部署CNI网络插件后，节点可能一直处于NotReady状态；</p>
+<p>通过<code>journalctl -u kubelet -f</code>命令，在各节点查看相关kubectl日志提示如下错误：</p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130113723325.png" srcset="/img/loading.gif" lazyload alt="image-20230130113723325"></p>
+<p>解决办法<br>需要下载CNI插件：CNI plugins v0.8.6(在1.0.0版本后CNI Plugins中没有flannel)</p>
+<p>github下载地址：<a target="_blank" rel="noopener" href="https://github.com/containernetworking/plugins/releases/tag/v0.8.6">https://github.com/containernetworking/plugins/releases/tag/v0.8.6</a></p>
+<p>下载后通过xftp 上传到Linux /home目录解压<code>tar zxvf cni-plugins-linux-amd64-v0.8.6.tgz</code><br>然后复制 flannel 到 /opt/cni/bin/ <code>cp flannel /opt/cni/bin/</code><br>问题立刻解决</p>
+</blockquote>
+<h3 id="2-1-7-测试kubernetes集群"><a href="#2-1-7-测试kubernetes集群" class="headerlink" title="2.1.7 测试kubernetes集群"></a>2.1.7 测试kubernetes集群</h3><p>在Kubernetes集群中创建一个pod，验证是否正常运行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl create deployment nginx --image=nginx<br>kubectl expose deployment nginx --port=80 --type=NodePort<br>kubectl get pod,svc<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130113934389.png" srcset="/img/loading.gif" lazyload alt="image-20230130113934389"></p>
+<p>访问地址：<a href="http://NodeIP:Port">http://NodeIP:Port</a>  </p>
+<h2 id="2-2-二进制包构建"><a href="#2-2-二进制包构建" class="headerlink" title="2.2 二进制包构建"></a>2.2 二进制包构建</h2><p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130111836127.png" srcset="/img/loading.gif" lazyload alt="image-20230130111836127"></p>
+<h3 id="2-2-1-集群规划"><a href="#2-2-1-集群规划" class="headerlink" title="2.2.1 集群规划"></a>2.2.1 集群规划</h3><p>网关IP：192.168.48.1</p>
+<p>集群设置：</p>
+<table>
+<thead>
+<tr>
+<th>IP</th>
+<th>主机名</th>
+<th>环境配置</th>
+<th>组件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.48.12</td>
+<td>k8s-master</td>
+<td>关防火墙和selinux，禁止swap分区，时间同步，IP与域名映射</td>
+<td>kube-api-server、kube-controller-manager、kube-scheduler、docker、etcd</td>
+</tr>
+<tr>
+<td>192.168.48.13</td>
+<td>k8s-node01</td>
+<td>关防火墙和selinux，禁止swap分区，时间同步，IP与域名映射</td>
+<td>kubelet、kube-proxy、docker、etcd</td>
+</tr>
+<tr>
+<td>192.168.48.14</td>
+<td>k8s-node02</td>
+<td>关防火墙和selinux，禁止swap分区，时间同步，IP与域名映射</td>
+<td>kubelet、kube-proxy、docker、etcd</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-2-环境搭建"><a href="#2-2-2-环境搭建" class="headerlink" title="2.2.2 环境搭建"></a>2.2.2 环境搭建</h3><p>该步骤与2.1.2类似，只是IP和主机名区别，省略。</p>
+<h3 id="2-2-3-部署-Etcd-集群"><a href="#2-2-3-部署-Etcd-集群" class="headerlink" title="2.2.3 部署 Etcd 集群"></a>2.2.3 部署 Etcd 集群</h3><p>Etcd 是一个分布式键值存储系统，Kubernetes 使用 Etcd 进行数据存储，所以需要先准备一个Etcd数据库，为解决 Etcd 单点故障，应采用集群方式部署，这里使用 3 台组建集群，可容忍1台机器故障。</p>
+<table>
+<thead>
+<tr>
+<th>IP</th>
+<th>节点名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>192.168.48.12</td>
+<td>etcd-1</td>
+</tr>
+<tr>
+<td>192.168.48.13</td>
+<td>etcd-2</td>
+</tr>
+<tr>
+<td>192.168.48.14</td>
+<td>etcd-3</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>为了节省机器，这里与 K8s 节点机器复用。也可以独立于 k8s 集群之外部署，只要 apiserver 能连接到就行。</p>
+</blockquote>
+<h4 id="准备-cfssl-证书生成工具"><a href="#准备-cfssl-证书生成工具" class="headerlink" title="准备 cfssl 证书生成工具"></a>准备 cfssl 证书生成工具</h4><ul>
+<li>cfssl是一个开源的证书管理工具，使用JSON文件生成证书，相比openssl更方便使用。</li>
+<li>找任意一台服务器操作，这里使用Master节点。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell">wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64<br>wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64<br>wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64<br>chmod +x cfssl_linux-amd64 cfssljson_linux-amd64 cfssl-certinfo_linux-amd64<br>mv cfssl_linux-amd64 /usr/local/bin/cfssl<br>mv cfssljson_linux-amd64 /usr/local/bin/cfssljson<br>mv cfssl-certinfo_linux-amd64 /usr/bin/cfssl-certinfo<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="生成Etcd证书"><a href="#生成Etcd证书" class="headerlink" title="生成Etcd证书"></a>生成Etcd证书</h4><p>自签证书颁发机构（CA）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#创建工作目录</span><br>mkdir -p ~/TLS/&#123;etcd,k8s&#125;<br><span class="hljs-built_in">cd</span> TLS/etcd<br></code></pre></td></tr></table></figure>
+
+<p>自签CA：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; ca-config.json&lt;&lt; EOF<br>&#123;<br>    &quot;signing&quot;: &#123;<br>        &quot;default&quot;: &#123;<br>        	&quot;expiry&quot;: &quot;87600h&quot;<br>        &#125;,<br>        &quot;profiles&quot;: &#123;<br>        	&quot;www&quot;: &#123;<br>        		&quot;expiry&quot;: &quot;87600h&quot;,<br>        		&quot;usages&quot;: [<br>        			&quot;signing&quot;,<br>                    &quot;key encipherment&quot;,<br>                    &quot;server auth&quot;,<br>                    &quot;client auth&quot;<br>        		]<br>        	&#125;<br>        &#125;<br>    &#125;<br>&#125;<br>EOF<br><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; ca-csr.json&lt;&lt; EOF<br>&#123;<br>    &quot;CN&quot;: &quot;etcd CA&quot;,<br>    &quot;key&quot;: &#123;<br>        &quot;algo&quot;: &quot;rsa&quot;,<br>        &quot;size&quot;: 2048<br>	&#125;,<br>    &quot;names&quot;: [<br>                &#123;<br>                    &quot;C&quot;: &quot;CN&quot;,<br>                    &quot;L&quot;: &quot;Beijing&quot;,<br>                    &quot;ST&quot;: &quot;Beijing&quot;<br>                &#125;<br>            ]<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<p>生成证书：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cfssl gencert -initca ca-csr.json | cfssljson -bare ca -<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130145734036.png" srcset="/img/loading.gif" lazyload alt="image-20230130145734036"></p>
+<p>使用自签CA签发Etcd HTTPS证书：</p>
+<p>创建证书申请文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; server-csr.json&lt;&lt; EOF<br>&#123;<br>	&quot;CN&quot;: &quot;etcd&quot;,<br>	&quot;hosts&quot;: [<br>        &quot;192.168.48.12&quot;,<br>        &quot;192.168.48.13&quot;,<br>        &quot;192.168.48.14&quot;<br>	],<br>    &quot;key&quot;: &#123;<br>        &quot;algo&quot;: &quot;rsa&quot;,<br>        &quot;size&quot;: 2048<br>    &#125;,<br>	&quot;names&quot;: [<br>		&#123;<br>            &quot;C&quot;: &quot;CN&quot;,<br>            &quot;L&quot;: &quot;BeiJing&quot;,<br>            &quot;ST&quot;: &quot;BeiJing&quot;<br>		&#125;<br>	]<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>上述文件 hosts 字段中 IP 为所有 etcd 节点的集群内部通信 IP，一个都不能少！为了 方便后期扩容可以多写几个预留的 IP。</strong></p>
+</blockquote>
+<p>生成证书： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=www server-csr.json | cfssljson -bare server<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130150445059.png" srcset="/img/loading.gif" lazyload alt="image-20230130150445059"></p>
+<h4 id="从github仓库下载etcd二进制文件"><a href="#从github仓库下载etcd二进制文件" class="headerlink" title="从github仓库下载etcd二进制文件"></a>从github仓库下载etcd二进制文件</h4><p><code>下载地址：https://github.com/etcd-io/etcd/releases/download/v3.4.9/etcd-v3.4.9- linux-amd64.tar.gz</code></p>
+<h4 id="部署Etcd集群"><a href="#部署Etcd集群" class="headerlink" title="部署Etcd集群"></a>部署Etcd集群</h4><p>以下在节点etcd-1上操作，为简化操作，待会将master生成的所有文件拷贝到etcd-2和etcd-3上</p>
+<ol>
+<li>创建工作目录并解压二进制包：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir -p /opt/etcd/&#123;bin,cfg,ssl&#125; <br>tar zxvf etcd-v3.4.9-linux-amd64.tar.gz<br>mv etcd-v3.4.9-linux-amd64/&#123;etcd,etcdctl&#125; /opt/etcd/bin/<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建etcd配置文件：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /opt/etcd/cfg/etcd.conf &lt;&lt; EOF<br><span class="hljs-meta">#</span><span class="bash">[Member]</span><br>ETCD_NAME=&quot;etcd-1&quot;<br>ETCD_DATA_DIR=&quot;/var/lib/etcd/default.etcd&quot;<br>ETCD_LISTEN_PEER_URLS=&quot;https://192.168.48.12:2380&quot;<br>ETCD_LISTEN_CLIENT_URLS=&quot;https://192.168.48.12:2379&quot;<br><span class="hljs-meta">#</span><span class="bash">[Clustering]</span><br>ETCD_INITIAL_ADVERTISE_PEER_URLS=&quot;https://192.168.48.12:2380&quot;<br>ETCD_ADVERTISE_CLIENT_URLS=&quot;https://192.168.48.12:2379&quot;<br>ETCD_INITIAL_CLUSTER=&quot;etcd-1=https://192.168.48.12:2380,etcd-2=https://192.168.48.13:2380,etcd-3=https://192.168.48.14:2380&quot;<br>ETCD_INITIAL_CLUSTER_TOKEN=&quot;etcd-cluster&quot;<br>ETCD_INITIAL_CLUSTER_STATE=&quot;new&quot;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">ETCD_NAME：节点名称，集群中唯一<br>ETCD_DAT<span class="hljs-built_in">A_DIR</span>：数据目录<br>ETCD_LISTEN_PEER_URLS：集群通信监听地址<br>ETCD_LISTEN_CLIENT_URLS：客户端访问监听地址<br>ETCD_INITIAL_ADVERTISE_PEER_URLS：集群通告地址<br>ETCD_ADVERTISE_CLIENT_URLS：客户端通告地址<br>ETCD_INITIAL_CLUSTER：集群节点地址<br>ETCD_INITIAL_CLUSTER_TOKEN：集群 Token<br>ETCD_INITIAL_CLUSTER_STATE：加入集群的当前状态，<span class="hljs-keyword">new</span> 是新集群，existing 表示加入 已有集群<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>systemd管理etcd：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /usr/lib/systemd/system/etcd.service &lt;&lt; EOF<br>[Unit]<br>Description=Etcd Server<br>After=network.target<br>After=network-online.target<br>Wants=network-online.target<br>[Service]<br>Type=notify<br>EnvironmentFile=/opt/etcd/cfg/etcd.conf<br>ExecStart=/opt/etcd/bin/etcd \<br>--cert-file=/opt/etcd/ssl/server.pem \<br>--key-file=/opt/etcd/ssl/server-key.pem \<br>--peer-cert-file=/opt/etcd/ssl/server.pem \<br>--peer-key-file=/opt/etcd/ssl/server-key.pem \<br>--trusted-ca-file=/opt/etcd/ssl/ca.pem \<br>--peer-trusted-ca-file=/opt/etcd/ssl/ca.pem \<br>--logger=zap<br>Restart=on-failure<br>LimitNOFILE=65536<br>[Install]<br>WantedBy=multi-user.target<br>EOF<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>拷贝刚才生成的证书：</li>
+</ol>
+<p>把刚才生成的证书拷贝到配置文件中的路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cp ~/TLS/etcd/ca*pem ~/TLS/etcd/server*pem /opt/etcd/ssl/<br></code></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>将上面节点 1 所有生成的文件拷贝到节点 2 和节点 3：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">scp -r /opt/etcd/ root@192.168.48.13:/opt/<br>scp /usr/lib/systemd/system/etcd.service root@192.168.48.13:/usr/lib/systemd/system/<br>scp -r /opt/etcd/ root@192.168.48.14:/opt/<br>scp /usr/lib/systemd/system/etcd.service root@192.168.48.14:/usr/lib/systemd/system/<br></code></pre></td></tr></table></figure>
+
+<p>分别在另外两台机器上修改IP为本机IP<code>vim /opt/etcd/cfg/etcd.conf</code>，name改为本地name</p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130174640892.png" srcset="/img/loading.gif" lazyload alt="image-20230130174640892"></p>
+<ol start="6">
+<li>设置开机启动：</li>
+</ol>
+<p><strong>注意需要先启动从节点的etcd，再启动主节点</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl daemon-reload<br>systemctl start etcd<br>systemctl enable etcd<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130174920334.png" srcset="/img/loading.gif" lazyload alt="image-20230130174920334"></p>
+<h3 id="2-2-4-安装Docker"><a href="#2-2-4-安装Docker" class="headerlink" title="2.2.4 安装Docker"></a>2.2.4 安装Docker</h3><p>在所有节点安装docker，步骤同2.1.3.1</p>
+<h3 id="2-2-5-部署-Master-Node"><a href="#2-2-5-部署-Master-Node" class="headerlink" title="2.2.5 部署 Master Node"></a>2.2.5 部署 Master Node</h3><blockquote>
+<p>查看错误日志：<code>cat /var/log/messages|grep kube-apiserver|grep -i error</code>     <code>netstat -ntlp | grep api</code></p>
+</blockquote>
+<h4 id="2-2-5-1-生成-kube-apiserver-证书"><a href="#2-2-5-1-生成-kube-apiserver-证书" class="headerlink" title="2.2.5.1 生成 kube-apiserver 证书"></a>2.2.5.1 生成 kube-apiserver 证书</h4><ol>
+<li>自签证书颁发机构（CA）：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /root/TLS/k8s<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; ca-config.json&lt;&lt; EOF<br>&#123;<br>	&quot;signing&quot;: &#123;<br>        &quot;default&quot;: &#123;<br>            &quot;expiry&quot;: &quot;87600h&quot;<br>        &#125;,<br>        &quot;profiles&quot;: &#123;<br>            &quot;kubernetes&quot;: &#123;<br>                &quot;expiry&quot;: &quot;87600h&quot;,<br>                &quot;usages&quot;: [<br>                    &quot;signing&quot;,<br>                    &quot;key encipherment&quot;,<br>                    &quot;server auth&quot;,<br>                    &quot;client auth&quot;<br>                ]<br>            &#125;<br>        &#125;<br>	&#125;<br>&#125;<br>EOF<br> <br>cat &gt; ca-csr.json&lt;&lt; EOF<br>&#123;<br>    &quot;CN&quot;: &quot;kubernetes&quot;,<br>    &quot;key&quot;: &#123;<br>        &quot;algo&quot;: &quot;rsa&quot;,<br>        &quot;size&quot;: 2048<br>    &#125;,<br>    &quot;names&quot;: [<br>        &#123;<br>            &quot;C&quot;: &quot;CN&quot;,<br>            &quot;L&quot;: &quot;Beijing&quot;,<br>            &quot;ST&quot;: &quot;Beijing&quot;,<br>            &quot;O&quot;: &quot;k8s&quot;,<br>            &quot;OU&quot;: &quot;System&quot;<br>        &#125;<br>    ]<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>生成证书：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cfssl gencert -initca ca-csr.json | cfssljson -bare ca -<br>ls *pem<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130180711535.png" srcset="/img/loading.gif" lazyload alt="image-20230130180711535"></p>
+<ol start="3">
+<li>使用自签CA签发kube-apiserver HTTPS证书：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /root/TLS/k8s<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; server-csr.json&lt;&lt; EOF<br>&#123;<br>    &quot;CN&quot;: &quot;kubernetes&quot;,<br>    &quot;hosts&quot;: [<br>        &quot;10.0.0.1&quot;,<br>        &quot;127.0.0.1&quot;,<br>        &quot;192.168.48.1&quot;,<br>        &quot;192.168.48.2&quot;,<br>        &quot;192.168.48.3&quot;,<br>        &quot;192.168.48.4&quot;,<br>        &quot;192.168.48.12&quot;,<br>        &quot;192.168.48.13&quot;,<br>        &quot;192.168.48.14&quot;,<br>        &quot;192.168.48.100&quot;,<br>        &quot;kubernetes&quot;,<br>        &quot;kubernetes.default&quot;,<br>        &quot;kubernetes.default.svc&quot;,<br>        &quot;kubernetes.default.svc.cluster&quot;,<br>        &quot;kubernetes.default.svc.cluster.local&quot;<br>	],<br>    &quot;key&quot;: &#123;<br>        &quot;algo&quot;: &quot;rsa&quot;,<br>        &quot;size&quot;: 2048<br>    &#125;,<br>    &quot;names&quot;: [<br>        &#123;<br>        &quot;C&quot;: &quot;CN&quot;,<br>        &quot;L&quot;: &quot;BeiJing&quot;,<br>        &quot;ST&quot;: &quot;BeiJing&quot;,<br>        &quot;O&quot;: &quot;k8s&quot;,<br>        &quot;OU&quot;: &quot;System&quot;<br>        &#125;<br>	]<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<p>生成证书：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes server-csr.json | cfssljson -bare server<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-5-2-部署-kube-apiserver"><a href="#2-2-5-2-部署-kube-apiserver" class="headerlink" title="2.2.5.2 部署 kube-apiserver"></a>2.2.5.2 部署 kube-apiserver</h4><ol>
+<li>从Github下载二进制文件 </li>
+</ol>
+<p><code>https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-1.23.md#server-binaries</code></p>
+<p><strong>注：打开链接会发现里面有很多包，下载一个 server 包就够了，包含了 Master 和 Worker Node 二进制文件</strong></p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230130181404103.png" srcset="/img/loading.gif" lazyload alt="image-20230130181404103"></p>
+<ol start="2">
+<li>解压并创建加目录：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir -p /opt/kubernetes/&#123;bin,cfg,ssl,logs&#125;<br>tar zxvf kubernetes-server-linux-amd64.tar.gz<br>cd kubernetes/server/bin<br>cp kube-apiserver kube-scheduler kube-controller-manager /opt/kubernetes/bin<br>cp kubectl /usr/bin/<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>部署kube-apiserver </li>
+</ol>
+<p>创建配置文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /opt/kubernetes/cfg/kube-apiserver.conf &lt;&lt; EOF<br>KUBE_APISERVER_OPTS=&quot;--logtostderr=false \\<br>--v=2 \\<br>--log-dir=/opt/kubernetes/logs \\<br>--etcd-servers=https://192.168.48.12:2379,https://192.168.48.13:2379,https://192.168.48.14:2379 \\<br>--bind-address=192.168.48.12 \\<br>--secure-port=6443 \\<br>--advertise-address=192.168.48.12 \\<br>--allow-privileged=true \\<br>--service-cluster-ip-range=10.0.0.0/24 \\<br>--enable-admission-plugins=NamespaceLifecycle,LimitRanger,ServiceAccount,ResourceQuota,NodeRestriction \\<br>--authorization-mode=RBAC,Node \\<br>--enable-bootstrap-token-auth=true \\<br>--token-auth-file=/opt/kubernetes/cfg/token.csv \\<br>--service-node-port-range=30000-32767 \\<br>--kubelet-client-certificate=/opt/kubernetes/ssl/server.pem \\<br>--kubelet-client-key=/opt/kubernetes/ssl/server-key.pem \\<br>--tls-cert-file=/opt/kubernetes/ssl/server.pem \\<br>--tls-private-key-file=/opt/kubernetes/ssl/server-key.pem \\<br>--client-ca-file=/opt/kubernetes/ssl/ca.pem \\<br>--service-account-key-file=/opt/kubernetes/ssl/ca-key.pem \\<br>--etcd-cafile=/opt/etcd/ssl/ca.pem \\<br>--etcd-certfile=/opt/etcd/ssl/server.pem \\<br>--etcd-keyfile=/opt/etcd/ssl/server-key.pem \\<br>--audit-log-maxage=30 \\<br>--audit-log-maxbackup=3 \\<br>--audit-log-maxsize=100 \\<br>--audit-log-path=/opt/kubernetes/logs/k8s-audit.log&quot;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<p>字段含义：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs stata">注：上面两个\ \ 第一个是转义符，第二个是换行符，使用转义符是为了使用 EOF 保留换行符。<br>–logtostderr：启用日志<br>—v：日志等级<br>–<span class="hljs-keyword">log</span>-<span class="hljs-keyword">dir</span>：日志目录<br>–etcd-servers：etcd 集群地址<br>–bind-address：监听地址<br>–secure-port：https 安全端口<br>–advertise-address：集群通告地址<br>–allow-privileged：启用授权<br>–service-<span class="hljs-keyword">cluster</span>-ip-<span class="hljs-keyword">range</span>：Service 虚拟 IP 地址段<br>–enable-admission-plugins：准入控制模块<br>–authorization-mode：认证授权，启用 RBAC 授权和节点自管理<br>–enable-<span class="hljs-keyword">bootstrap</span>-<span class="hljs-keyword">token</span>-auth：启用 TLS <span class="hljs-keyword">bootstrap</span> 机制<br>–<span class="hljs-keyword">token</span>-auth-<span class="hljs-keyword">file</span>：<span class="hljs-keyword">bootstrap</span> <span class="hljs-keyword">token</span> 文件<br>–service-node-port-<span class="hljs-keyword">range</span>：Service nodeport 类型默认分配端口范围<br>–kubelet-client-xxx：apiserver 访问 kubelet 客户端证书<br>–tls-xxx-<span class="hljs-keyword">file</span>：apiserver https 证书<br>–etcd-xxxfile：连接 Etcd 集群证书<br>–audit-<span class="hljs-keyword">log</span>-xxx：审计日志<br></code></pre></td></tr></table></figure>
+
+<p>拷贝刚生成的k8s证书：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cp ~/TLS/k8s/ca*pem ~/TLS/k8s/server*pem /opt/kubernetes/ssl/<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>启用 TLS Bootstrapping 机制</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /opt/kubernetes/cfg/token.csv &lt;&lt; EOF<br>c47ffb939f5ca36231d9e3121a252940,kubelet-bootstrap,10001,&quot;system:nodebootstrapper&quot;<br>EOF<br><span class="hljs-meta"></span><br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">格式：token，用户名，UID，用户组</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>token 也可自行生成替换：<code>head -c 16 /dev/urandom | od -An </code></p>
+</blockquote>
+<ol start="5">
+<li>systemd 管理 apiserver</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /usr/lib/systemd/system/kube-apiserver.service<br><br>[Unit]<br>Description=Kubernetes API Server<br>Documentation=https://github.com/kubernetes/kubernetes<br>[Service]<br>EnvironmentFile=/opt/kubernetes/cfg/kube-apiserver.conf<br>ExecStart=/opt/kubernetes/bin/kube-apiserver $KUBE_APISERVER_OPTS<br>Restart=on-failure<br>[Install]<br>WantedBy=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意第8行<code>$KUBE_APISERVER_OPTS</code>前没有<code>/</code></p>
+</blockquote>
+<ol start="6">
+<li>启动并设置开机启动</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl daemon-reload<br>systemctl start kube-apiserver<br>systemctl enable kube-apiserver<br></code></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>授权 kubelet-bootstrap 用户允许请求证书</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl create clusterrolebinding kubelet-bootstrap --clusterrole=system:node-bootstrapper --user=kubelet-bootstrap<br></code></pre></td></tr></table></figure>
+
+
+
+<ol start="8">
+<li>如果无法启动，需要进行如下操作</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /root/TLS/k8s<br>vim sa-csr.json<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">&#123;<br>    &quot;CN&quot;:&quot;sa&quot;,<br>    &quot;key&quot;:&#123;<br>        &quot;algo&quot;:&quot;rsa&quot;,<br>        &quot;size&quot;:2048<br>    &#125;,<br>    &quot;names&quot;:[<br>        &#123;<br>            &quot;C&quot;:&quot;CN&quot;,<br>            &quot;L&quot;:&quot;BeiJing&quot;,<br>            &quot;ST&quot;:&quot;BeiJing&quot;,<br>            &quot;O&quot;:&quot;k8s&quot;,<br>            &quot;OU&quot;:&quot;System&quot;<br>        &#125;<br>    ]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">cfssl gencert -initca sa-csr.json  | cfssljson -bare sa -<br><br>openssl x509 -in sa.pem -pubkey -noout &gt; sa.pub<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 修改apiserver的参数</span><br>--service-account-key-file=/root/TLS/k8s/sa.pub<br>--service-account-signing-key-file=/root/TLS/k8s/sa-key.pem<br>--service-account-issuer=https://kubernetes.service.account.issuer<br>-insecure-port=8080<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230201174428861.png" srcset="/img/loading.gif" lazyload alt="image-20230201174428861"></p>
+<h4 id="2-2-5-3-部署-kube-controller-manager"><a href="#2-2-5-3-部署-kube-controller-manager" class="headerlink" title="2.2.5.3 部署 kube-controller-manager"></a>2.2.5.3 部署 kube-controller-manager</h4><ol>
+<li><p>创建配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /opt/kubernetes/cfg/kube-controller-manager.conf &lt;&lt; EOF<br>KUBE_CONTROLLER_MANAGER_OPTS=&quot;--logtostderr=false \\<br>--v=2 \\<br>--log-dir=/opt/kubernetes/logs \\<br>--leader-elect=true \\<br>--master=127.0.0.1:8080 \\<br>--bind-address=127.0.0.1 \\<br>--allocate-node-cidrs=true \\<br>--cluster-cidr=10.244.0.0/16 \\<br>--service-cluster-ip-range=10.0.0.0/24 \\<br>--cluster-signing-cert-file=/opt/kubernetes/ssl/ca.pem \\<br>--cluster-signing-key-file=/opt/kubernetes/ssl/ca-key.pem \\<br>--root-ca-file=/opt/kubernetes/ssl/ca.pem \\<br>--service-account-private-key-file=/opt/kubernetes/ssl/ca-key.pem \\<br>--experimental-cluster-signing-duration=87600h0m0s&quot;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>–master：通过本地非安全本地端口 8080 连接 apiserver。</p>
+<p> –leader-elect：当该组件启动多个时，自动选举（HA）</p>
+<p> –cluster-signing-cert-file/–cluster-signing-key-file：自动为 kubelet 颁发证书 的 CA，与 apiserver 保持一致</p>
+</blockquote>
+</li>
+<li><p>systemd 管理 controller-manager</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /usr/lib/systemd/system/kube-controller-manager.service &lt;&lt; EOF<br>[Unit]<br>Description=Kubernetes Controller Manager<br>Documentation=https://github.com/kubernetes/kubernetes<br>[Service]<br>EnvironmentFile=/opt/kubernetes/cfg/kube-controller-manager.conf<br>ExecStart=/opt/kubernetes/bin/kube-controller-manager \$KUBE_CONTROLLER_MANAGER_OPTS<br>Restart=on-failure<br>[Install]<br>WantedBy=multi-user.target<br>EOF<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>启动并设置开机启动</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl daemon-reload<br>systemctl start kube-controller-manager<br>systemctl enable kube-controller-manager<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230201174455321.png" srcset="/img/loading.gif" lazyload alt="image-20230201174455321"></p>
+<h4 id="2-2-5-4-部署-kube-scheduler"><a href="#2-2-5-4-部署-kube-scheduler" class="headerlink" title="2.2.5.4 部署 kube-scheduler"></a>2.2.5.4 部署 kube-scheduler</h4><ol>
+<li>创建配置文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /opt/kubernetes/cfg/kube-scheduler.conf &lt;&lt; EOF<br>KUBE_SCHEDULER_OPTS=&quot;--logtostderr=false \\<br>--v=2 \\<br>--log-dir=/opt/kubernetes/logs \\<br>--leader-elect \\<br>--master=127.0.0.1:8080 \\<br>--bind-address=127.0.0.1&quot;<br>EOF<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>–master：通过本地非安全本地端口 8080 连接 apiserver。</p>
+<p>–leader-elect：当该组件启动多个时，自动选举（HA）</p>
+</blockquote>
+<ol start="2">
+<li>systemd 管理 scheduler</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat &gt; /usr/lib/systemd/system/kube-scheduler.service &lt;&lt; EOF<br>[Unit]<br>Description=Kubernetes Scheduler<br>Documentation=https://github.com/kubernetes/kubernetes<br>[Service]<br>EnvironmentFile=/opt/kubernetes/cfg/kube-scheduler.conf<br>ExecStart=/opt/kubernetes/bin/kube-scheduler \$KUBE_SCHEDULER_OPTS<br>Restart=on-failure<br>[Install]<br>WantedBy=multi-user.target<br>EOF<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>启动并设置开机启动</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl daemon-reload<br>systemctl start kube-scheduler<br>systemctl enable kube-scheduler<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230201174536993.png" srcset="/img/loading.gif" lazyload alt="image-20230201174536993"></p>
+<h3 id="2-2-6-部署Worker-Node"><a href="#2-2-6-部署Worker-Node" class="headerlink" title="2.2.6 部署Worker Node"></a>2.2.6 部署Worker Node</h3><p>下面同时在 Master Node 上操作，即Master同时作为 Worker</p>
+<h4 id="2-2-6-1-创建工作目录并拷贝二进制文件"><a href="#2-2-6-1-创建工作目录并拷贝二进制文件" class="headerlink" title="2.2.6.1 创建工作目录并拷贝二进制文件"></a>2.2.6.1 创建工作目录并拷贝二进制文件</h4><p>在所有 worker node 创建工作目录： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir -p /opt/kubernetes/&#123;bin,cfg,ssl,logs&#125; <br></code></pre></td></tr></table></figure>
+
+<p>从 master 拷贝</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /software/kubernetes/server/bin<br>cp kubelet kube-proxy /opt/kubernetes/bin # 本地拷贝<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-6-2-部署-kubelet"><a href="#2-2-6-2-部署-kubelet" class="headerlink" title="2.2.6.2 部署 kubelet"></a>2.2.6.2 部署 kubelet</h4><ol>
+<li>创建配置文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim  /opt/kubernetes/cfg/kubelet.conf <br><br>KUBELET_OPTS=&quot;--logtostderr=false \<br>--v=2 \<br>--log-dir=/opt/kubernetes/logs \<br>--hostname-override=k8s-master \<br>--network-plugin=cni \<br>--kubeconfig=/opt/kubernetes/cfg/kubelet.kubeconfig \<br>--bootstrap-kubeconfig=/opt/kubernetes/cfg/bootstrap.kubeconfig \<br>--config=/opt/kubernetes/cfg/kubelet-config.yml \<br>--cert-dir=/opt/kubernetes/ssl \<br>--pod-infra-container-image=lizhenliang/pause-amd64:3.0&quot;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>–hostname-override：显示名称，集群中唯一 </p>
+<p>–network-plugin：启用 CNI </p>
+<p>–kubeconfig：空路径，会自动生成，后面用于连接 apiserver </p>
+<p>–bootstrap-kubeconfig：首次启动向 apiserver 申请证书 </p>
+<p>–config：配置参数文件 </p>
+<p>–cert-dir：kubelet 证书生成目录 </p>
+<p>–pod-infra-container-image：管理 Pod 网络容器的镜像</p>
+</blockquote>
+<ol start="2">
+<li>配置参数文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /opt/kubernetes/cfg/kubelet-config.yml<br><br>kind: KubeletConfiguration<br>apiVersion: kubelet.config.k8s.io/v1beta1<br>address: 0.0.0.0<br>port: 10250<br>readOnlyPort: 10255<br>cgroupDriver: cgroupfs<br>clusterDNS:<br>- 10.0.0.2<br>clusterDomain: cluster.local<br>failSwapOn: false<br>authentication:<br>	anonymous:<br>		enabled: false<br>	webhook:<br>		cacheTTL: 2m0s<br>		enabled: true<br>	x509:<br>		clientCAFile: /opt/kubernetes/ssl/ca.pem<br>authorization:<br>	mode: Webhook<br>	webhook:<br>		cacheAuthorizedTTL: 5m0s<br>		cacheUnauthorizedTTL: 30s<br>evictionHard:<br>imagefs.available: 15%<br>memory.available: 100Mi<br>nodefs.available: 10%<br>nodefs.inodesFree: 5%<br>maxOpenFiles: 1000000<br>maxPods: 110<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>生成 bootstrap.kubeconfig 文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /opt/kubernetes/cfg/bootstrap.kubeconfig<br><br>KUBE_APISERVER=&quot;https://192.168.48.12:6443&quot; # apiserver IP:PORT<br>TOKEN=&quot;c47ffb939f5ca36231d9e3121a252940&quot; # 与 token.csv 里保持一致<br><span class="hljs-meta">#</span><span class="bash"> 生成 kubelet bootstrap kubeconfig 配置文件</span><br>kubectl config set-cluster kubernetes \<br>--certificate-authority=/opt/kubernetes/ssl/ca.pem \<br>--embed-certs=true \<br>--server=$&#123;KUBE_APISERVER&#125; \<br>--kubeconfig=bootstrap.kubeconfig<br>kubectl config set-credentials &quot;kubelet-bootstrap&quot; \<br>--token=$&#123;TOKEN&#125; \<br>--kubeconfig=bootstrap.kubeconfig<br>kubectl config set-context default \<br>--cluster=kubernetes \<br>--user=&quot;kubelet-bootstrap&quot; \<br>--kubeconfig=bootstrap.kubeconfig<br>kubectl config use-context default --kubeconfig=bootstrap.kubeconfig<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>systemd 管理 kubele</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell">vim /usr/lib/systemd/system/kubelet.service<br><br>[Unit]<br>Description=Kubernetes Kubelet<br>After=docker.service<br>[Service]<br>EnvironmentFile=/opt/kubernetes/cfg/kubelet.conf<br>ExecStart=/opt/kubernetes/bin/kubelet \$KUBELET_OPTS<br>Restart=on-failure<br>LimitNOFILE=65536<br>[Install]<br>WantedBy=multi-user.target<br></code></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>启动并设置开机启动</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl daemon-reload<br>systemctl start kubelet<br>systemctl enable kubelet<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<hr>
+<h1 id="三、YAML-文件详解"><a href="#三、YAML-文件详解" class="headerlink" title="三、YAML 文件详解"></a>三、YAML 文件详解</h1><h2 id="3-1-概述"><a href="#3-1-概述" class="headerlink" title="3.1 概述"></a>3.1 概述</h2><p>k8s 集群中对资源管理和资源对象编排部署都可以通过声明样式（YAML）文件来解决，也就是可以把需要对资源对象操作编辑到 YAML 格式文件中，这种文件叫做资源清单文件，通过 kubectl 命令直接使用资源清单文件，就可以实现对大量的资源对象进行编排和部署。</p>
+<p>YAML ：是一种标记语言。这种语言以数据做为中心，而不是以标记语言为重点。YAML 是一个可读性高，用来表达数据序列的格式。</p>
+<p>YAML文件由两部分组成：</p>
+<ul>
+<li>控制器定义</li>
+<li>被控制对象</li>
+</ul>
+<h2 id="3-2-YAML-文件书写格式"><a href="#3-2-YAML-文件书写格式" class="headerlink" title="3.2 YAML 文件书写格式"></a>3.2 YAML 文件书写格式</h2><h3 id="3-2-1-基本语法"><a href="#3-2-1-基本语法" class="headerlink" title="3.2.1 基本语法"></a>3.2.1 基本语法</h3><ul>
+<li>使用空格做为缩进</li>
+<li>缩进的空格数目不重要，只要相同层级的元素左侧对齐即可</li>
+<li>低版本缩进时不允许使用 Tab 键，只允许使用空格</li>
+<li>使用#标识注释，从这个字符一直到行尾，都会被解释器忽略</li>
+<li>使用—表示新的yaml文件的开始</li>
+<li>字符后缩进一个空格，比如冒号，逗号等后面</li>
+</ul>
+<h3 id="3-2-2-支持的数据结构"><a href="#3-2-2-支持的数据结构" class="headerlink" title="3.2.2 支持的数据结构"></a>3.2.2 支持的数据结构</h3><h4 id="纯量（scalars）"><a href="#纯量（scalars）" class="headerlink" title="纯量（scalars）"></a>纯量（scalars）</h4><p>纯量是单个的、不可再分的值</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 数值直接以字面量的形式表示</span><br><span class="hljs-attr">number:</span> <span class="hljs-number">12.30</span><br><br><span class="hljs-comment"># 布尔值用true和false表示</span><br><span class="hljs-attr">isSet:</span> <span class="hljs-literal">true</span><br><br><span class="hljs-comment"># null用~表示</span><br><span class="hljs-attr">parent:</span> <span class="hljs-string">~</span><br><br><span class="hljs-comment"># 时间采用ISO8601格式</span><br><span class="hljs-attr">time:</span> <span class="hljs-number">2023-02-20t15:30:30.10-05:00</span><br><span class="hljs-attr">date:</span> <span class="hljs-number">1976-07-07</span><br><br><span class="hljs-comment"># YAML允许使用两个感叹号强制转换数据类型</span><br><span class="hljs-attr">e:</span> <span class="hljs-type">!!str</span> <span class="hljs-number">123</span><br><span class="hljs-attr">f:</span> <span class="hljs-type">!!str</span> <span class="hljs-literal">true</span><br><br><span class="hljs-comment"># 字符串默认不使用引号表示</span><br><span class="hljs-attr">str:</span> <span class="hljs-string">这是一串字符串</span><br><span class="hljs-comment"># 如果字符串之中包含空格或特殊字符，需要放在引号之中</span><br><span class="hljs-attr">str:</span> <span class="hljs-string">&#x27;内容：	字符串&#x27;</span><br><span class="hljs-comment"># 单引号和双引号都可以使用，双引号不会对特殊字符转义</span><br><span class="hljs-attr">str1:</span> <span class="hljs-string">&#x27;内容\n字符串&#x27;</span><br><span class="hljs-attr">str2:</span> <span class="hljs-string">&quot;内容\n字符串&quot;</span><br><span class="hljs-comment"># 单引号之中如果还有单引号，必须连续使用两个单引号转义</span><br><span class="hljs-attr">str:</span> <span class="hljs-string">&#x27;labor&#x27;</span><span class="hljs-string">&#x27;s day&#x27;</span><br><span class="hljs-comment"># 字符串可以写成多行，从第二行开始，必须有一个单元空格缩进，换行符通常会被转为空格</span><br><span class="hljs-attr">str:</span> <span class="hljs-string">这是一段</span><br> <span class="hljs-string">多行</span><br> <span class="hljs-string">字符串</span><br><span class="hljs-comment"># 多行字符串可以使用|保留换行符，也可以使用&gt;折叠换行</span><br><span class="hljs-attr">this:</span> <span class="hljs-string">|</span><br><span class="hljs-string">Foo</span><br><span class="hljs-string">Bar</span><br><br><span class="hljs-string">that</span><br><span class="hljs-string">Foo</span><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h4><p>对象是键值对的集合，又称为映射(mapping) / 哈希（hashes） / 字典（dictionary）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 对象类型使用一组键值对的的结构表示</span><br><span class="hljs-attr">name:</span> <span class="hljs-string">Tom</span><br><span class="hljs-attr">age:</span> <span class="hljs-number">23</span><br><br><span class="hljs-comment"># yaml也允许将所有键值对写成一个行内对象</span><br><span class="hljs-attr">hash:</span> &#123;<span class="hljs-string">name:Tom</span>,<span class="hljs-string">age:23</span>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p>数组是一组按次序排列的值，又称为序列（sequence） / 列表 （list）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 数组类型以连词线开通</span><br><span class="hljs-string">People</span><br><span class="hljs-bullet">-</span> <span class="hljs-string">Tom</span><br><span class="hljs-bullet">-</span> <span class="hljs-string">Gotcha</span><br><br><span class="hljs-comment"># 数组也可以采用行内表示法</span><br><span class="hljs-attr">People:</span> [<span class="hljs-string">Tom</span>,<span class="hljs-string">Gotcha</span>]<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-3-资源清单描述方法"><a href="#3-3-资源清单描述方法" class="headerlink" title="3.3 资源清单描述方法"></a>3.3 资源清单描述方法</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>在 k8s 中，一般使用 YAML 格式的文件来创建符合预期期望的 pod，这样的 YAML 文件称为资源清单。</p>
+<h3 id="常用字段"><a href="#常用字段" class="headerlink" title="常用字段"></a>常用字段</h3><p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/8c1001e93901213f00bc800c48bb98d82e2e953d.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="3-4-快速编写yaml文件"><a href="#3-4-快速编写yaml文件" class="headerlink" title="3.4 快速编写yaml文件"></a>3.4 快速编写yaml文件</h2><h3 id="kubectl-create生成"><a href="#kubectl-create生成" class="headerlink" title="kubectl create生成"></a>kubectl create生成</h3><p><code>kubectl create deployment web --image=nginx -o yaml --dry-run=client  &gt; d1.yaml</code></p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409121103239.png" srcset="/img/loading.gif" lazyload alt="image-20230409121103239"></p>
+<h3 id="kubectl-get导出"><a href="#kubectl-get导出" class="headerlink" title="kubectl get导出"></a>kubectl get导出</h3><p><code>kubectl get deploy nginx -o=yaml --export &gt; d2.yaml</code></p>
+<blockquote>
+<p><code>--export</code> 已弃用</p>
+</blockquote>
+<h2 id="3-5-示例"><a href="#3-5-示例" class="headerlink" title="3.5 示例"></a>3.5 示例</h2><ul>
+<li>创建一个namespace</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Namespace</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">test</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>创建一个pod</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">test</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">containers:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nginx-containers</span><br>    <span class="hljs-attr">images:</span> <span class="hljs-string">nginx:lastest</span><br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="四、kubectl"><a href="#四、kubectl" class="headerlink" title="四、kubectl"></a>四、kubectl</h1><h2 id="4-1-概述"><a href="#4-1-概述" class="headerlink" title="4.1 概述"></a>4.1 概述</h2><p><strong>kubectl 是 Kubernetes 集群的命令行工具</strong>，通过 kubectl 能够对集群本身进行管理，并能够在集群上进行容器化应用的安装部署。</p>
+<h2 id="4-2-语法"><a href="#4-2-语法" class="headerlink" title="4.2 语法"></a>4.2 语法</h2><p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409173426730.png" srcset="/img/loading.gif" lazyload alt="image-20230409173426730"></p>
+<ul>
+<li><p>comand：指定要对资源执行的操作，例如 create、get、describe 和 delete</p>
+</li>
+<li><p>TYPE：指定资源类型，资源类型是大小写敏感的，开发者能够以单数、复数和缩略的形式。例如：</p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409173621942.png" srcset="/img/loading.gif" lazyload alt="image-20230409173621942"></p>
+</li>
+<li><p>NAME：指定资源的名称，名称也大小写敏感的。如果省略名称，则会显示所有的资源。</p>
+</li>
+<li><p>flags：指定可选的参数。例如，可用-s 或者–server 参数指定 Kubernetes API server 的地址和端口。</p>
+</li>
+</ul>
+<h2 id="4-3-命令表"><a href="#4-3-命令表" class="headerlink" title="4.3 命令表"></a>4.3 命令表</h2><h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><p><a target="_blank" rel="noopener" href="http://docs.kubernetes.org.cn/683.html">http://docs.kubernetes.org.cn/683.html</a></p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409174515178.png" srcset="/img/loading.gif" lazyload alt="image-20230409174515178"></p>
+<img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409174706502.png" srcset="/img/loading.gif" lazyload alt="image-20230409174706502" style="zoom:50%;">
+
+<h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><h4 id="create-命令：根据文件或者输入来创建资源"><a href="#create-命令：根据文件或者输入来创建资源" class="headerlink" title="create 命令：根据文件或者输入来创建资源"></a>create 命令：根据文件或者输入来创建资源</h4><p>创建Deployment和Service资源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl create -f demo-deployment.yaml<br>[root@master ~]# kubectl create -f demo-service.yaml<br></code></pre></td></tr></table></figure>
+
+<h4 id="delete-命令：删除资源"><a href="#delete-命令：删除资源" class="headerlink" title="delete 命令：删除资源"></a>delete 命令：删除资源</h4><p>根据yaml文件删除对应的资源，但是yaml文件并不会被删除，这样更加高效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl delete -f demo-deployment.yaml <br>[root@master ~]# kubectl delete -f demo-service.yaml<br></code></pre></td></tr></table></figure>
+
+<p>也可以通过具体的资源名称来进行删除，使用这个删除资源，同时删除deployment和service资源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl delete 具体的资源名称<br></code></pre></td></tr></table></figure>
+
+<h4 id="get-命令-：获得资源信息"><a href="#get-命令-：获得资源信息" class="headerlink" title="get 命令 ：获得资源信息"></a>get 命令 ：获得资源信息</h4><h5 id="查看所有ns空间的pod"><a href="#查看所有ns空间的pod" class="headerlink" title="查看所有ns空间的pod"></a>查看所有ns空间的pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod --all-namespaces<br>kubectl get pods -A <br><span class="hljs-meta">#</span><span class="bash">两个命令，一样效果，都是查看所有命名空间的pod【可以加上`-owide，查看运行在哪个主机上】。</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="查看指定命名空间-pod-列表"><a href="#查看指定命名空间-pod-列表" class="headerlink" title="查看指定命名空间 pod 列表"></a>查看指定命名空间 pod 列表</h5><p>查看所有命名空间</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get ns<br></code></pre></td></tr></table></figure>
+
+<p>在-n跟上命名空间</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod -n kube-system <br></code></pre></td></tr></table></figure>
+
+<h5 id="查看pod列表"><a href="#查看pod列表" class="headerlink" title="查看pod列表"></a>查看pod列表</h5><p>这个命令查看的默认名称是：kube-public，如果pod不是运行在kube-public上，就需要指定名称才能查看了，否则报错。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod <br></code></pre></td></tr></table></figure>
+
+<h5 id="显示pod节点的标签信息"><a href="#显示pod节点的标签信息" class="headerlink" title="显示pod节点的标签信息"></a>显示pod节点的标签信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod --show-labels<br></code></pre></td></tr></table></figure>
+
+<h5 id="根据指定标签匹配到具体的pod"><a href="#根据指定标签匹配到具体的pod" class="headerlink" title="根据指定标签匹配到具体的pod"></a>根据指定标签匹配到具体的pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pods -l app=example<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看node节点列表"><a href="#查看node节点列表" class="headerlink" title="查看node节点列表"></a>查看node节点列表</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get node<br>kubectl get nodes<br></code></pre></td></tr></table></figure>
+
+<h5 id="显示node节点的标签信息"><a href="#显示node节点的标签信息" class="headerlink" title="显示node节点的标签信息"></a>显示node节点的标签信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get node --show-labels<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）"><a href="#查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）" class="headerlink" title="查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）"></a>查看pod详细信息，也就是可以查看pod具体运行在哪个节点上（ip地址信息）</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod -o wide<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息"><a href="#查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息" class="headerlink" title="查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息"></a>查看服务的详细信息，显示了服务名称，类型，集群ip，端口，时间等信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get svc<br>kubectl get svc -n kube-system<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看所有命名空间"><a href="#查看所有命名空间" class="headerlink" title="查看所有命名空间"></a>查看所有命名空间</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get ns<br>kubectl get namespaces<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看所有pod所属的命名空间"><a href="#查看所有pod所属的命名空间" class="headerlink" title="查看所有pod所属的命名空间"></a>查看所有pod所属的命名空间</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod --all-namespaces<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看所有pod所属的命名空间并且查看都在哪些节点上运行"><a href="#查看所有pod所属的命名空间并且查看都在哪些节点上运行" class="headerlink" title="查看所有pod所属的命名空间并且查看都在哪些节点上运行"></a>查看所有pod所属的命名空间并且查看都在哪些节点上运行</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod --all-namespaces  -o wide<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看目前所有的replica-set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息"><a href="#查看目前所有的replica-set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息" class="headerlink" title="查看目前所有的replica set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息"></a>查看目前所有的replica set，显示了所有的pod的副本数，以及他们的可用数量以及状态等信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get rs<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息"><a href="#查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息" class="headerlink" title="查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息"></a>查看已经部署了的所有应用，可以看到容器，以及容器所用的镜像，标签等信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get deploy -o wide<br>kubectl get deployments -o wide<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看事件【get-ev】"><a href="#查看事件【get-ev】" class="headerlink" title="查看事件【get ev】"></a>查看事件【get ev】</h5><p>具体使用场景未知，在做k8s的健康性检查使用到这个命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get ev | tail -n 10<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="run-命令：在集群中创建并运行一个或多个容器镜像。"><a href="#run-命令：在集群中创建并运行一个或多个容器镜像。" class="headerlink" title="run 命令：在集群中创建并运行一个或多个容器镜像。"></a>run 命令：在集群中创建并运行一个或多个容器镜像。</h4><p>语法：<code>run NAME --image=image [--env=&quot;key=value&quot;] [--port=port] [--replicas=replicas] [--dry-run=bool] [--overrides=inline-json] [--command] -- [COMMAND] [args...]</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 示例，运行一个名称为nginx，副本数为3，标签为app=example，镜像为nginx:1.10，端口为80的容器实例</span><br>kubectl run nginx --replicas=3 --labels=&quot;app=example&quot; --image=nginx:1.10 --port=80<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 示例，运行一个名称为nginx，副本数为3，标签为app=example，镜像为nginx:1.10，端口为80的容器实例，并绑定到k8s-node1上</span><br>kubectl run nginx --image=nginx:1.10 --replicas=3 --labels=&quot;app=example&quot; --port=80 --overrid<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="expose-命令：创建一个service服务，并且暴露端口让外部可以访问"><a href="#expose-命令：创建一个service服务，并且暴露端口让外部可以访问" class="headerlink" title="expose 命令：创建一个service服务，并且暴露端口让外部可以访问"></a>expose 命令：创建一个service服务，并且暴露端口让外部可以访问</h4><p>创建一个nginx服务并且暴露端口让外界可以访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl expose deployment nginx --port=88 --type=NodePort --target-port=80 --name=nginx-service<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="set-命令：配置应用的一些特定资源，也可以修改应用已有的资源"><a href="#set-命令：配置应用的一些特定资源，也可以修改应用已有的资源" class="headerlink" title="set 命令：配置应用的一些特定资源，也可以修改应用已有的资源"></a>set 命令：配置应用的一些特定资源，也可以修改应用已有的资源</h4><p>语法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">set SUBCOMMAND<br></code></pre></td></tr></table></figure>
+
+<p>它的子命令</p>
+<ul>
+<li>env</li>
+<li>image</li>
+<li>resources</li>
+<li>selector</li>
+<li>serviceaccount</li>
+<li>subject</li>
+</ul>
+<h5 id="kubectl-set-resources"><a href="#kubectl-set-resources" class="headerlink" title="kubectl set resources"></a>kubectl set resources</h5><p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">resources (-f FILENAME | TYPE NAME) ([--limits=LIMITS &amp; --requests=REQUESTS]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>这个命令用于设置资源的一些范围限制。</li>
+<li>资源对象中的Pod可以指定计算资源需求（CPU-单位m、内存-单位Mi），即使用的最小资源请求（Requests），限制（Limits）的最大资源需求，Pod将保证使用在设置的资源数量范围。</li>
+<li>对于每个Pod资源，如果指定了Limits（限制）值，并省略了Requests（请求），则Requests默认为Limits的值。</li>
+<li>可用资源对象包括(支持大小写)：replicationcontroller、deployment、daemonset、job、replicaset。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 将deployment的nginx容器cpu限制为“200m”，将内存设置为“512Mi”</span><br>kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 设置所有nginx容器中 Requests和Limits</span><br>kubectl set resources deployment nginx --limits=cpu=200m,memory=512Mi --requests=cpu=100m,memory=256Mi<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 删除nginx中容器的计算资源值</span><br>kubectl set resources deployment nginx --limits=cpu=0,memory=0 --requests=cpu=0,memory=0<br></code></pre></td></tr></table></figure>
+
+<h5 id="kubectl-set-selector-命令"><a href="#kubectl-set-selector-命令" class="headerlink" title="kubectl set selector 命令"></a>kubectl set selector 命令</h5><ul>
+<li>设置资源的 selector（选择器）。如果在调用”set selector”命令之前已经存在选择器，则新创建的选择器将覆盖原来的选择器。</li>
+<li>selector必须以字母或数字开头，最多包含63个字符，可使用：字母、数字、连字符” - “ 、点”.“和下划线” _ “。如果指定了–resource-version，则更新将使用此资源版本，否则将使用现有的资源版本。</li>
+<li>注意：目前selector命令只能用于Service对象。</li>
+</ul>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">selector (-f FILENAME | TYPE NAME) EXPRESSIONS [--resource-version=version]<br></code></pre></td></tr></table></figure>
+
+<h5 id="kubectl-set-image-命令"><a href="#kubectl-set-image-命令" class="headerlink" title="kubectl set image 命令"></a>kubectl set image 命令</h5><ul>
+<li>用于更新现有资源的容器镜像。</li>
+<li>可用资源对象包括：pod (po)、replicationcontroller (rc)、deployment (deploy)、daemonset (ds)、job、replicaset (rs)。</li>
+</ul>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">image (-f FILENAME | TYPE NAME) CONTAINER_NAME_1=CONTAINER_IMAGE_1 ... CONTAINER_NAME_N=CONTAINER_IMAGE_N<br></code></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 将deployment中的nginx容器镜像设置为“nginx：1.9.1”</span><br>kubectl set image deployment/nginx busybox=busybox nginx=nginx:1.9.1<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 所有deployment和rc的nginx容器镜像更新为“nginx：1.9.1”</span><br>kubectl set image deployments,rc nginx=nginx:1.9.1 --all<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 将daemonset abc的所有容器镜像更新为“nginx：1.9.1”</span><br>[root@master ~]# kubectl set image daemonset abc *=nginx:1.9.1<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 从本地文件中更新nginx容器镜像</span><br>kubectl set image -f path/to/file.yaml nginx=nginx:1.9.1 --local -o yaml<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="explain-命令：用于显示资源文档信息"><a href="#explain-命令：用于显示资源文档信息" class="headerlink" title="explain 命令：用于显示资源文档信息"></a>explain 命令：用于显示资源文档信息</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl explain rs<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="edit-命令-用于编辑资源信息"><a href="#edit-命令-用于编辑资源信息" class="headerlink" title="edit 命令: 用于编辑资源信息"></a>edit 命令: 用于编辑资源信息</h4><h5 id="编辑Deployment-nginx的一些信息"><a href="#编辑Deployment-nginx的一些信息" class="headerlink" title="编辑Deployment nginx的一些信息"></a>编辑Deployment nginx的一些信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl edit deployment nginx<br></code></pre></td></tr></table></figure>
+
+<h5 id="编辑service类型的nginx的一些信息"><a href="#编辑service类型的nginx的一些信息" class="headerlink" title="编辑service类型的nginx的一些信息"></a>编辑service类型的nginx的一些信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl edit service/nginx<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="设置命令"><a href="#设置命令" class="headerlink" title="设置命令"></a>设置命令</h3><h4 id="label命令-用于更新（增加、修改或删除）资源上的-label（标签）"><a href="#label命令-用于更新（增加、修改或删除）资源上的-label（标签）" class="headerlink" title="label命令: 用于更新（增加、修改或删除）资源上的 label（标签）"></a>label命令: 用于更新（增加、修改或删除）资源上的 label（标签）</h4><ul>
+<li>label 必须以字母或数字开头，可以使用字母、数字、连字符、点和下划线，最长63个字符。</li>
+<li>如果 –overwrite 为 true，则可以覆盖已有的label，否则尝试覆盖label将会报错。</li>
+<li>如果指定了–resource-version，则更新将使用此资源版本，否则将使用现有的资源版本。</li>
+</ul>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">label [--overwrite] (-f FILENAME | TYPE NAME) KEY_1=VAL_1 ... KEY_N=VAL_N [--resource-version=version]<br></code></pre></td></tr></table></figure>
+
+<h5 id="给名为foo的Pod添加label-unhealthy-true"><a href="#给名为foo的Pod添加label-unhealthy-true" class="headerlink" title="给名为foo的Pod添加label unhealthy=true"></a>给名为foo的Pod添加label unhealthy=true</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl label pods foo unhealthy=true<br></code></pre></td></tr></table></figure>
+
+<h5 id="给名为foo的Pod修改label-为-‘status’-value-‘unhealthy’，且覆盖现有的value"><a href="#给名为foo的Pod修改label-为-‘status’-value-‘unhealthy’，且覆盖现有的value" class="headerlink" title="给名为foo的Pod修改label 为 ‘status’ / value ‘unhealthy’，且覆盖现有的value"></a>给名为foo的Pod修改label 为 ‘status’ / value ‘unhealthy’，且覆盖现有的value</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl label --overwrite pods foo status=unhealthy<br></code></pre></td></tr></table></figure>
+
+<h5 id="给-namespace-中的所有-pod-添加-label"><a href="#给-namespace-中的所有-pod-添加-label" class="headerlink" title="给 namespace 中的所有 pod 添加 label"></a>给 namespace 中的所有 pod 添加 label</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl label  pods --all status=unhealthy<br></code></pre></td></tr></table></figure>
+
+<h5 id="仅当resource-version-1时才更新-名为foo的Pod上的label"><a href="#仅当resource-version-1时才更新-名为foo的Pod上的label" class="headerlink" title="仅当resource-version=1时才更新 名为foo的Pod上的label"></a>仅当resource-version=1时才更新 名为foo的Pod上的label</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl label pods foo status=unhealthy --resource-version=1<br></code></pre></td></tr></table></figure>
+
+<h5 id="删除名为“bar”的label-。（使用“-”减号相连）"><a href="#删除名为“bar”的label-。（使用“-”减号相连）" class="headerlink" title="删除名为“bar”的label 。（使用“ - ”减号相连）"></a>删除名为“bar”的label 。（使用“ - ”减号相连）</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl label pods foo bar-<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。"><a href="#annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。" class="headerlink" title="annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。"></a>annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。</h4><ul>
+<li>Annotations由key/value组成。</li>
+<li>Annotations的目的是存储辅助数据，特别是通过工具和系统扩展操作的数据，更多介绍在这里。</li>
+<li>如果–overwrite为true，现有的annotations可以被覆盖，否则试图覆盖annotations将会报错。</li>
+<li>如果设置了–resource-version，则更新将使用此resource version，否则将使用原有的resource version。</li>
+</ul>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">annotate [--overwrite] (-f FILENAME | TYPE NAME) KEY_1=VAL_1 ... KEY_N=VAL_N [--resource-version=version]<br></code></pre></td></tr></table></figure>
+
+<h5 id="更新Pod“foo”，设置annotation-“description”的value-“my-frontend”，如果同一个annotation多次设置，则只使用最后设置的value值"><a href="#更新Pod“foo”，设置annotation-“description”的value-“my-frontend”，如果同一个annotation多次设置，则只使用最后设置的value值" class="headerlink" title="更新Pod“foo”，设置annotation “description”的value “my frontend”，如果同一个annotation多次设置，则只使用最后设置的value值"></a>更新Pod“foo”，设置annotation “description”的value “my frontend”，如果同一个annotation多次设置，则只使用最后设置的value值</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl annotate pods foo description=‘my frontend’<br></code></pre></td></tr></table></figure>
+
+<h5 id="根据“pod-json”中的type和name更新pod的annotation"><a href="#根据“pod-json”中的type和name更新pod的annotation" class="headerlink" title="根据“pod.json”中的type和name更新pod的annotation"></a>根据“pod.json”中的type和name更新pod的annotation</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl annotate -f pod.json description=&#x27;my frontend&#x27;<br></code></pre></td></tr></table></figure>
+
+<h5 id="更新Pod”foo”，设置annotation“description”的value“my-frontend-running-nginx”，覆盖现有的值"><a href="#更新Pod”foo”，设置annotation“description”的value“my-frontend-running-nginx”，覆盖现有的值" class="headerlink" title="更新Pod”foo”，设置annotation“description”的value“my frontend running nginx”，覆盖现有的值"></a>更新Pod”foo”，设置annotation“description”的value“my frontend running nginx”，覆盖现有的值</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl annotate --overwrite pods foo description=&#x27;my frontend running nginx&#x27;<br></code></pre></td></tr></table></figure>
+
+<h5 id="更新-namespace中的所有pod"><a href="#更新-namespace中的所有pod" class="headerlink" title="更新 namespace中的所有pod"></a>更新 namespace中的所有pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl annotate pods --all description=&#x27;my frontend running nginx&#x27;<br></code></pre></td></tr></table></figure>
+
+<h5 id="只有当resource-version为1时，才更新pod-‘foo’"><a href="#只有当resource-version为1时，才更新pod-‘foo’" class="headerlink" title="只有当resource-version为1时，才更新pod ‘foo’"></a>只有当resource-version为1时，才更新pod ‘foo’</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl annotate pods foo description=&#x27;my frontend running nginx&#x27; --resource-version=1<br></code></pre></td></tr></table></figure>
+
+<h5 id="通过删除名为“description”的annotations来更新pod-‘foo’。-不需要-overwrite-flag。"><a href="#通过删除名为“description”的annotations来更新pod-‘foo’。-不需要-overwrite-flag。" class="headerlink" title="通过删除名为“description”的annotations来更新pod ‘foo’。 不需要 -overwrite flag。"></a>通过删除名为“description”的annotations来更新pod ‘foo’。 不需要 -overwrite flag。</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl annotate pods foo description-<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="completion命令：用于设置-kubectl-命令自动补全"><a href="#completion命令：用于设置-kubectl-命令自动补全" class="headerlink" title="completion命令：用于设置 kubectl 命令自动补全"></a>completion命令：用于设置 kubectl 命令自动补全</h4><h5 id="BASH"><a href="#BASH" class="headerlink" title="BASH"></a>BASH</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在 bash 中设置当前 shell 的自动补全，要先安装 bash-completion 包</span><br>source &lt;(kubectl completion bash)<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 在您的 bash shell 中永久的添加自动补全</span><br>echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc <br></code></pre></td></tr></table></figure>
+
+<h5 id="ZSH"><a href="#ZSH" class="headerlink" title="ZSH"></a>ZSH</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在 zsh 中设置当前 shell 的自动补全</span><br>source &lt;(kubectl completion zsh)  <br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 在您的 zsh shell 中永久的添加自动补全</span><br>echo &quot;if [ [root@master ~]#commands[kubectl] ]; then source &lt;(kubectl completion zsh); fi&quot; &gt;&gt; ~/.zshrc <br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="部署命令"><a href="#部署命令" class="headerlink" title="部署命令"></a>部署命令</h3><h4 id="rollout-命令-用于对资源进行管理"><a href="#rollout-命令-用于对资源进行管理" class="headerlink" title="rollout 命令: 用于对资源进行管理"></a>rollout 命令: 用于对资源进行管理</h4><ul>
+<li>可用资源包括：deployments，daemonsets。</li>
+<li>子命令：<ul>
+<li>history（查看历史版本）</li>
+<li>pause（暂停资源）</li>
+<li>resume（恢复暂停资源）</li>
+<li>status（查看资源状态）</li>
+<li>undo（回滚版本）</li>
+</ul>
+</li>
+</ul>
+<p>语法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl rollout SUBCOMMAND<br></code></pre></td></tr></table></figure>
+
+<h5 id="回滚到之前的deployment"><a href="#回滚到之前的deployment" class="headerlink" title="回滚到之前的deployment"></a>回滚到之前的deployment</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl rollout undo deployment/abc<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看daemonet的状态"><a href="#查看daemonet的状态" class="headerlink" title="查看daemonet的状态"></a>查看daemonet的状态</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl rollout status daemonset/foo<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="rolling-update命令-执行指定ReplicationController的滚动更新"><a href="#rolling-update命令-执行指定ReplicationController的滚动更新" class="headerlink" title="rolling-update命令: 执行指定ReplicationController的滚动更新"></a>rolling-update命令: 执行指定ReplicationController的滚动更新</h4><p>该命令创建了一个新的RC， 然后一次更新一个pod方式逐步使用新的PodTemplate，最终实现Pod滚动更新，new-controller.json需要与之前RC在相同的namespace下。</p>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">rolling-update OLD_CONTROLLER_NAME ([NEW_CONTROLLER_NAME] --image=NEW_CONTAINER_IMAGE | -f NEW_CONTROLLER_SPEC)<br></code></pre></td></tr></table></figure>
+
+<h5 id="使用frontend-v2-json中的新RC数据更新frontend-v1的pod"><a href="#使用frontend-v2-json中的新RC数据更新frontend-v1的pod" class="headerlink" title="使用frontend-v2.json中的新RC数据更新frontend-v1的pod"></a>使用frontend-v2.json中的新RC数据更新frontend-v1的pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl rolling-update frontend-v1 -f frontend-v2.json<br></code></pre></td></tr></table></figure>
+
+<h5 id="使用JSON数据更新frontend-v1的pod"><a href="#使用JSON数据更新frontend-v1的pod" class="headerlink" title="使用JSON数据更新frontend-v1的pod"></a>使用JSON数据更新frontend-v1的pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat frontend-v2.json | kubectl rolling-update frontend-v1 -f -<br></code></pre></td></tr></table></figure>
+
+<h5 id="其他的一些滚动更新"><a href="#其他的一些滚动更新" class="headerlink" title="其他的一些滚动更新"></a>其他的一些滚动更新</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl rolling-update frontend-v1 frontend-v2 --image=image:v2<br><br>kubectl rolling-update frontend --image=image:v2<br><br>kubectl rolling-update frontend-v1 frontend-v2 --rollback<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="scale命令：扩容或缩容-Deployment、ReplicaSet、Replication-Controller或-Job-中Pod数量"><a href="#scale命令：扩容或缩容-Deployment、ReplicaSet、Replication-Controller或-Job-中Pod数量" class="headerlink" title="scale命令：扩容或缩容 Deployment、ReplicaSet、Replication Controller或 Job 中Pod数量"></a>scale命令：扩容或缩容 Deployment、ReplicaSet、Replication Controller或 Job 中Pod数量</h4><p>scale也可以指定多个前提条件，如：当前副本数量或 –resource-version ，进行伸缩比例设置前，系统会先验证前提条件是否成立。这个就是弹性伸缩策略。</p>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl scale [--resource-version=version] [--current-replicas=count] --replicas=COUNT (-f FILENAME | TYPE NAME)<br></code></pre></td></tr></table></figure>
+
+<h5 id="将名为foo中的pod副本数设置为3。"><a href="#将名为foo中的pod副本数设置为3。" class="headerlink" title="将名为foo中的pod副本数设置为3。"></a>将名为foo中的pod副本数设置为3。</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl scale --replicas=3 rs/foo<br>kubectl scale deploy/nginx --replicas=30<br></code></pre></td></tr></table></figure>
+
+<h5 id="将由“foo-yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3"><a href="#将由“foo-yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3" class="headerlink" title="将由“foo.yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3"></a>将由“foo.yaml”配置文件中指定的资源对象和名称标识的Pod资源副本设为3</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl scale --replicas=3 -f foo.yaml<br></code></pre></td></tr></table></figure>
+
+<h5 id="如果当前副本数为2，则将其扩展至3。"><a href="#如果当前副本数为2，则将其扩展至3。" class="headerlink" title="如果当前副本数为2，则将其扩展至3。"></a>如果当前副本数为2，则将其扩展至3。</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl scale --current-replicas=2 --replicas=3 deployment/mysql<br></code></pre></td></tr></table></figure>
+
+<h5 id="设置多个RC中Pod副本数量"><a href="#设置多个RC中Pod副本数量" class="headerlink" title="设置多个RC中Pod副本数量"></a>设置多个RC中Pod副本数量</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl scale --replicas=5 rc/foo rc/bar rc/baz<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="autoscale命令：这个比scale更加强大，也是弹性伸缩策略-，它是根据流量的多少来自动进行扩展或者缩容。"><a href="#autoscale命令：这个比scale更加强大，也是弹性伸缩策略-，它是根据流量的多少来自动进行扩展或者缩容。" class="headerlink" title="autoscale命令：这个比scale更加强大，也是弹性伸缩策略 ，它是根据流量的多少来自动进行扩展或者缩容。"></a>autoscale命令：这个比scale更加强大，也是弹性伸缩策略 ，它是根据流量的多少来自动进行扩展或者缩容。</h4><p>指定Deployment、ReplicaSet或ReplicationController，并创建已经定义好资源的自动伸缩器。使用自动伸缩器可以根据需要自动增加或减少系统中部署的pod数量。</p>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl autoscale (-f FILENAME | TYPE NAME | TYPE/NAME) [--min=MINPODS] --max=MAXPODS [--cpu-percent=CPU] [flags]<br></code></pre></td></tr></table></figure>
+
+<h5 id="使用-Deployment-“foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间"><a href="#使用-Deployment-“foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间" class="headerlink" title="使用 Deployment “foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间"></a>使用 Deployment “foo”设定，使用默认的自动伸缩策略，指定目标CPU使用率，使其Pod数量在2到10之间</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl autoscale deployment foo --min=2 --max=10<br></code></pre></td></tr></table></figure>
+
+<h5 id="使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％"><a href="#使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％" class="headerlink" title="使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％"></a>使用RC“foo”设定，使其Pod的数量介于1和5之间，CPU使用率维持在80％</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl autoscale rc foo --max=5 --cpu-percent=80<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="集群管理命令"><a href="#集群管理命令" class="headerlink" title="集群管理命令"></a>集群管理命令</h3><h4 id="查看集群的初始化信息【pod使用镜像和网段等】"><a href="#查看集群的初始化信息【pod使用镜像和网段等】" class="headerlink" title="查看集群的初始化信息【pod使用镜像和网段等】"></a>查看集群的初始化信息【pod使用镜像和网段等】</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubeadm config view<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="certificate命令：用于证书资源管理，授权等"><a href="#certificate命令：用于证书资源管理，授权等" class="headerlink" title="certificate命令：用于证书资源管理，授权等"></a>certificate命令：用于证书资源管理，授权等</h4><p>例如，当有node节点要向master请求，那么是需要master节点授权的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl certificate approve node-csr-81F5uBehyEyLWco5qavBsxc1GzFcZk3aFM3XW5rT3mw node-csr-Ed0kbFhc_q7qx14H3QpqLIUs0uKo036O2SnFpIheM18<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="cluster-info-命令：显示集群信息"><a href="#cluster-info-命令：显示集群信息" class="headerlink" title="cluster-info 命令：显示集群信息"></a>cluster-info 命令：显示集群信息</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cluster-info<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="top-命令：用于查看资源的cpu，内存磁盘等资源的使用率"><a href="#top-命令：用于查看资源的cpu，内存磁盘等资源的使用率" class="headerlink" title="top 命令：用于查看资源的cpu，内存磁盘等资源的使用率"></a>top 命令：用于查看资源的cpu，内存磁盘等资源的使用率</h4><p>以前需要heapster，后替换为metrics-server 【如果不装这个服务，会有error报错】</p>
+<h5 id="查看pod的使用情况"><a href="#查看pod的使用情况" class="headerlink" title="查看pod的使用情况"></a>查看pod的使用情况</h5><p>查看所有</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl top pod --all-namespaces<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看指定pod"><a href="#查看指定pod" class="headerlink" title="查看指定pod"></a>查看指定pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl top pod -n 命名名称 【命名名称查看：kubectl get ns】<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看node的使用情况"><a href="#查看node的使用情况" class="headerlink" title="查看node的使用情况"></a>查看node的使用情况</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl top nodes<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="cordon命令：用于标记某个节点不可调度"><a href="#cordon命令：用于标记某个节点不可调度" class="headerlink" title="cordon命令：用于标记某个节点不可调度"></a>cordon命令：用于标记某个节点不可调度</h4><p>标记 my-node 为 unschedulable,禁止pod被调度过来。注意这时现有的pod还会继续运行，不会被驱逐。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cordon my-node<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="uncordon命令：用于标签节点可以调度"><a href="#uncordon命令：用于标签节点可以调度" class="headerlink" title="uncordon命令：用于标签节点可以调度"></a>uncordon命令：用于标签节点可以调度</h4><p>与cordon相反，标记 my-node 为 允许调度。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl uncordon my-node<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="drain命令：-用于在维护期间排除节点。"><a href="#drain命令：-用于在维护期间排除节点。" class="headerlink" title="drain命令： 用于在维护期间排除节点。"></a>drain命令： 用于在维护期间排除节点。</h4><p>drain字面意思为排水，实际就是把my-node的pod平滑切换到其他node，同时标记pod为unschedulable，也就是包含了cordon命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl drain my-node<br></code></pre></td></tr></table></figure>
+
+<p>但是直接使用命令一般不会成功，建议在要维护节点时，加上以下参数：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">kubectl</span> <span class="hljs-comment">drain</span> <span class="hljs-comment">my</span><span class="hljs-literal">-</span><span class="hljs-comment">node</span> --<span class="hljs-comment">ignore</span><span class="hljs-literal">-</span><span class="hljs-comment">daemonsets</span> --<span class="hljs-comment">force</span> --<span class="hljs-comment">delete</span><span class="hljs-literal">-</span><span class="hljs-comment">local</span><span class="hljs-literal">-</span><span class="hljs-comment">data</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>–ignore-daemonsets 忽略daemonset部署的pod</li>
+<li>–force 直接删除不由workload对象（Deployment、Job等）管理的pod</li>
+<li>–delete-local-data 直接删除挂载有本地目录(empty-dir方式）的pod</li>
+</ul>
+<h4 id="taint命令：用于给某个Node节点设置污点"><a href="#taint命令：用于给某个Node节点设置污点" class="headerlink" title="taint命令：用于给某个Node节点设置污点"></a>taint命令：用于给某个Node节点设置污点</h4><h5 id="污点-Taint-的组成"><a href="#污点-Taint-的组成" class="headerlink" title="污点 ( Taint ) 的组成"></a>污点 ( Taint ) 的组成</h5><ul>
+<li>使用kubectl taint命令可以给某个Node节点设置污点，Node被设置上污点之后就和Pod之间存在了一种相斥的关系，可以让Node拒绝Pod的调度执行，甚至将Node已经存在的Pod驱逐出去</li>
+<li>每个污点的组成如下： <code>key=value:effect</code> 每个污点有一个 key 和 value 作为污点的标签，其中 value 可以为空，eﬀect 描述污点的作用。</li>
+<li>当前 taint eﬀect 支持如下三个选项：<ul>
+<li>NoSchedule ：表示k8s将不会将Pod调度到具有该污点的Node上</li>
+<li>NoExecute ：表示k8s将不会将Pod调度到具有该污点的Node上，同时会将Node上已经存在的Pod驱逐出去</li>
+<li>PreferNoSchedule ：表示k8s将尽量避免将Pod调度到具有该污点的Node上</li>
+</ul>
+</li>
+</ul>
+<h5 id="污点的设置、查看和去除"><a href="#污点的设置、查看和去除" class="headerlink" title="污点的设置、查看和去除"></a>污点的设置、查看和去除</h5><p>设置污点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl taint nodes k8s-node2 check=yuanzhang:NoExecute<br></code></pre></td></tr></table></figure>
+
+<p>节点说明中，查找Taints字段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl describe nodes k8s-node2<br></code></pre></td></tr></table></figure>
+
+<p>去除污点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl taint nodes k8s-node2 check:NoExecute-<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="集群故障排查和调试命令"><a href="#集群故障排查和调试命令" class="headerlink" title="集群故障排查和调试命令"></a>集群故障排查和调试命令</h3><h4 id="describe命令：显示特定pod资源的详细信息"><a href="#describe命令：显示特定pod资源的详细信息" class="headerlink" title="describe命令：显示特定pod资源的详细信息"></a>describe命令：显示特定pod资源的详细信息</h4><p>要先知道所有的命名空间，因为pod可能不是在默认default中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get ns<br>NAME              STATUS   AGE<br>ccx               Active   15h<br>ccxhero           Active   15h<br>default           Active   5d<br>kube-node-lease   Active   5d<br>kube-public       Active   5d<br>kube-system       Active   5d<br>ns1               Active   16h<br></code></pre></td></tr></table></figure>
+
+<p>这时需要获取指定命名空间中的pod名称</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pods -n ccx<br>NAME                          READY   STATUS             RESTARTS   AGE<br>nginx-test-795d659f45-j9m9b   0/1     ImagePullBackOff   0          26m<br>nginx-test-795d659f45-txf8l   0/1     ImagePullBackOff   0          26m<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看某个-pod的详细状态"><a href="#查看某个-pod的详细状态" class="headerlink" title="查看某个 pod的详细状态"></a>查看某个 pod的详细状态</h5><p>得到上面的pod名称后，加上-n 后面跟上命名空间，如果不加-n，则是使用默认的命名空间，会报错。<br>语法：<code>kubectl describe pod -n pod所属ns podNAME</code><br>如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl describe pod -n ccx nginx-test-795d659f45-j9m9b<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名"><a href="#logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名" class="headerlink" title="logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名"></a>logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名</h4><p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl logs [-f] [-p] POD [-c CONTAINER]<br></code></pre></td></tr></table></figure>
+
+<h5 id="返回仅包含一个容器的pod-nginx的日志快照"><a href="#返回仅包含一个容器的pod-nginx的日志快照" class="headerlink" title="返回仅包含一个容器的pod nginx的日志快照"></a>返回仅包含一个容器的pod nginx的日志快照</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl logs nginx<br></code></pre></td></tr></table></figure>
+
+<h5 id="返回pod-ruby中已经停止的容器web-1的日志快照"><a href="#返回pod-ruby中已经停止的容器web-1的日志快照" class="headerlink" title="返回pod ruby中已经停止的容器web-1的日志快照"></a>返回pod ruby中已经停止的容器web-1的日志快照</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl logs -p -c ruby web-1<br></code></pre></td></tr></table></figure>
+
+<h5 id="持续输出pod-ruby中的容器web-1的日志"><a href="#持续输出pod-ruby中的容器web-1的日志" class="headerlink" title="持续输出pod ruby中的容器web-1的日志"></a>持续输出pod ruby中的容器web-1的日志</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">logs -f -c ruby web-1<br></code></pre></td></tr></table></figure>
+
+<h5 id="仅输出pod-nginx中最近的20条日志"><a href="#仅输出pod-nginx中最近的20条日志" class="headerlink" title="仅输出pod nginx中最近的20条日志"></a>仅输出pod nginx中最近的20条日志</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl logs --tail=20 nginx<br></code></pre></td></tr></table></figure>
+
+<h5 id="输出pod-nginx中最近一小时内产生的所有日志"><a href="#输出pod-nginx中最近一小时内产生的所有日志" class="headerlink" title="输出pod nginx中最近一小时内产生的所有日志"></a>输出pod nginx中最近一小时内产生的所有日志</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl logs --since=1h nginx<br></code></pre></td></tr></table></figure>
+
+<p>参数选项：</p>
+<ul>
+<li>-c, –container=””: 容器名。</li>
+<li>-f, –follow[=false]: 指定是否持续输出日志（实时日志）。</li>
+<li>–interactive[=true]: 如果为true，当需要时提示用户进行输入。默认为true。</li>
+<li>–limit-bytes=0: 输出日志的最大字节数。默认无限制。</li>
+<li>-p, –previous[=false]: 如果为true，输出pod中曾经运行过，但目前已终止的容器的日志。</li>
+<li>–since=0: 仅返回相对时间范围，如5s、2m或3h，之内的日志。默认返回所有日志。只能同时使用since和since-time中的一种。</li>
+<li>–since-time=””: 仅返回指定时间（RFC3339格式）之后的日志。默认返回所有日志。只能同时使用since和since-time中的一种。</li>
+<li>–tail=-1: 要显示的最新的日志条数。默认为-1，显示所有的日志。</li>
+<li>–timestamps[=false]: 在日志中包含时间戳。</li>
+</ul>
+<h4 id="exec命令：进入容器进行交互，在容器中执行命令-语法："><a href="#exec命令：进入容器进行交互，在容器中执行命令-语法：" class="headerlink" title="exec命令：进入容器进行交互，在容器中执行命令 语法："></a>exec命令：进入容器进行交互，在容器中执行命令 语法：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl exec POD [-c CONTAINER] -- COMMAND [args...]<br></code></pre></td></tr></table></figure>
+
+<p>命令选项：</p>
+<ul>
+<li>-c, –container=””: 容器名。如果未指定，使用pod中的一个容器。</li>
+<li>-p, –pod=””: Pod名。</li>
+<li>-i, –stdin[=false]: 将控制台输入发送到容器。</li>
+<li>-t, –tty[=false]: 将标准输入控制台作为容器的控制台输入。</li>
+<li>进入nginx容器，执行一些命令操作</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl exec -it nginx-deployment-58d6d6ccb8-lc5fp bash<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="attach命令：连接到一个正在运行的容器。"><a href="#attach命令：连接到一个正在运行的容器。" class="headerlink" title="attach命令：连接到一个正在运行的容器。"></a>attach命令：连接到一个正在运行的容器。</h4><p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl attach POD -c CONTAINER<br></code></pre></td></tr></table></figure>
+
+<p>参数选项：</p>
+<ul>
+<li>- <code>-c, --container=&quot;&quot;</code>: 容器名。如果省略，则默认选择第一个 pod。</li>
+<li>- <code>-i, --stdin[=false]</code>: 将控制台输入发送到容器。</li>
+<li>- <code>-t, --tty[=false]</code>: 将标准输入控制台作为容器的控制台输入。</li>
+</ul>
+<h5 id="获取正在运行中的pod-123456-7890的输出，默认连接到第一个容器"><a href="#获取正在运行中的pod-123456-7890的输出，默认连接到第一个容器" class="headerlink" title="获取正在运行中的pod 123456-7890的输出，默认连接到第一个容器"></a>获取正在运行中的pod 123456-7890的输出，默认连接到第一个容器</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl attach 123456-7890<br></code></pre></td></tr></table></figure>
+
+<h5 id="获取pod-123456-7890中ruby-container的输出"><a href="#获取pod-123456-7890中ruby-container的输出" class="headerlink" title="获取pod 123456-7890中ruby-container的输出"></a>获取pod 123456-7890中ruby-container的输出</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl attach 123456-7890 -c ruby-container<br></code></pre></td></tr></table></figure>
+
+<p>切换到终端模式，将控制台输入发送到pod 123456-7890的ruby-container的“bash”命令，并将其结果输出到控制台</p>
+<h5 id="错误控制台的信息发送回客户端。"><a href="#错误控制台的信息发送回客户端。" class="headerlink" title="错误控制台的信息发送回客户端。"></a>错误控制台的信息发送回客户端。</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl attach 123456-7890 -c ruby-container -i -t<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="cp命令：拷贝文件或者目录到pod容器中"><a href="#cp命令：拷贝文件或者目录到pod容器中" class="headerlink" title="cp命令：拷贝文件或者目录到pod容器中"></a>cp命令：拷贝文件或者目录到pod容器中</h4><p>用于pod和外部的文件交换,类似于docker 的cp，就是将容器中的内容和外部的内容进行交换。</p>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cp &lt;file-spec-src&gt; &lt;file-spec-dest&gt; [options]<br></code></pre></td></tr></table></figure>
+
+<h5 id="拷贝宿主机本地文件夹到pod"><a href="#拷贝宿主机本地文件夹到pod" class="headerlink" title="拷贝宿主机本地文件夹到pod"></a>拷贝宿主机本地文件夹到pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cp /tmp/foo_dir &lt;some-pod&gt;:/tmp/bar_dir<br></code></pre></td></tr></table></figure>
+
+<h5 id="指定namespace的拷贝pod文件到宿主机本地目录"><a href="#指定namespace的拷贝pod文件到宿主机本地目录" class="headerlink" title="指定namespace的拷贝pod文件到宿主机本地目录"></a>指定namespace的拷贝pod文件到宿主机本地目录</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cp &lt;some-namespace&gt;/&lt;some-pod&gt;:/tmp/foo /tmp/bar<br></code></pre></td></tr></table></figure>
+
+<p>对于多容器pod，用-c指定容器名</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cp /tmp/foo &lt;some-pod&gt;:/tmp/bar -c &lt;specific-container&gt;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><h4 id="api-servions命令：打印受支持的api版本信息"><a href="#api-servions命令：打印受支持的api版本信息" class="headerlink" title="api-servions命令：打印受支持的api版本信息"></a>api-servions命令：打印受支持的api版本信息</h4><p>打印当前集群支持的api版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl api-versions<br></code></pre></td></tr></table></figure>
+
+<h4 id="help命令：用于查看命令帮助"><a href="#help命令：用于查看命令帮助" class="headerlink" title="help命令：用于查看命令帮助"></a>help命令：用于查看命令帮助</h4><p>显示全部的命令帮助提示</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl --help<br></code></pre></td></tr></table></figure>
+
+<p>具体的子命令帮助，例如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl create --help<br></code></pre></td></tr></table></figure>
+
+<h4 id="config-命令-用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）"><a href="#config-命令-用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）" class="headerlink" title="config 命令: 用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）"></a>config 命令: 用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）</h4><p>设置 kubectl 与哪个 Kubernetes 集群进行通信并修改配置信息。查看 使用 kubeconfig 跨集群授权访问 文档获取详情配置文件信息。</p>
+<h5 id="显示合并的-kubeconfig-配置信息"><a href="#显示合并的-kubeconfig-配置信息" class="headerlink" title="显示合并的 kubeconfig 配置信息"></a>显示合并的 kubeconfig 配置信息</h5><p>为啥要加个合并呢，是因为如果配置了多集群，那么这里面的配置信息是很多的，如下，我配置了2个集群的config文件内容就如下【我博客中有一篇是：【Kubernetes】k8s多集群切换【含上下文作用详解】，这里面说了如何配置多集群，感兴趣的可以去看看。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs Shell">[root@master ~]# kubectl config view<br>apiVersion: v1<br>clusters:<br>- cluster:<br>    certificate-authority-data: DATA+OMITTED<br>    server: https://192.168.59.142:6443<br>  name: master<br>- cluster:<br>    certificate-authority-data: DATA+OMITTED<br>    server: https://192.168.59.151:6443<br>  name: master1<br>contexts:<br>- context:<br>    cluster: master<br>    namespace: default<br>    user: ccx<br>  name: context<br>- context:<br>    cluster: master1<br>    namespace: default<br>    user: ccx1<br>  name: context1<br>current-context: context<br>kind: Config<br>preferences: &#123;&#125;<br>users:<br>- name: ccx<br>  user:<br>    client-certificate-data: REDACTED<br>    client-key-data: REDACTED<br>- name: ccx1<br>  user:<br>    client-certificate-data: REDACTED<br>    client-key-data: REDACTED<br></code></pre></td></tr></table></figure>
+
+<h5 id="同时使用多个-kubeconfig-文件并查看合并的配置"><a href="#同时使用多个-kubeconfig-文件并查看合并的配置" class="headerlink" title="同时使用多个 kubeconfig 文件并查看合并的配置"></a>同时使用多个 kubeconfig 文件并查看合并的配置</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">KUBECONFIG=~/.kube/config:~/.kube/kubconfig2 kubectl config view<br></code></pre></td></tr></table></figure>
+
+<h5 id="获取-e2e-用户的密码"><a href="#获取-e2e-用户的密码" class="headerlink" title="获取 e2e 用户的密码"></a>获取 e2e 用户的密码</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl config view -o jsonpath=&#x27;&#123;.users[?(@.name == &quot;e2e&quot;)].user.password&#125;&#x27;<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看当前所处的上下文"><a href="#查看当前所处的上下文" class="headerlink" title="查看当前所处的上下文"></a>查看当前所处的上下文</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl config current-context<br></code></pre></td></tr></table></figure>
+
+<h5 id="查看多集群上下文等信息"><a href="#查看多集群上下文等信息" class="headerlink" title="查看多集群上下文等信息"></a>查看多集群上下文等信息</h5><p>CURRENT是当前所处集群</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Shell">[root@master ~]# kubectl config get-contexts <br>CURRENT   NAME       CLUSTER   AUTHINFO   NAMESPACE<br>*         context    master    ccx        default<br>          context1   master1   ccx1       default<br></code></pre></td></tr></table></figure>
+
+<h5 id="设置默认的上下文【多集群切换】"><a href="#设置默认的上下文【多集群切换】" class="headerlink" title="设置默认的上下文【多集群切换】"></a>设置默认的上下文【多集群切换】</h5><p>使用：kubectl config get-contexts查看现在有的上下文【一般多集群才需要切换】<br>语法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl config use-context 上下文名称【NAME】<br></code></pre></td></tr></table></figure>
+
+<p>如，现在在context上，切换到context1这个上下文上【也就切换到另一个集群了】</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Shell">[root@master ~]# kubectl config get-contexts <br>CURRENT   NAME       CLUSTER   AUTHINFO   NAMESPACE<br>*         context    master    ccx        default<br>          context1   master1   ccx1       default<br>[root@master ~]# <br>[root@master ~]# kubectl config use-context context1<br>Switched to context &quot;context1&quot;.<br>[root@master ~]# <br>[root@master ~]# kubectl config get-contexts <br>CURRENT   NAME       CLUSTER   AUTHINFO   NAMESPACE<br>          context    master    ccx        default<br>*         context1   master1   ccx1       default<br></code></pre></td></tr></table></figure>
+
+<h5 id="添加新的集群配置到-kubeconf-中，使用-basic-auth-进行鉴权"><a href="#添加新的集群配置到-kubeconf-中，使用-basic-auth-进行鉴权" class="headerlink" title="添加新的集群配置到 kubeconf 中，使用 basic auth 进行鉴权"></a>添加新的集群配置到 kubeconf 中，使用 basic auth 进行鉴权</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl config set-credentials kubeuser/foo.kubernetes.com --username=kubeuser --password=kubepassword<br></code></pre></td></tr></table></figure>
+
+<h5 id="使用特定的用户名和命名空间设置上下文。"><a href="#使用特定的用户名和命名空间设置上下文。" class="headerlink" title="使用特定的用户名和命名空间设置上下文。"></a>使用特定的用户名和命名空间设置上下文。</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Shell">[root@master ~]# kubectl config set-context gce --user=cluster-admin --namespace=foo \<br>  &amp;&amp; kubectl config use-context gce<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="version-命令：打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】"><a href="#version-命令：打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】" class="headerlink" title="version 命令：打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】"></a>version 命令：打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl version<br></code></pre></td></tr></table></figure>
+
+<p>精简版【仅显示版本号】</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl version --short<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="plugin-命令：运行一个命令行插件"><a href="#plugin-命令：运行一个命令行插件" class="headerlink" title="plugin 命令：运行一个命令行插件"></a>plugin 命令：运行一个命令行插件</h4><p>docker plugin命令用于管理插件。<br>用法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">docker plugin COMMAND<br></code></pre></td></tr></table></figure>
+
+
+<p>​    </p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>docker plugin create</td>
+<td>从rootfs和配置创建一个插件。插件数据目录必须包含config.json和rootfs目录。</td>
+</tr>
+<tr>
+<td>docker plugin enable</td>
+<td>启用插件</td>
+</tr>
+<tr>
+<td>docker plugin inspect</td>
+<td>显示一个或多个插件的详细信息</td>
+</tr>
+<tr>
+<td>docker plugin install</td>
+<td>安装一个插件</td>
+</tr>
+<tr>
+<td>docker plugin ls</td>
+<td>列出所有插件</td>
+</tr>
+<tr>
+<td>docker plugin push</td>
+<td>将插件推送到注册表</td>
+</tr>
+<tr>
+<td>docker plugin rm</td>
+<td>删除一个或多个插件</td>
+</tr>
+<tr>
+<td>docker plugin set</td>
+<td>更改插件的设置</td>
+</tr>
+<tr>
+<td>docker plugin upgrade</td>
+<td>升级现有插件</td>
+</tr>
+</tbody></table>
+<h3 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h3><h4 id="apply命令：通过文件名或者标准输入对资源应用配置"><a href="#apply命令：通过文件名或者标准输入对资源应用配置" class="headerlink" title="apply命令：通过文件名或者标准输入对资源应用配置"></a>apply命令：通过文件名或者标准输入对资源应用配置</h4><p>通过文件名或控制台输入，对资源进行配置。 如果资源不存在，将会新建一个。可以使用 JSON 或者 YAML 格式。</p>
+<p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl apply -f FILENAME<br></code></pre></td></tr></table></figure>
+
+<h5 id="将pod-json中的配置应用到pod"><a href="#将pod-json中的配置应用到pod" class="headerlink" title="将pod.json中的配置应用到pod"></a>将pod.json中的配置应用到pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl apply -f ./pod.json<br></code></pre></td></tr></table></figure>
+
+<h5 id="将控制台输入的JSON配置应用到Pod"><a href="#将控制台输入的JSON配置应用到Pod" class="headerlink" title="将控制台输入的JSON配置应用到Pod"></a>将控制台输入的JSON配置应用到Pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat pod.json | kubectl apply -f -<br></code></pre></td></tr></table></figure>
+
+<h5 id="参数选项："><a href="#参数选项：" class="headerlink" title="参数选项："></a>参数选项：</h5><p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl patch (-f FILENAME | TYPE NAME) -p PATCH<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>-f, –filename=[]: 包含配置信息的文件名，目录名或者URL。</li>
+<li>–include-extended-apis[=true]: If true, include definitions of new APIs via calls to the API server. [default true]</li>
+<li>-o, –output=””: 输出模式。”-o name”为快捷输出(资源/name).</li>
+<li>–record[=false]: 在资源注释中记录当前 kubectl 命令。</li>
+<li>-R, –recursive[=false]: Process the directory used in -f, –filename recursively. Useful when you want to manage related manifests organized within the same directory.</li>
+<li>–schema-cache-dir=”~/.kube/schema”: 非空则将API schema缓存为指定文件，默认缓存到’[root@master ~]#HOME/.kube/schema’</li>
+<li>–validate[=true]: 如果为true，在发送到服务端前先使用schema来验证输入。</li>
+</ul>
+<h4 id="patch命令：使用补丁修改，更新资源的字段，也就是修改资源的部分内容"><a href="#patch命令：使用补丁修改，更新资源的字段，也就是修改资源的部分内容" class="headerlink" title="patch命令：使用补丁修改，更新资源的字段，也就是修改资源的部分内容"></a>patch命令：使用补丁修改，更新资源的字段，也就是修改资源的部分内容</h4><h5 id="使用全局合并修补程序，更新节点"><a href="#使用全局合并修补程序，更新节点" class="headerlink" title="使用全局合并修补程序，更新节点"></a>使用全局合并修补程序，更新节点</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl patch node k8s-node-1 -p &#x27;&#123;&quot;spec&quot;:&#123;&quot;unschedulable&quot;:true&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure>
+
+<h5 id="更新容器的镜像"><a href="#更新容器的镜像" class="headerlink" title="更新容器的镜像"></a>更新容器的镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl patch pod valid-pod -p &#x27;&#123;&quot;spec&quot;:&#123;&quot;containers&quot;:[&#123;&quot;name&quot;:&quot;kubernetes-serve-hostname&quot;,&quot;image&quot;:&quot;new image&quot;&#125;]&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="replace命令：-通过文件或者标准输入替换原有资源"><a href="#replace命令：-通过文件或者标准输入替换原有资源" class="headerlink" title="replace命令： 通过文件或者标准输入替换原有资源"></a>replace命令： 通过文件或者标准输入替换原有资源</h4><p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl replace -f FILENAME<br></code></pre></td></tr></table></figure>
+
+<h5 id="使用pod-json中的数据更新pod"><a href="#使用pod-json中的数据更新pod" class="headerlink" title="使用pod.json中的数据更新pod"></a>使用pod.json中的数据更新pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl replace -f ./pod.json<br></code></pre></td></tr></table></figure>
+
+<h5 id="根据输入的JSON更新pod"><a href="#根据输入的JSON更新pod" class="headerlink" title="根据输入的JSON更新pod"></a>根据输入的JSON更新pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cat pod.json | kubectl replace -f -<br></code></pre></td></tr></table></figure>
+
+<h5 id="将单个容器pod镜像版本标记更新为v4"><a href="#将单个容器pod镜像版本标记更新为v4" class="headerlink" title="将单个容器pod镜像版本标记更新为v4"></a>将单个容器pod镜像版本标记更新为v4</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pod mypod -o yaml | sed &#x27;s/\(image: myimage\):.*[root@master ~]#/\1:v4/&#x27; | kubectl replace -f -<br></code></pre></td></tr></table></figure>
+
+<h5 id="强制替换、删除然后重新创建资源"><a href="#强制替换、删除然后重新创建资源" class="headerlink" title="强制替换、删除然后重新创建资源"></a>强制替换、删除然后重新创建资源</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl replace --force -f ./pod.json<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="convert命令：不同的版本之间转换配置文件"><a href="#convert命令：不同的版本之间转换配置文件" class="headerlink" title="convert命令：不同的版本之间转换配置文件"></a>convert命令：不同的版本之间转换配置文件</h4><p>语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl convert -f FILENAME<br></code></pre></td></tr></table></figure>
+
+<h5 id="将pod-yaml转换为最新版本并输出"><a href="#将pod-yaml转换为最新版本并输出" class="headerlink" title="将pod.yaml转换为最新版本并输出"></a>将pod.yaml转换为最新版本并输出</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl convert -f pod.yaml<br></code></pre></td></tr></table></figure>
+
+<h5 id="将“pod-yaml”指定的资源的活动状态转换为最新版本，并以json格式输出"><a href="#将“pod-yaml”指定的资源的活动状态转换为最新版本，并以json格式输出" class="headerlink" title="将“pod.yaml”指定的资源的活动状态转换为最新版本，并以json格式输出"></a>将“pod.yaml”指定的资源的活动状态转换为最新版本，并以json格式输出</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl convert -f pod.yaml --local -o json<br></code></pre></td></tr></table></figure>
+
+<h5 id="将当前目录下的所有文件转换为最新版本并全部创建"><a href="#将当前目录下的所有文件转换为最新版本并全部创建" class="headerlink" title="将当前目录下的所有文件转换为最新版本并全部创建"></a>将当前目录下的所有文件转换为最新版本并全部创建</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl convert -f . | kubectl create -f -<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-4-格式化输出"><a href="#4-4-格式化输出" class="headerlink" title="4.4 格式化输出"></a>4.4 格式化输出</h2><p>要以特定格式将详细信息输出到终端窗口，可以将-o或–output 参数添加到支持的 kubectl 命令。</p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409230010230.png" srcset="/img/loading.gif" lazyload alt="image-20230409230010230"></p>
+<h2 id="4-5-Kubectl-日志输出详细程度和调试"><a href="#4-5-Kubectl-日志输出详细程度和调试" class="headerlink" title="4.5 Kubectl 日志输出详细程度和调试"></a>4.5 Kubectl 日志输出详细程度和调试</h2><p>Kubectl 日志输出详细程度是通过 -v 或者 –v 来控制的，参数后跟了一个数字表示日志的级别。</p>
+<p><img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409230045605.png" srcset="/img/loading.gif" lazyload alt="image-20230409230045605"></p>
+<hr>
+<h1 id="五、pod"><a href="#五、pod" class="headerlink" title="五、pod"></a>五、pod</h1><h2 id="5-1-概述"><a href="#5-1-概述" class="headerlink" title="5.1 概述"></a>5.1 概述</h2><p>Pod 是 k8s 系统中可以创建和管理的最小单元，是资源对象模型中由用户创建或部署的<strong>最小资源对象模型</strong>，也是在 k8s 上运行容器化应用的资源对象，其他的资源对象都是用来支撑或者扩展 Pod 对象功能的，比如：</p>
+<ul>
+<li>控制器对象是用来管控 Pod 对象的</li>
+<li>Service 或者 Ingress 资源对象是用来暴露 Pod 引用对象的</li>
+<li>PersistentVolume 资源对象是用来为 Pod 提供存储的等等</li>
+</ul>
+<p>k8s 不会直接处理容器，而是 Pod，<strong>Pod 是由一个或多个 container 组成</strong>。 Pod 是 Kubernetes 的最重要概念，每一个 Pod 都有一个特殊的被称为”根容器“的 Pause 容器。Pause 容器对应的镜像属于 Kubernetes 平台的一部分，除了 Pause 容器，每个 Pod 还包含一个或多个紧密相关的用户业务容器。</p>
+<img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409230615796.png" srcset="/img/loading.gif" lazyload alt="image-20230409230615796" style="zoom:33%;">
+
+<img src="/2022/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230409230700273.png" srcset="/img/loading.gif" lazyload alt="image-20230409230700273" style="zoom:50%;">
+
+<ul>
+<li>Pod与应用：每个 Pod 都是应用的一个实例，有专用的 IP </li>
+<li>Pod与容器：一个 Pod 可以有多个容器，彼此间共享网络和存储资源，每个 Pod 中有一个 Pause 容器保存所有的容器状态， 通过管理 pause 容器，达到管理 pod 中所有容器的效果</li>
+<li>Pod与节点：同一个 Pod 中的容器总会被调度到相同 Node 节点，不同节点间 Pod 的通信基于虚拟二层网络技术实现</li>
+</ul>
+<h2 id="5-2-Pod-特性"><a href="#5-2-Pod-特性" class="headerlink" title="5.2 Pod 特性"></a>5.2 Pod 特性</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/">容器化</a>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/">Kubernetes</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Kubernetes/">Kubernetes</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/20/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E6%A6%82%E8%BF%B0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">消息队列概述</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/11/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%AD%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+                        <span class="hidden-mobile">SpringBoot中异常处理的3种方式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+    
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8.8.3/dist/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?cd190160b5401a029cee361d013e32a1";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

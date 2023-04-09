@@ -182,6 +182,170 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/03/07/Java/%E6%A1%86%E6%9E%B6/Mybatis-Plus/MyBatis-Plus%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E8%BD%AC%E4%B9%89/" target="_self">
+          MyBatis-Plus模糊搜索转义
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/03/07/Java/%E6%A1%86%E6%9E%B6/Mybatis-Plus/MyBatis-Plus%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E8%BD%AC%E4%B9%89/" target="_self">
+          
+          
+            
+          
+          使用MyBatis-Plus执行LIKE模糊查询时，若预处理参数包含_ % \等字符，会导致查询结果异常。
+12345// 不论写法是自定义SQLxxx like concat(&#x27;%&#x27;,#&#123;userName&#125;,&#x27;%&#x27;) // 还是Wrapper（本质上也是生成like SQL语句）like(StringUtils.isNotBlank(r
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-03-07 00:00" pubdate>
+              2023-03-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MyBatis-Plus/">MyBatis-Plus</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MyBatis-Plus%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2%E8%BD%AC%E4%B9%89/">MyBatis-Plus模糊搜索转义</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/03/07/Java/JavaSE/JavaSE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" target="_self">
+          JavaSE中遇到的一些问题
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/03/07/Java/JavaSE/JavaSE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" target="_self">
+          
+          
+            
+          
+          1、Collectors.toMap空指针异常问题描述使用Collectors.toMap出现空指针，报错代码和异常如下
+
+
+问题分析Jdk1.8的Collectors.toMap的value不能为null
+https://bugs.openjdk.org/browse/JDK-8148463
+查看一下 Collectors.toMap() 方法的源码，如下：
+12345public static
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-03-07 00:00" pubdate>
+              2023-03-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Java/">Java</a>
+            
+              <a href="/categories/Java/JavaSE/">JavaSE</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JavaSE%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">JavaSE中遇到的一些问题</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/02/20/Java/%E6%A1%86%E6%9E%B6/SpringCloud/Sentinel/Sentinel%E5%85%A5%E9%97%A8/" target="_self">
+          Sentinel入门
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/02/20/Java/%E6%A1%86%E6%9E%B6/SpringCloud/Sentinel/Sentinel%E5%85%A5%E9%97%A8/" target="_self">
+          
+          
+            
+          
+          一、概述1.1 简介sentinel是Spring Cloud Alibaba的一个重要组件，类似于spring clound的hystrix，与hystrix-dashboard控制台一样，sentinel-dashboard控制台可以提供对流量的实时监控、在线维护流量规则、熔断规则，前提是微服务整合了sentinel。
+Sentinel 具有以下特征:
+
+丰富的应用场景：Sentinel 承接
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-02-20 00:00" pubdate>
+              2023-02-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">微服务</a>
+            
+              <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E6%B5%81%E9%87%8F%E6%B2%BB%E7%90%86/">流量治理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Sentinel/">Sentinel</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/12/28/%E6%95%B0%E6%8D%AE%E5%BA%93/NebulaGraph/NebulaGraph%E5%85%A5%E9%97%A8/" target="_self">
           NebulaGraph入门
         </a>
@@ -563,189 +727,11 @@ fastjson一般用在中间层，controller层用Jackson注解
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/09/08/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%ADRestTemplate%E4%BD%BF%E7%94%A8/" target="_self">
-          SpringBoot中RestTemplate使用
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/09/08/Java/%E6%A1%86%E6%9E%B6/SpringBoot/SpringBoot%E4%B8%ADRestTemplate%E4%BD%BF%E7%94%A8/" target="_self">
-          
-          
-            
-          
-          一、RestTemplate概述1.1 概述在项目中，当需要远程调用一个 HTTP 接口时，经常会用到 RestTemplate 这个类。这个类是 Spring 框架提供的一个工具类。Spring 官网对它的介绍如下：
-
-RestTemplate: The original Spring REST client with a synchronous, template method API.
-
-从
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-09-08 00:00" pubdate>
-              2022-09-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java/">Java</a>
-            
-              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/">框架</a>
-            
-              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/">Spring</a>
-            
-              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringBoot/">SpringBoot</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/">服务端接口调用</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/08/10/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" target="_self">
-          SpringDataJPA开发遇到的问题
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/08/10/Java/%E6%A1%86%E6%9E%B6/SpringData/SpringDataJPA/SpringDataJPA%E5%BC%80%E5%8F%91%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" target="_self">
-          
-          
-            
-          
-          一、JPA 在多模块中无法找到对应的 Bean具体的项目结构如下图所示：
-
-项目为微服务项目，其中，common-utils包为通用工具和配置，包含公共实体类；service_payment_provider包为业务层，用于定义实际的操作。
-此时希望在service_payment_provider通过 JPA 来完成数据的实际操作，但是在当前的项目环境下，service_payment_prov
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-08-10 00:00" pubdate>
-              2022-08-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Java/">Java</a>
-            
-              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/">框架</a>
-            
-              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/">Spring</a>
-            
-              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringData/">SpringData</a>
-            
-              <a href="/categories/Java/%E6%A1%86%E6%9E%B6/Spring/SpringData/SpringDataJPA/">SpringDataJPA</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/SpringDataJPA/">SpringDataJPA</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/08/08/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Kafka/Kafka%E5%85%A5%E9%97%A8/" target="_self">
-          Kafka入门
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/08/08/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Kafka/Kafka%E5%85%A5%E9%97%A8/" target="_self">
-          
-          
-            
-          
-          一、Kafka概述1.1 kafka定义
-1.1.1 传统定义Kafka是一个分布式的基于发布/订阅模式的消息队列（MessageQueue），主要应用于大数据实时处理领域。 
-
-发布/订阅：消息的发布者不会将消息直接发送给特定的订阅者，而是将发布的消息 分为不同的类别，订阅者只接收感兴趣的消息。
-
-1.1.2 最新定义Kafka是一个开源的分布式事件流平台（ Event Streaming Pl
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-08-08 00:00" pubdate>
-              2022-08-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">消息队列</a>
-            
-              <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Kafka/">Kafka</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Kafka/">Kafka</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

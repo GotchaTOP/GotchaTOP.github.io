@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      16.2k 字
+      16.5k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      496
+      508
        分钟
     </span>
   
@@ -570,7 +570,7 @@
 </ol>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在/root目录下创建mysql目录用于存储mysql数据信息</span><br>mkdir ~/mysql<br>cd ~/mysql<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -id -p 3306:3306 --name=c_mysql -v $PWD/conf:/etc/mysql/conf.d -v $PWD/logs:/logs -v $PWD/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -id -p 3306:3306 --name=c_mysql -v $PWD/conf:/etc/mysql/conf.d -v $PWD/logs:/logs -v $PWD/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 mysql:5.7<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>参数说明：<ul>
@@ -733,6 +733,60 @@
 </li>
 </ul>
 <p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20210510152639624.png" srcset="/img/loading.gif" lazyload alt="image-20210510152639624"></p>
+<h2 id="5-8-Nacos部署"><a href="#5-8-Nacos部署" class="headerlink" title="5.8 Nacos部署"></a>5.8 Nacos部署</h2><ol>
+<li>搜索nacos镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search nacos<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>拉取nacos镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker pull nacos/nacos-server<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建容器，设置端口映射、目录映射</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">推荐使用这种方式，可以连接自己的数据库</span><br>docker run -d -p 8848:8848 -p 9848:9848 \<br>--name c_nacos \<br>--env MODE=standalone \<br>--env SPRING_DATASOURCE_PLATFORM=mysql \<br>--env MYSQL_SERVICE_HOST=172.17.0.1 \<br>--env MYSQL_SERVICE_PORT=3306 \<br>--env MYSQL_SERVICE_DB_NAME=nacos \<br>--env MYSQL_SERVICE_USER=root \<br>--env MYSQL_SERVICE_PASSWORD=Tsked_394Hd \<br>nacos/nacos-server:latest<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash">访问地址 默认账号密码是nacos/nacos</span><br>http://ip:8848/nacos<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>使用外部机器访问nacos，打开 IP:8848</li>
+</ol>
+<h2 id="5-9-kafka部署"><a href="#5-9-kafka部署" class="headerlink" title="5.9 kafka部署"></a>5.9 kafka部署</h2><ol>
+<li>拉取Zookeeper镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search wurstmeister/zookeeper<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>拉取kafka镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker pull wurstmeister/kafka<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建Zookeeper单点容器</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -itd --name c_zookeeper -p 2181:2181 wurstmeister/zookeeper<br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>创建Kafka单点容器</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -itd --name c_kafka -p 9092:9092 -e HOST_IP=127.0.0.1 -e KAFKA_ADVERTISED_HOST_NAME=localhost -e KAFKA_ADVERTISED_PORT=9092 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 --link c_zookeeper:zookeeper wurstmeister/kafka<br></code></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>测试，进入Kafka容器</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker exec -it c_kafka /bin/bash<br>cd opt/kafka_2.13-2.8.1/<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash">创建topic</span><br>bin/kafka-topics.sh --create --topic test --replication-factor 1 --partitions 1 --zookeeper localhost:2181<br><span class="hljs-meta">#</span><span class="bash">生产消息</span><br>bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test<br><span class="hljs-meta">#</span><span class="bash">消费消息</span><br>bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2021/04/25/%E5%AE%B9%E5%99%A8%E5%8C%96/Docker/Docker%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0/image-20230310094729757.png" srcset="/img/loading.gif" lazyload alt="image-20230310094729757"></p>
+<h2 id="5-10-Sentinel部署"><a href="#5-10-Sentinel部署" class="headerlink" title="5.10 Sentinel部署"></a>5.10 Sentinel部署</h2><ol>
+<li><p>搜索镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker search sentinel<br></code></pre></td></tr></table></figure></li>
+<li><p>下载镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker pull bladex/sentinel-dashboard<br></code></pre></td></tr></table></figure></li>
+<li><p>启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker run -d -p 8858:8858 --name c_sentinel - bladex/sentinel-dashboard:latest<br></code></pre></td></tr></table></figure></li>
+</ol>
 <hr>
 <h1 id="六、集群应用部署"><a href="#六、集群应用部署" class="headerlink" title="六、集群应用部署"></a>六、集群应用部署</h1><h2 id="6-1-主从MySQL部署"><a href="#6-1-主从MySQL部署" class="headerlink" title="6.1 主从MySQL部署"></a>6.1 主从MySQL部署</h2><h3 id="主从复制原理"><a href="#主从复制原理" class="headerlink" title="主从复制原理"></a>主从复制原理</h3><p>原理详见数据库篇<a target="_blank" rel="noopener" href="https://igotcha.gitee.io/2020/11/10/%E6%95%B0%E6%8D%AE%E5%BA%93/Mysql/Mysql%E9%AB%98%E7%BA%A7/mysql%E9%AB%98%E7%BA%A7/">MySQL进阶</a>。</p>
 <p>主从复制主要涉及三个线程：binlog 线程、I/O 线程和 SQL 线程。</p>
