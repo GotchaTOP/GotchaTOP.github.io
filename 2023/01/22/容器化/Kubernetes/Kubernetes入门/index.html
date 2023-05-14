@@ -185,7 +185,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      20k 字
+      21.7k 字
     </span>
   
 
@@ -195,7 +195,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      659
+      711
        分钟
     </span>
   
@@ -881,7 +881,8 @@
 
 
 
-<h3 id="设置命令"><a href="#设置命令" class="headerlink" title="设置命令"></a>设置命令</h3><h4 id="label命令-用于更新（增加、修改或删除）资源上的-label（标签）"><a href="#label命令-用于更新（增加、修改或删除）资源上的-label（标签）" class="headerlink" title="label命令: 用于更新（增加、修改或删除）资源上的 label（标签）"></a>label命令: 用于更新（增加、修改或删除）资源上的 label（标签）</h4><ul>
+<h3 id="设置命令"><a href="#设置命令" class="headerlink" title="设置命令"></a>设置命令</h3><h4 id="label命令"><a href="#label命令" class="headerlink" title="label命令"></a>label命令</h4><p><strong>用于更新（增加、修改或删除）资源上的 label（标签）</strong></p>
+<ul>
 <li>label 必须以字母或数字开头，可以使用字母、数字、连字符、点和下划线，最长63个字符。</li>
 <li>如果 –overwrite 为 true，则可以覆盖已有的label，否则尝试覆盖label将会报错。</li>
 <li>如果指定了–resource-version，则更新将使用此资源版本，否则将使用现有的资源版本。</li>
@@ -901,7 +902,8 @@
 
 
 
-<h4 id="annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。"><a href="#annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。" class="headerlink" title="annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。"></a>annotate命令：更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。</h4><ul>
+<h4 id="annotate命令"><a href="#annotate命令" class="headerlink" title="annotate命令"></a>annotate命令</h4><p><strong>更新一个或多个资源的Annotations信息。也就是注解信息，可以方便的查看做了哪些操作。</strong></p>
+<ul>
 <li>Annotations由key/value组成。</li>
 <li>Annotations的目的是存储辅助数据，特别是通过工具和系统扩展操作的数据，更多介绍在这里。</li>
 <li>如果–overwrite为true，现有的annotations可以被覆盖，否则试图覆盖annotations将会报错。</li>
@@ -924,13 +926,15 @@
 
 
 
-<h4 id="completion命令：用于设置-kubectl-命令自动补全"><a href="#completion命令：用于设置-kubectl-命令自动补全" class="headerlink" title="completion命令：用于设置 kubectl 命令自动补全"></a>completion命令：用于设置 kubectl 命令自动补全</h4><h5 id="BASH"><a href="#BASH" class="headerlink" title="BASH"></a>BASH</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在 bash 中设置当前 shell 的自动补全，要先安装 bash-completion 包</span><br>source &lt;(kubectl completion bash)<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 在您的 bash shell 中永久的添加自动补全</span><br>echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc <br></code></pre></td></tr></table></figure>
+<h4 id="completion命令"><a href="#completion命令" class="headerlink" title="completion命令"></a>completion命令</h4><p><strong>用于设置 kubectl 命令自动补全</strong></p>
+<h5 id="BASH"><a href="#BASH" class="headerlink" title="BASH"></a>BASH</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在 bash 中设置当前 shell 的自动补全，要先安装 bash-completion 包</span><br>source &lt;(kubectl completion bash)<br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 在您的 bash shell 中永久的添加自动补全</span><br>echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc <br></code></pre></td></tr></table></figure>
 
 <h5 id="ZSH"><a href="#ZSH" class="headerlink" title="ZSH"></a>ZSH</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 在 zsh 中设置当前 shell 的自动补全</span><br>source &lt;(kubectl completion zsh)  <br><span class="hljs-meta"></span><br><span class="hljs-meta">#</span><span class="bash"> 在您的 zsh shell 中永久的添加自动补全</span><br>echo &quot;if [ [root@master ~]#commands[kubectl] ]; then source &lt;(kubectl completion zsh); fi&quot; &gt;&gt; ~/.zshrc <br></code></pre></td></tr></table></figure>
 
 
 
-<h3 id="部署命令"><a href="#部署命令" class="headerlink" title="部署命令"></a>部署命令</h3><h4 id="rollout-命令-用于对资源进行管理"><a href="#rollout-命令-用于对资源进行管理" class="headerlink" title="rollout 命令: 用于对资源进行管理"></a>rollout 命令: 用于对资源进行管理</h4><ul>
+<h3 id="部署命令"><a href="#部署命令" class="headerlink" title="部署命令"></a>部署命令</h3><h4 id="rollout-命令"><a href="#rollout-命令" class="headerlink" title="rollout 命令"></a>rollout 命令</h4><p><strong>用于对资源进行管理</strong></p>
+<ul>
 <li>可用资源包括：deployments，daemonsets。</li>
 <li>子命令：<ul>
 <li>history（查看历史版本）</li>
@@ -950,7 +954,8 @@
 
 
 
-<h4 id="rolling-update命令-执行指定ReplicationController的滚动更新"><a href="#rolling-update命令-执行指定ReplicationController的滚动更新" class="headerlink" title="rolling-update命令: 执行指定ReplicationController的滚动更新"></a>rolling-update命令: 执行指定ReplicationController的滚动更新</h4><p>该命令创建了一个新的RC， 然后一次更新一个pod方式逐步使用新的PodTemplate，最终实现Pod滚动更新，new-controller.json需要与之前RC在相同的namespace下。</p>
+<h4 id="rolling-update命令"><a href="#rolling-update命令" class="headerlink" title="rolling-update命令"></a>rolling-update命令</h4><p><strong>执行指定ReplicationController的滚动更新</strong></p>
+<p>该命令创建了一个新的RC， 然后一次更新一个pod方式逐步使用新的PodTemplate，最终实现Pod滚动更新，new-controller.json需要与之前RC在相同的namespace下。</p>
 <p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">rolling-update OLD_CONTROLLER_NAME ([NEW_CONTROLLER_NAME] --image=NEW_CONTAINER_IMAGE | -f NEW_CONTROLLER_SPEC)<br></code></pre></td></tr></table></figure>
 
@@ -962,7 +967,8 @@
 
 
 
-<h4 id="scale命令：扩容或缩容-Deployment、ReplicaSet、Replication-Controller或-Job-中Pod数量"><a href="#scale命令：扩容或缩容-Deployment、ReplicaSet、Replication-Controller或-Job-中Pod数量" class="headerlink" title="scale命令：扩容或缩容 Deployment、ReplicaSet、Replication Controller或 Job 中Pod数量"></a>scale命令：扩容或缩容 Deployment、ReplicaSet、Replication Controller或 Job 中Pod数量</h4><p>scale也可以指定多个前提条件，如：当前副本数量或 –resource-version ，进行伸缩比例设置前，系统会先验证前提条件是否成立。这个就是弹性伸缩策略。</p>
+<h4 id="scale命令"><a href="#scale命令" class="headerlink" title="scale命令"></a>scale命令</h4><p><strong>扩容或缩容 Deployment、ReplicaSet、Replication Controller或 Job 中Pod数量</strong></p>
+<p>scale也可以指定多个前提条件，如：当前副本数量或 –resource-version ，进行伸缩比例设置前，系统会先验证前提条件是否成立。这个就是弹性伸缩策略。</p>
 <p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl scale [--resource-version=version] [--current-replicas=count] --replicas=COUNT (-f FILENAME | TYPE NAME)<br></code></pre></td></tr></table></figure>
 
@@ -976,7 +982,8 @@
 
 
 
-<h4 id="autoscale命令：这个比scale更加强大，也是弹性伸缩策略-，它是根据流量的多少来自动进行扩展或者缩容。"><a href="#autoscale命令：这个比scale更加强大，也是弹性伸缩策略-，它是根据流量的多少来自动进行扩展或者缩容。" class="headerlink" title="autoscale命令：这个比scale更加强大，也是弹性伸缩策略 ，它是根据流量的多少来自动进行扩展或者缩容。"></a>autoscale命令：这个比scale更加强大，也是弹性伸缩策略 ，它是根据流量的多少来自动进行扩展或者缩容。</h4><p>指定Deployment、ReplicaSet或ReplicationController，并创建已经定义好资源的自动伸缩器。使用自动伸缩器可以根据需要自动增加或减少系统中部署的pod数量。</p>
+<h4 id="autoscale命令"><a href="#autoscale命令" class="headerlink" title="autoscale命令"></a>autoscale命令</h4><p><strong>这个比scale更加强大，也是弹性伸缩策略 ，它是根据流量的多少来自动进行扩展或者缩容。</strong></p>
+<p>指定Deployment、ReplicaSet或ReplicationController，并创建已经定义好资源的自动伸缩器。使用自动伸缩器可以根据需要自动增加或减少系统中部署的pod数量。</p>
 <p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl autoscale (-f FILENAME | TYPE NAME | TYPE/NAME) [--min=MINPODS] --max=MAXPODS [--cpu-percent=CPU] [flags]<br></code></pre></td></tr></table></figure>
 
@@ -990,16 +997,18 @@
 
 
 
-<h4 id="certificate命令：用于证书资源管理，授权等"><a href="#certificate命令：用于证书资源管理，授权等" class="headerlink" title="certificate命令：用于证书资源管理，授权等"></a>certificate命令：用于证书资源管理，授权等</h4><p>例如，当有node节点要向master请求，那么是需要master节点授权的</p>
+<h4 id="certificate命令"><a href="#certificate命令" class="headerlink" title="certificate命令"></a>certificate命令</h4><p><strong>用于证书资源管理，授权等</strong></p>
+<p>例如，当有node节点要向master请求，那么是需要master节点授权的</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl certificate approve node-csr-81F5uBehyEyLWco5qavBsxc1GzFcZk3aFM3XW5rT3mw node-csr-Ed0kbFhc_q7qx14H3QpqLIUs0uKo036O2SnFpIheM18<br></code></pre></td></tr></table></figure>
 
 
 
-<h4 id="cluster-info-命令：显示集群信息"><a href="#cluster-info-命令：显示集群信息" class="headerlink" title="cluster-info 命令：显示集群信息"></a>cluster-info 命令：显示集群信息</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cluster-info<br></code></pre></td></tr></table></figure>
+<h4 id="cluster-info-命令"><a href="#cluster-info-命令" class="headerlink" title="cluster-info 命令"></a>cluster-info 命令</h4><p><strong>显示集群信息</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cluster-info<br></code></pre></td></tr></table></figure>
 
 
 
-<h4 id="top-命令：用于查看资源的cpu，内存磁盘等资源的使用率"><a href="#top-命令：用于查看资源的cpu，内存磁盘等资源的使用率" class="headerlink" title="top 命令：用于查看资源的cpu，内存磁盘等资源的使用率"></a>top 命令：用于查看资源的cpu，内存磁盘等资源的使用率</h4><p>以前需要heapster，后替换为metrics-server 【如果不装这个服务，会有error报错】</p>
+<h4 id="top-命令"><a href="#top-命令" class="headerlink" title="top 命令"></a>top 命令</h4><h4 id="用于查看资源的cpu，内存磁盘等资源的使用率"><a href="#用于查看资源的cpu，内存磁盘等资源的使用率" class="headerlink" title="用于查看资源的cpu，内存磁盘等资源的使用率"></a><strong>用于查看资源的cpu，内存磁盘等资源的使用率</strong></h4><p>以前需要heapster，后替换为metrics-server 【如果不装这个服务，会有error报错】</p>
 <h5 id="查看pod的使用情况"><a href="#查看pod的使用情况" class="headerlink" title="查看pod的使用情况"></a>查看pod的使用情况</h5><p>查看所有</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl top pod --all-namespaces<br></code></pre></td></tr></table></figure>
 
@@ -1009,17 +1018,20 @@
 
 
 
-<h4 id="cordon命令：用于标记某个节点不可调度"><a href="#cordon命令：用于标记某个节点不可调度" class="headerlink" title="cordon命令：用于标记某个节点不可调度"></a>cordon命令：用于标记某个节点不可调度</h4><p>标记 my-node 为 unschedulable,禁止pod被调度过来。注意这时现有的pod还会继续运行，不会被驱逐。</p>
+<h4 id="cordon命令"><a href="#cordon命令" class="headerlink" title="cordon命令"></a>cordon命令</h4><p><strong>用于标记某个节点不可调度</strong></p>
+<p>标记 my-node 为 unschedulable,禁止pod被调度过来。注意这时现有的pod还会继续运行，不会被驱逐。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cordon my-node<br></code></pre></td></tr></table></figure>
 
 
 
-<h4 id="uncordon命令：用于标签节点可以调度"><a href="#uncordon命令：用于标签节点可以调度" class="headerlink" title="uncordon命令：用于标签节点可以调度"></a>uncordon命令：用于标签节点可以调度</h4><p>与cordon相反，标记 my-node 为 允许调度。</p>
+<h4 id="uncordon命令"><a href="#uncordon命令" class="headerlink" title="uncordon命令"></a>uncordon命令</h4><p><strong>用于标签节点可以调度</strong></p>
+<p>与cordon相反，标记 my-node 为 允许调度。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl uncordon my-node<br></code></pre></td></tr></table></figure>
 
 
 
-<h4 id="drain命令：-用于在维护期间排除节点。"><a href="#drain命令：-用于在维护期间排除节点。" class="headerlink" title="drain命令： 用于在维护期间排除节点。"></a>drain命令： 用于在维护期间排除节点。</h4><p>drain字面意思为排水，实际就是把my-node的pod平滑切换到其他node，同时标记pod为unschedulable，也就是包含了cordon命令。</p>
+<h4 id="drain命令"><a href="#drain命令" class="headerlink" title="drain命令"></a>drain命令</h4><p><strong>用于在维护期间排除节点。</strong></p>
+<p>drain字面意思为排水，实际就是把my-node的pod平滑切换到其他node，同时标记pod为unschedulable，也就是包含了cordon命令。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl drain my-node<br></code></pre></td></tr></table></figure>
 
 <p>但是直接使用命令一般不会成功，建议在要维护节点时，加上以下参数：</p>
@@ -1030,7 +1042,8 @@
 <li>–force 直接删除不由workload对象（Deployment、Job等）管理的pod</li>
 <li>–delete-local-data 直接删除挂载有本地目录(empty-dir方式）的pod</li>
 </ul>
-<h4 id="taint命令：用于给某个Node节点设置污点"><a href="#taint命令：用于给某个Node节点设置污点" class="headerlink" title="taint命令：用于给某个Node节点设置污点"></a>taint命令：用于给某个Node节点设置污点</h4><h5 id="污点-Taint-的组成"><a href="#污点-Taint-的组成" class="headerlink" title="污点 ( Taint ) 的组成"></a>污点 ( Taint ) 的组成</h5><ul>
+<h4 id="taint命令"><a href="#taint命令" class="headerlink" title="taint命令"></a>taint命令</h4><p><strong>用于给某个Node节点设置污点</strong></p>
+<h5 id="污点-Taint-的组成"><a href="#污点-Taint-的组成" class="headerlink" title="污点 ( Taint ) 的组成"></a>污点 ( Taint ) 的组成</h5><ul>
 <li>使用kubectl taint命令可以给某个Node节点设置污点，Node被设置上污点之后就和Pod之间存在了一种相斥的关系，可以让Node拒绝Pod的调度执行，甚至将Node已经存在的Pod驱逐出去</li>
 <li>每个污点的组成如下： <code>key=value:effect</code> 每个污点有一个 key 和 value 作为污点的标签，其中 value 可以为空，eﬀect 描述污点的作用。</li>
 <li>当前 taint eﬀect 支持如下三个选项：<ul>
@@ -1053,7 +1066,8 @@
 
 
 
-<h3 id="集群故障排查和调试命令"><a href="#集群故障排查和调试命令" class="headerlink" title="集群故障排查和调试命令"></a>集群故障排查和调试命令</h3><h4 id="describe命令：显示特定pod资源的详细信息"><a href="#describe命令：显示特定pod资源的详细信息" class="headerlink" title="describe命令：显示特定pod资源的详细信息"></a>describe命令：显示特定pod资源的详细信息</h4><p>要先知道所有的命名空间，因为pod可能不是在默认default中</p>
+<h3 id="集群故障排查和调试命令"><a href="#集群故障排查和调试命令" class="headerlink" title="集群故障排查和调试命令"></a>集群故障排查和调试命令</h3><h4 id="describe命令"><a href="#describe命令" class="headerlink" title="describe命令"></a>describe命令</h4><p><strong>显示特定pod资源的详细信息</strong></p>
+<p>要先知道所有的命名空间，因为pod可能不是在默认default中</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get ns<br>NAME              STATUS   AGE<br>ccx               Active   15h<br>ccxhero           Active   15h<br>default           Active   5d<br>kube-node-lease   Active   5d<br>kube-public       Active   5d<br>kube-system       Active   5d<br>ns1               Active   16h<br></code></pre></td></tr></table></figure>
 
 <p>这时需要获取指定命名空间中的pod名称</p>
@@ -1064,7 +1078,8 @@
 
 
 
-<h4 id="logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名"><a href="#logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名" class="headerlink" title="logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名"></a>logs命令：用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名</h4><p>语法：</p>
+<h4 id="logs命令"><a href="#logs命令" class="headerlink" title="logs命令"></a>logs命令</h4><p><strong>用于在一个pod中打印一个容器的日志，如果pod中只有一个容器，可以省略容器名</strong></p>
+<p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl logs [-f] [-p] POD [-c CONTAINER]<br></code></pre></td></tr></table></figure>
 
 <h5 id="返回仅包含一个容器的pod-nginx的日志快照"><a href="#返回仅包含一个容器的pod-nginx的日志快照" class="headerlink" title="返回仅包含一个容器的pod nginx的日志快照"></a>返回仅包含一个容器的pod nginx的日志快照</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl logs nginx<br></code></pre></td></tr></table></figure>
@@ -1089,7 +1104,9 @@
 <li>–tail=-1: 要显示的最新的日志条数。默认为-1，显示所有的日志。</li>
 <li>–timestamps[=false]: 在日志中包含时间戳。</li>
 </ul>
-<h4 id="exec命令：进入容器进行交互，在容器中执行命令-语法："><a href="#exec命令：进入容器进行交互，在容器中执行命令-语法：" class="headerlink" title="exec命令：进入容器进行交互，在容器中执行命令 语法："></a>exec命令：进入容器进行交互，在容器中执行命令 语法：</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl exec POD [-c CONTAINER] -- COMMAND [args...]<br></code></pre></td></tr></table></figure>
+<h4 id="exec命令"><a href="#exec命令" class="headerlink" title="exec命令"></a>exec命令</h4><p><strong>进入容器进行交互，在容器中执行命令</strong></p>
+<p> 语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl exec POD [-c CONTAINER] -- COMMAND [args...]<br></code></pre></td></tr></table></figure>
 
 <p>命令选项：</p>
 <ul>
@@ -1103,7 +1120,8 @@
 
 
 
-<h4 id="attach命令：连接到一个正在运行的容器。"><a href="#attach命令：连接到一个正在运行的容器。" class="headerlink" title="attach命令：连接到一个正在运行的容器。"></a>attach命令：连接到一个正在运行的容器。</h4><p>语法：</p>
+<h4 id="attach命令"><a href="#attach命令" class="headerlink" title="attach命令"></a>attach命令</h4><p><strong>连接到一个正在运行的容器。</strong></p>
+<p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl attach POD -c CONTAINER<br></code></pre></td></tr></table></figure>
 
 <p>参数选项：</p>
@@ -1121,7 +1139,8 @@
 
 
 
-<h4 id="cp命令：拷贝文件或者目录到pod容器中"><a href="#cp命令：拷贝文件或者目录到pod容器中" class="headerlink" title="cp命令：拷贝文件或者目录到pod容器中"></a>cp命令：拷贝文件或者目录到pod容器中</h4><p>用于pod和外部的文件交换,类似于docker 的cp，就是将容器中的内容和外部的内容进行交换。</p>
+<h4 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h4><p><strong>拷贝文件或者目录到pod容器中</strong></p>
+<p>用于pod和外部的文件交换,类似于docker 的cp，就是将容器中的内容和外部的内容进行交换。</p>
 <p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl cp &lt;file-spec-src&gt; &lt;file-spec-dest&gt; [options]<br></code></pre></td></tr></table></figure>
 
@@ -1134,16 +1153,19 @@
 
 
 
-<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><h4 id="api-servions命令：打印受支持的api版本信息"><a href="#api-servions命令：打印受支持的api版本信息" class="headerlink" title="api-servions命令：打印受支持的api版本信息"></a>api-servions命令：打印受支持的api版本信息</h4><p>打印当前集群支持的api版本</p>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><h4 id="api-servions命令"><a href="#api-servions命令" class="headerlink" title="api-servions命令"></a>api-servions命令</h4><p><strong>打印受支持的api版本信息</strong></p>
+<p>打印当前集群支持的api版本</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl api-versions<br></code></pre></td></tr></table></figure>
 
-<h4 id="help命令：用于查看命令帮助"><a href="#help命令：用于查看命令帮助" class="headerlink" title="help命令：用于查看命令帮助"></a>help命令：用于查看命令帮助</h4><p>显示全部的命令帮助提示</p>
+<h4 id="help命令"><a href="#help命令" class="headerlink" title="help命令"></a>help命令</h4><p><strong>用于查看命令帮助</strong></p>
+<p>显示全部的命令帮助提示</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl --help<br></code></pre></td></tr></table></figure>
 
 <p>具体的子命令帮助，例如</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl create --help<br></code></pre></td></tr></table></figure>
 
-<h4 id="config-命令-用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）"><a href="#config-命令-用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）" class="headerlink" title="config 命令: 用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）"></a>config 命令: 用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）</h4><p>设置 kubectl 与哪个 Kubernetes 集群进行通信并修改配置信息。查看 使用 kubeconfig 跨集群授权访问 文档获取详情配置文件信息。</p>
+<h4 id="config-命令"><a href="#config-命令" class="headerlink" title="config 命令"></a>config 命令</h4><p><strong>用于修改kubeconfig配置文件（用于访问api，例如配置认证信息）</strong></p>
+<p>设置 kubectl 与哪个 Kubernetes 集群进行通信并修改配置信息。查看 使用 kubeconfig 跨集群授权访问 文档获取详情配置文件信息。</p>
 <h5 id="显示合并的-kubeconfig-配置信息"><a href="#显示合并的-kubeconfig-配置信息" class="headerlink" title="显示合并的 kubeconfig 配置信息"></a>显示合并的 kubeconfig 配置信息</h5><p>为啥要加个合并呢，是因为如果配置了多集群，那么这里面的配置信息是很多的，如下，我配置了2个集群的config文件内容就如下【我博客中有一篇是：【Kubernetes】k8s多集群切换【含上下文作用详解】，这里面说了如何配置多集群，感兴趣的可以去看看。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs Shell">[root@master ~]# kubectl config view<br>apiVersion: v1<br>clusters:<br>- cluster:<br>    certificate-authority-data: DATA+OMITTED<br>    server: https://192.168.59.142:6443<br>  name: master<br>- cluster:<br>    certificate-authority-data: DATA+OMITTED<br>    server: https://192.168.59.151:6443<br>  name: master1<br>contexts:<br>- context:<br>    cluster: master<br>    namespace: default<br>    user: ccx<br>  name: context<br>- context:<br>    cluster: master1<br>    namespace: default<br>    user: ccx1<br>  name: context1<br>current-context: context<br>kind: Config<br>preferences: &#123;&#125;<br>users:<br>- name: ccx<br>  user:<br>    client-certificate-data: REDACTED<br>    client-key-data: REDACTED<br>- name: ccx1<br>  user:<br>    client-certificate-data: REDACTED<br>    client-key-data: REDACTED<br></code></pre></td></tr></table></figure>
 
@@ -1168,14 +1190,16 @@
 
 
 
-<h4 id="version-命令：打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】"><a href="#version-命令：打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】" class="headerlink" title="version 命令：打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】"></a>version 命令：打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl version<br></code></pre></td></tr></table></figure>
+<h4 id="version-命令"><a href="#version-命令" class="headerlink" title="version 命令"></a>version 命令</h4><p><strong>打印客户端和服务端版本信息打印客户端和服务端版本信息【详细版】</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl version<br></code></pre></td></tr></table></figure>
 
 <p>精简版【仅显示版本号】</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">kubectl version --short<br></code></pre></td></tr></table></figure>
 
 
 
-<h4 id="plugin-命令：运行一个命令行插件"><a href="#plugin-命令：运行一个命令行插件" class="headerlink" title="plugin 命令：运行一个命令行插件"></a>plugin 命令：运行一个命令行插件</h4><p>docker plugin命令用于管理插件。<br>用法：</p>
+<h4 id="plugin-命令"><a href="#plugin-命令" class="headerlink" title="plugin 命令"></a>plugin 命令</h4><p><strong>运行一个命令行插件</strong></p>
+<p>docker plugin命令用于管理插件。<br>用法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">docker plugin COMMAND<br></code></pre></td></tr></table></figure>
 
 
@@ -1224,7 +1248,8 @@
 <td>升级现有插件</td>
 </tr>
 </tbody></table>
-<h3 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h3><h4 id="apply命令：通过文件名或者标准输入对资源应用配置"><a href="#apply命令：通过文件名或者标准输入对资源应用配置" class="headerlink" title="apply命令：通过文件名或者标准输入对资源应用配置"></a>apply命令：通过文件名或者标准输入对资源应用配置</h4><p>通过文件名或控制台输入，对资源进行配置。 如果资源不存在，将会新建一个。可以使用 JSON 或者 YAML 格式。</p>
+<h3 id="高级命令"><a href="#高级命令" class="headerlink" title="高级命令"></a>高级命令</h3><h4 id="apply命令"><a href="#apply命令" class="headerlink" title="apply命令"></a>apply命令</h4><p><strong>通过文件名或者标准输入对资源应用配置</strong></p>
+<p>通过文件名或控制台输入，对资源进行配置。 如果资源不存在，将会新建一个。可以使用 JSON 或者 YAML 格式。</p>
 <p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl apply -f FILENAME<br></code></pre></td></tr></table></figure>
 
@@ -1244,13 +1269,15 @@
 <li>–schema-cache-dir=”~/.kube/schema”: 非空则将API schema缓存为指定文件，默认缓存到’[root@master ~]#HOME/.kube/schema’</li>
 <li>–validate[=true]: 如果为true，在发送到服务端前先使用schema来验证输入。</li>
 </ul>
-<h4 id="patch命令：使用补丁修改，更新资源的字段，也就是修改资源的部分内容"><a href="#patch命令：使用补丁修改，更新资源的字段，也就是修改资源的部分内容" class="headerlink" title="patch命令：使用补丁修改，更新资源的字段，也就是修改资源的部分内容"></a>patch命令：使用补丁修改，更新资源的字段，也就是修改资源的部分内容</h4><h5 id="使用全局合并修补程序，更新节点"><a href="#使用全局合并修补程序，更新节点" class="headerlink" title="使用全局合并修补程序，更新节点"></a>使用全局合并修补程序，更新节点</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl patch node k8s-node-1 -p &#x27;&#123;&quot;spec&quot;:&#123;&quot;unschedulable&quot;:true&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure>
+<h4 id="patch命令"><a href="#patch命令" class="headerlink" title="patch命令"></a>patch命令</h4><p><strong>使用补丁修改，更新资源的字段，也就是修改资源的部分内容</strong></p>
+<h5 id="使用全局合并修补程序，更新节点"><a href="#使用全局合并修补程序，更新节点" class="headerlink" title="使用全局合并修补程序，更新节点"></a>使用全局合并修补程序，更新节点</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">[root@master ~]# kubectl patch node k8s-node-1 -p &#x27;&#123;&quot;spec&quot;:&#123;&quot;unschedulable&quot;:true&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure>
 
 <h5 id="更新容器的镜像"><a href="#更新容器的镜像" class="headerlink" title="更新容器的镜像"></a>更新容器的镜像</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl patch pod valid-pod -p &#x27;&#123;&quot;spec&quot;:&#123;&quot;containers&quot;:[&#123;&quot;name&quot;:&quot;kubernetes-serve-hostname&quot;,&quot;image&quot;:&quot;new image&quot;&#125;]&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure>
 
 
 
-<h4 id="replace命令：-通过文件或者标准输入替换原有资源"><a href="#replace命令：-通过文件或者标准输入替换原有资源" class="headerlink" title="replace命令： 通过文件或者标准输入替换原有资源"></a>replace命令： 通过文件或者标准输入替换原有资源</h4><p>语法：</p>
+<h4 id="replace命令"><a href="#replace命令" class="headerlink" title="replace命令"></a>replace命令</h4><p><strong>通过文件或者标准输入替换原有资源</strong></p>
+<p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl replace -f FILENAME<br></code></pre></td></tr></table></figure>
 
 <h5 id="使用pod-json中的数据更新pod"><a href="#使用pod-json中的数据更新pod" class="headerlink" title="使用pod.json中的数据更新pod"></a>使用pod.json中的数据更新pod</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl replace -f ./pod.json<br></code></pre></td></tr></table></figure>
@@ -1263,7 +1290,8 @@
 
 
 
-<h4 id="convert命令：不同的版本之间转换配置文件"><a href="#convert命令：不同的版本之间转换配置文件" class="headerlink" title="convert命令：不同的版本之间转换配置文件"></a>convert命令：不同的版本之间转换配置文件</h4><p>语法：</p>
+<h4 id="convert命令"><a href="#convert命令" class="headerlink" title="convert命令"></a>convert命令</h4><p><strong>不同的版本之间转换配置文件</strong></p>
+<p>语法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl convert -f FILENAME<br></code></pre></td></tr></table></figure>
 
 <h5 id="将pod-yaml转换为最新版本并输出"><a href="#将pod-yaml转换为最新版本并输出" class="headerlink" title="将pod.yaml转换为最新版本并输出"></a>将pod.yaml转换为最新版本并输出</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl convert -f pod.yaml<br></code></pre></td></tr></table></figure>
@@ -1470,6 +1498,17 @@
 </blockquote>
 <p>比如上面的 volumeMounts.name=tmp, Podname=demo-statefulset-[0-2]，因此创建出来的PVC是 tmp-demo-statefulset-0、tmp-demo-statefulset-1、 tmp-demo-statefulset-2。</p>
 <h4 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h4><p>PVC 和 PV 的设计，就是“接口”和“实现”的思想，‘volumeClaimTemplates’进行了再一层的封装抽象，提供了更加模版的开发方式，降低开发与运维之间的耦合性。</p>
+<h2 id="7-6-Daemon-Set"><a href="#7-6-Daemon-Set" class="headerlink" title="7.6 Daemon Set"></a>7.6 Daemon Set</h2><p>Daemon Set 的主要作用，是在 Kubernetes 集群里，运行一个 <code>Daemon Pod</code>。 Daemon Set 只管理 Pod 对象，然后通过 node Affinity 和 Toleration 这两个调度器的小功能，保证了每个节点上有且只有一个 Pod。<br> 所以，这个 Pod 有如下三个特征：</p>
+<ul>
+<li>这个 Pod 运行在 Kubernetes 集群里的每一个节点（Node）上。</li>
+<li>每个节点上只有一个这样的 Pod 实例。</li>
+<li>当有新的节点加入 Kubernetes 集群后，该 Pod 会自动地在新节点上被创建出来。</li>
+<li>当旧节点被删除后，它上面的 Pod 也相应地会被回收掉。</li>
+</ul>
+<p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230509203903603.png" srcset="/img/loading.gif" lazyload alt="image-20230509203903603"></p>
+<p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230509204003830.png" srcset="/img/loading.gif" lazyload alt="image-20230509204003830"></p>
+<h2 id="7-7-Job"><a href="#7-7-Job" class="headerlink" title="7.7 Job"></a>7.7 Job</h2><p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230509204121086.png" srcset="/img/loading.gif" lazyload alt="image-20230509204121086"></p>
+<h2 id="7-8-cronjob"><a href="#7-8-cronjob" class="headerlink" title="7.8 cronjob"></a>7.8 cronjob</h2><p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230509204154751.png" srcset="/img/loading.gif" lazyload alt="image-20230509204154751"></p>
 <h1 id="八、Service"><a href="#八、Service" class="headerlink" title="八、Service"></a>八、Service</h1><h2 id="8-1-概述"><a href="#8-1-概述" class="headerlink" title="8.1 概述"></a>8.1 概述</h2><p>Service 是 Kubernetes 最核心的概念，通过创建 Service，可以为一组具有相同功能的容器应用提供一个统一的入口地址，并且将请求负载分发到后端的各个容器应用上。</p>
 <p><strong>Pod和Service关系</strong></p>
 <ul>
@@ -1503,13 +1542,84 @@
 
 
 
-<h1 id="九、Volume"><a href="#九、Volume" class="headerlink" title="九、Volume"></a>九、Volume</h1><h1 id="九、PVC和PV"><a href="#九、PVC和PV" class="headerlink" title="九、PVC和PV"></a>九、PVC和PV</h1><h2 id="9-1概述"><a href="#9-1概述" class="headerlink" title="9.1概述"></a>9.1概述</h2><p>管理存储是管理计算的一个明显问题。PersistentVolume 子系统为用户和管理员提供了 一个 API，用于抽象如何根据消费方式提供存储的详细信息。</p>
+<h1 id="九、Volume"><a href="#九、Volume" class="headerlink" title="九、Volume"></a>九、Volume</h1><h2 id="9-1-概述"><a href="#9-1-概述" class="headerlink" title="9.1 概述"></a>9.1 概述</h2><p>Volume 是 Pod 中能够被多个容器访问的共享目录。Kubernetes 的 Volume 定义在 Pod 上， 它被一个 Pod 中的多个容器挂载到具体的文件目录下。</p>
+<p>Volume 与 Pod 的生命周期相同，但与容器的生命周期不相关，当容器终止或重启时，Volume 中的数据也不会丢失。要使用 volume，pod 需要指定 volume 的类型和内容（ 字段），和映射到容器的位置（ 字段）。</p>
+<p>Kubernetes 支持多种类型的 Volume，包括：emptyDir、hostPath、gcePersistentDisk、 awsElasticBlockStore、nfs、iscsi、ﬂocker、glusterfs、rbd、cephfs、gitRepo、 secret、persistentVolumeClaim、downwardAPI、azureFileVolume、azureDisk、 vsphereVolume、Quobyte、PortworxVolume、ScaleIO。</p>
+<h2 id="9-2-类型"><a href="#9-2-类型" class="headerlink" title="9.2 类型"></a>9.2 类型</h2><h3 id="9-2-1-EmptyDir"><a href="#9-2-1-EmptyDir" class="headerlink" title="9.2.1 EmptyDir"></a>9.2.1 EmptyDir</h3><p>emptyDir 类型的 volume 创建于 pod 被调度到某个宿主机上的时候，而同一个 pod 内的容器都能读写 EmptyDir 中的同一个文件。一旦这个 pod 离开了这个宿主机，EmptyDir 中的数据就会被永久删除。所 以目前 EmptyDir 类型的 volume 主要用作临时空间，比如 Web 服务器写日志或者 tmp 文件需要的临时目录。</p>
+<p>示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>        <span class="hljs-comment">#类型是Pod</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">labels:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">redis</span><br>    <span class="hljs-attr">role:</span> <span class="hljs-string">master</span>        <span class="hljs-comment">#定义为主redis</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">redis-master</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">containers:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">master</span><br>      <span class="hljs-attr">image:</span> <span class="hljs-string">redis:latest</span><br>      <span class="hljs-attr">env:</span>        <span class="hljs-comment">#定义环境变量</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">MASTER</span><br>          <span class="hljs-attr">value:</span> <span class="hljs-string">&quot;true&quot;</span><br>      <span class="hljs-attr">ports:</span>        <span class="hljs-comment">#容器内端口</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">6379</span><br>      <span class="hljs-attr">volumeMounts:</span>        <span class="hljs-comment">#容器内挂载点</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/data</span><br>          <span class="hljs-attr">name:</span> <span class="hljs-string">redis-data</span>        <span class="hljs-comment">#必须有名称</span><br>  <span class="hljs-attr">volumes:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">redis-data</span>        <span class="hljs-comment">#跟上面的名称对应</span><br>      <span class="hljs-attr">emptyDir:</span> &#123;&#125;        <span class="hljs-comment">#宿主机挂载点</span><br></code></pre></td></tr></table></figure>
+
+<p>创建Pod</p>
+<p><code>kubectl create -f emptydir.yaml</code></p>
+<p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/796f3012b1305e74019974017cc0e808.png" srcset="/img/loading.gif" lazyload alt="blob.png"></p>
+<p>此时Emptydir已经创建成功，在宿主机上的访问路径为<code>/var/lib/kubelet/pods/&lt;pod uid&gt;/volumes/kubernetes.io~empty-dir/redis-data</code>，如果在此目录中创建删除文件，都将对容器中的/data目录有影响，如果删除Pod，文件将全部删除，即使是在宿主机上创建的文件也是如此，在宿主机上删除容器则k8s会再自动创建一个容器，此时文件仍然存在。</p>
+<h3 id="9-2-2-HostPath"><a href="#9-2-2-HostPath" class="headerlink" title="9.2.2 HostPath"></a>9.2.2 HostPath</h3><p>HostPath 属性的 volume 使得对应的容器能够访问当前宿主机上的指定目录。</p>
+<p>例如，需要 运行一个访问 Docker 系统目录的容器，那么就使用/var/lib/docker 目录作为一个 HostDir 类型的 volume；或者要在一个容器内部运行 CAdvisor，那么就使用/dev/cgroups 目录作为一个 HostDir 类型的 volume。一旦这个 pod 离开了这个宿主机，HostDir 中的数据虽然不会被永久删除，但数据也不会随 pod 迁移到其他宿主机上。因此，需要注意的是， 由于各个宿主机上的文件系统结构和内容并不一定完全相同，所以相同 pod 的 HostDir 可能会在不 同的宿主机上表现出不同的行为。</p>
+<p>示例</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">...</span><br>  <span class="hljs-attr">volumes:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">redis-data</span>        <span class="hljs-comment">#跟上面的名称对应</span><br>      <span class="hljs-attr">hostPath:</span> <br>        <span class="hljs-attr">path:</span> <span class="hljs-string">/data</span>      <span class="hljs-comment">#宿主机挂载点</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="9-2-2-NFS"><a href="#9-2-2-NFS" class="headerlink" title="9.2.2 NFS"></a>9.2.2 NFS</h3><p>NFS 类型 volume。允许一块现有的网络硬盘在同一个 pod 内的容器间共享。</p>
+<p>示例</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">nfs-web</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">containers:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">web</span><br>      <span class="hljs-attr">image:</span> <span class="hljs-string">nginx</span><br>      <span class="hljs-attr">imagePullPolicy:</span> <span class="hljs-string">Never</span>        <span class="hljs-comment">#如果已经有镜像，就不需要再拉取镜像</span><br>      <span class="hljs-attr">ports:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">web</span><br>          <span class="hljs-attr">containerPort:</span> <span class="hljs-number">80</span><br>          <span class="hljs-attr">hostPort:</span> <span class="hljs-number">80</span>        <span class="hljs-comment">#将容器的80端口映射到宿主机的80端口</span><br>      <span class="hljs-attr">volumeMounts:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name :</span> <span class="hljs-string">nfs</span>        <span class="hljs-comment">#指定名称必须与下面一致</span><br>          <span class="hljs-attr">mountPath:</span> <span class="hljs-string">&quot;/usr/share/nginx/html&quot;</span>        <span class="hljs-comment">#容器内的挂载点</span><br>  <span class="hljs-attr">volumes:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">nfs</span>            <span class="hljs-comment">#指定名称必须与上面一致</span><br>      <span class="hljs-attr">nfs:</span>            <span class="hljs-comment">#nfs存储</span><br>        <span class="hljs-attr">server:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.66</span><span class="hljs-number">.50</span>        <span class="hljs-comment">#nfs服务器ip或是域名</span><br>        <span class="hljs-attr">path:</span> <span class="hljs-string">&quot;/test&quot;</span>                <span class="hljs-comment">#nfs服务器共享的目录</span><br></code></pre></td></tr></table></figure>
+
+<p>创建Pod</p>
+<p><code>kubectl create -f nfs.yaml</code></p>
+<p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/2b2677ba239bb26f024cd124f207cab4.png" srcset="/img/loading.gif" lazyload alt="blob.png"></p>
+<p>在节点端可以用mount命令查询挂载情况</p>
+<p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/24f13ecfcb80ac8d11b50c803a432683.png" srcset="/img/loading.gif" lazyload alt="blob.png"></p>
+<p>因为映射的是代码目录，在/test目录中创建index.html文件后，这个文件也将在容器中生效，当Pod删除时，文件不受影响，实现了数据持久化。</p>
+<p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230510140355253.png" srcset="/img/loading.gif" lazyload alt="image-20230510140355253"></p>
+<h1 id="十、PVC和PV"><a href="#十、PVC和PV" class="headerlink" title="十、PVC和PV"></a>十、PVC和PV</h1><h2 id="10-1概述"><a href="#10-1概述" class="headerlink" title="10.1概述"></a>10.1概述</h2><p>管理存储是管理计算的一个明显问题。PersistentVolume 子系统为用户和管理员提供了 一个 API，用于抽象如何根据消费方式提供存储的详细信息。</p>
 <p>为此，引入了两个新的 API 资源：PersistentVolume 和 PersistentVolumeClaim。PersistentVolume（PV）是集群中由管理员配置的一段网络存储。 它是集群中的资源，就像节点是集群资源一样。PV 是容量插件，如 Volumes，但其生命周期独立于使用 PV 的任何单个 pod。 此 API 对象捕获存储实现的详细信息，包括 NFS，iSCSI 或特定于云提供程序的存储系统。</p>
 <p>PersistentVolumeClaim（PVC）是由用户进行存储的请求。 它类似于 pod。 Pod 消耗节点资源，PVC 消耗 PV 资源。Pod 可以请求特定级别的资源（CPU 和内存）。声明可以请求特定的大小和访问模式（例如，可以一次读/写或多次只读）。</p>
+<p>PVC 和 PV 是一一对应的</p>
+<ul>
+<li><p>PersistentVolume（PV） 数据持久卷</p>
+<pre><code>  对存储资源的创建与使用进行抽象，让存储可以做为集群的资源进行管理
+</code></pre>
+</li>
+<li><p>PersistentVolumeClaim(PVC) 数据持久卷请求</p>
+<pre><code>  让用户不需要关心具体的volume实现细节
+</code></pre>
+</li>
+</ul>
+<p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230510143504924.png" srcset="/img/loading.gif" lazyload alt="image-20230510143504924"></p>
 <p>虽然 PVC允许用户使用抽象存储资源，但是 PV对于不同的问题，用户通常需要具有不同属性（例如性能）。集群管理员需要能够提供各种 PV 不同的方式，而不仅仅是大小和访问模式，而不会让用户了解这些卷的实现方式。对于这些需求，有 StorageClass 资源。</p>
 <p>StorageClass 为管理员提供了一种描述他们提供的存储的“类”的方法。 不同的类可能映射到服务质量级别，或备份策略，或者由群集管理员确定的任意策略。 Kubernetes 本身对于什么类别代表是不言而喻的。 这个概念有时在其他存储系统中称为“配置文件”。</p>
-<p>PVC 和 PV 是一一对应的</p>
-<h1 id="十、Secret"><a href="#十、Secret" class="headerlink" title="十、Secret"></a>十、Secret</h1><h1 id="十一、ConfigMap"><a href="#十一、ConfigMap" class="headerlink" title="十一、ConfigMap"></a>十一、ConfigMap</h1><h1 id="十二、Namespace"><a href="#十二、Namespace" class="headerlink" title="十二、Namespace"></a>十二、Namespace</h1><h1 id="十三、Service"><a href="#十三、Service" class="headerlink" title="十三、Service"></a>十三、Service</h1><h1 id="十四、探针"><a href="#十四、探针" class="headerlink" title="十四、探针"></a>十四、探针</h1><h1 id="十五、调度器"><a href="#十五、调度器" class="headerlink" title="十五、调度器"></a>十五、调度器</h1>
+<h2 id="10-2-生命周期"><a href="#10-2-生命周期" class="headerlink" title="10.2 生命周期"></a>10.2 生命周期</h2><p>PV 是群集中的资源。PVC 是对这些资源的请求，并且还充当对资源的检查。PV 和 PVC 之间 的相互作用遵循以下生命周期：</p>
+<p>Provisioning ——-&gt; Binding ——–&gt;Using——&gt;Releasing——&gt;Recycling</p>
+<ul>
+<li><p>供应准备（Provisioning）：通过集群外的存储系统或者云平台来提供存储持久化支持。</p>
+<ul>
+<li>静态提供 Static：集群管理员创建多个 PV。 它们携带可供集群用户使用的真实存储的详细信息。 它们存在于 Kubernetes API 中，可用于消费</li>
+<li>动态提供 Dynamic：当管理员创建的静态 PV 都不匹配用户的 PersistentVolumeClaim 时，集群可能会尝试为 PVC 动态配置卷。 此配置基于 StorageClasses：PVC 必须请求一个类，并且管理员必须已创建并配置该类才能进行动态配置。 要求该类的声明有效地为自己禁用动态配置。</li>
+</ul>
+</li>
+<li><p>绑定（Binding）：用户创建 pvc 并指定需要的资源和访问模式。在找到可用 pv 之前，pvc 会保持未绑定状态。</p>
+</li>
+<li><p>使用（Using）：用户可在 pod 中像 volume 一样使用 pvc。</p>
+</li>
+<li><p>释放（Releasing）：用户删除 pvc 来回收存储资源，pv 将变成“released”状态。由于还保留着之前的数据，这些数据需要根据不同的策略来处理，否则这些存储资源无法被其他 pvc 使用。</p>
+</li>
+<li><p>回收（Recycling）：pv 可以设置三种回收策略：保留（Retain），回收（Recycle）和删除 （Delete）。</p>
+<ul>
+<li><p>保留策略：允许人工处理保留的数据。</p>
+</li>
+<li><p>删除策略：将删除 pv 和外部关联的存储资源，需要插件支持。</p>
+</li>
+<li><p>回收策略：将执行清除操作，之后可以被新的 pvc 使用，需要插件支持</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/01/22/%E5%AE%B9%E5%99%A8%E5%8C%96/Kubernetes/Kubernetes%E5%85%A5%E9%97%A8/image-20230510160409273.png" srcset="/img/loading.gif" lazyload alt="image-20230510160409273"></p>
+<h1 id="十一、Secret"><a href="#十一、Secret" class="headerlink" title="十一、Secret"></a>十一、Secret</h1><h2 id="11-1-概述"><a href="#11-1-概述" class="headerlink" title="11.1 概述"></a>11.1 概述</h2><p>Secret 解决了密码、token、密钥等敏感数据的配置问题，而不需要把这些敏感数据暴露到镜像或者 Pod Spec 中。Secret 可以以 Volume 或者环境变量的方式使用。</p>
+<h2 id="11-2-类型"><a href="#11-2-类型" class="headerlink" title="11.2 类型"></a>11.2 类型</h2><p>• Service Account：用来访问 Kubernetes API，由 Kubernetes 自动创建，并且会自动挂载到 Pod 的 <code>/run/secrets/kubernetes.io/serviceaccount</code>目录中</p>
+<p>• Opaque：base64 编码格式的 Secret，用来存储密码、密钥等</p>
+<p>• kubernetes.io/dockerconfigjson：用来存储私有 docker registry 的认证信息</p>
+<h1 id="十一、ConfigMap"><a href="#十一、ConfigMap" class="headerlink" title="十一、ConfigMap"></a>十一、ConfigMap</h1><h1 id="十二、Namespace"><a href="#十二、Namespace" class="headerlink" title="十二、Namespace"></a>十二、Namespace</h1><h1 id="十三、Service"><a href="#十三、Service" class="headerlink" title="十三、Service"></a>十三、Service</h1><h1 id="十四、探针"><a href="#十四、探针" class="headerlink" title="十四、探针"></a>十四、探针</h1><h1 id="十五、调度器"><a href="#十五、调度器" class="headerlink" title="十五、调度器"></a>十五、调度器</h1>
             </div>
             <hr>
             <div>
